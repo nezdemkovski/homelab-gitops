@@ -40,10 +40,18 @@ N8N_ENCRYPTION_KEY
 N8N_HOST
 N8N_PORT
 N8N_PROTOCOL
+WEBHOOK_URL
+N8N_EDITOR_BASE_URL
 ```
 
 The encryption key protects stored n8n credentials. Losing or changing it can
 make existing workflow credentials unreadable.
+
+Public access currently goes through Cloudflare Tunnel:
+
+```text
+https://n8n-homelab.nezdemkovski.cloud
+```
 
 ## Access
 
