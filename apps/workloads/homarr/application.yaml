@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homarr
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: ghcr.io/homarr-labs/charts
+    chart: homarr
+    targetRevision: 8.19.0
+    helm:
+      valuesObject:
+        image:
+          tag: v1.46.0
+        env:
+          TZ: Europe/Prague
+        envSecrets:
+          dbEncryption:
+            existingSecret: homarr-env
+            key: SECRET_ENCRYPTION_KEY
+        persistence:
+          homarrDatabase:
+            enabled: true
+            storageClassName: local-path
+            size: 1Gi
+        strategyType: Recreate
+        service:
+          type: ClusterIP
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: homarr
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
