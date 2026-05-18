@@ -38,6 +38,10 @@ spec:
           extraEnv:
             - name: N8N_SECURE_COOKIE
               value: "true"
+            - name: WEBHOOK_URL
+              value: https://n8n-homelab.nezdemkovski.cloud/
+            - name: N8N_EDITOR_BASE_URL
+              value: https://n8n-homelab.nezdemkovski.cloud/
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n
