@@ -2,18 +2,14 @@
 
 This deploys a locally managed Cloudflare Tunnel connector inside the cluster.
 
-```text
-Tunnel:   homelab-k8s
-ID:       fb9144ee-d450-448f-94ab-530094b85247
-Hostname: n8n.nezdemkovski.cloud
-Alias:    n8n-homelab.nezdemkovski.cloud
-Origin:   http://n8n-main.n8n.svc.cluster.local:5678
-```
+The tunnel ID, public hostnames, and ingress rules are stored in 1Password, not
+in Git.
 
 The tunnel credentials JSON is stored in 1Password:
 
 ```text
 Homelab/cloudflare-homelab-k8s/credentials.json
+Homelab/cloudflare-homelab-k8s/config.yaml
 ```
 
 External Secrets Operator syncs that field into:
@@ -22,4 +18,4 @@ External Secrets Operator syncs that field into:
 cloudflared/cloudflare-tunnel-credentials
 ```
 
-The older `n8n-homelab.nezdemkovski.cloud` hostname is kept as a migration alias.
+The `config.yaml` key contains the locally managed tunnel ingress rules.

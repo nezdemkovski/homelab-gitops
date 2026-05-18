@@ -62,9 +62,15 @@ spec:
             - name: N8N_SECURE_COOKIE
               value: "true"
             - name: WEBHOOK_URL
-              value: https://n8n.nezdemkovski.cloud/
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-env
+                  key: WEBHOOK_URL
             - name: N8N_EDITOR_BASE_URL
-              value: https://n8n.nezdemkovski.cloud/
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-env
+                  key: N8N_EDITOR_BASE_URL
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n

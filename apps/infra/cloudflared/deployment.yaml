@@ -46,9 +46,11 @@ spec:
               readOnly: true
       volumes:
         - name: config
-          configMap:
-            name: cloudflared-config
+          secret:
+            secretName: cloudflare-tunnel-credentials
+            items:
+              - key: config.yaml
+                path: config.yaml
         - name: credentials
           secret:
             secretName: cloudflare-tunnel-credentials
-

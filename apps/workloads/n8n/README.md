@@ -47,11 +47,8 @@ N8N_EDITOR_BASE_URL
 The encryption key protects stored n8n credentials. Losing or changing it can
 make existing workflow credentials unreadable.
 
-Public access currently goes through Cloudflare Tunnel:
-
-```text
-https://n8n.nezdemkovski.cloud
-```
+Public access goes through Cloudflare Tunnel. The public hostname is stored in
+1Password and synced through `n8n-env`.
 
 ## Access
 
