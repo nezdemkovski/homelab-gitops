@@ -1,5 +1,8 @@
 # NocoDB
 
+NocoDB is currently disabled. Its Kubernetes manifests are kept in `_disabled/`
+so the root Argo CD application ignores them.
+
 NocoDB runs from plain Kubernetes manifests using the official image:
 
 ```text
