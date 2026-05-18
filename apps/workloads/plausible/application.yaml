@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plausible
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: https://imio.github.io/helm-charts
+    chart: plausible-analytics
+    targetRevision: 0.4.2
+    helm:
+      valuesObject:
+        fullnameOverride: plausible
+        image:
+          repository: ghcr.io/plausible/community-edition
+          tag: v3.2.0
+        baseURL: ""
+        secret:
+          create: false
+          existingSecret: plausible-env
+        disableRegistration: false
+        service:
+          type: ClusterIP
+          port: 80
+        ingress:
+          enabled: false
+        extraEnv:
+          - name: BASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: plausible-env
+                key: BASE_URL
+        postgresql:
+          fullnameOverride: plausible-postgresql
+          enabled: true
+          auth:
+            username: postgres
+            database: plausible_db
+            existingSecret: plausible-env
+            secretKeys:
+              adminPasswordKey: POSTGRES_PASSWORD
+              userPasswordKey: POSTGRES_PASSWORD
+          primary:
+            persistence:
+              enabled: true
+              storageClass: local-path
+              size: 5Gi
+        clickhouse:
+          fullnameOverride: plausible-clickhouse
+          enabled: true
+          auth:
+            username: clickhouse
+            existingSecret: plausible-env
+            existingSecretKey: CLICKHOUSE_PASSWORD
+          persistence:
+            enabled: true
+            storageClass: local-path
+            size: 10Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: plausible
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
