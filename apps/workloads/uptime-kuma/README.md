@@ -27,3 +27,15 @@ old Helios data until the Kubernetes instance is verified.
 
 Public hostnames and Cloudflare Tunnel ingress rules are stored in 1Password,
 not in Git.
+
+The service metadata is stored in 1Password:
+
+```text
+Homelab/uptime-kuma
+```
+
+The Cloudflare Tunnel route itself is stored in:
+
+```text
+Homelab/cloudflare-homelab-k8s/config.yaml
+```
