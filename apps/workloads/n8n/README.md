@@ -50,7 +50,7 @@ make existing workflow credentials unreadable.
 Public access currently goes through Cloudflare Tunnel:
 
 ```text
-https://n8n-homelab.nezdemkovski.cloud
+https://n8n.nezdemkovski.cloud
 ```
 
 ## Access

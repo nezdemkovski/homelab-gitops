@@ -5,7 +5,8 @@ This deploys a locally managed Cloudflare Tunnel connector inside the cluster.
 ```text
 Tunnel:   homelab-k8s
 ID:       fb9144ee-d450-448f-94ab-530094b85247
-Hostname: n8n-homelab.nezdemkovski.cloud
+Hostname: n8n.nezdemkovski.cloud
+Alias:    n8n-homelab.nezdemkovski.cloud
 Origin:   http://n8n-main.n8n.svc.cluster.local:5678
 ```
 
@@ -21,6 +22,4 @@ External Secrets Operator syncs that field into:
 cloudflared/cloudflare-tunnel-credentials
 ```
 
-The main `n8n.nezdemkovski.cloud` hostname currently points at the older `zeus`
-tunnel. Switch it later only after verifying the Kubernetes-backed hostname.
-
+The older `n8n-homelab.nezdemkovski.cloud` hostname is kept as a migration alias.
