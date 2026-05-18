@@ -5,6 +5,10 @@
   ],
   "timezone": "Europe/Prague",
   "dependencyDashboard": true,
+  "ignorePaths": [
+    "**/_disabled/**",
+    "**/*.disabled"
+  ],
   "labels": [
     "dependencies"
   ],
@@ -26,6 +30,17 @@
         "kubernetes"
       ],
       "automerge": false
+    },
+    {
+      "description": "Require explicit dashboard approval for major infrastructure updates",
+      "matchManagers": [
+        "argocd",
+        "kubernetes"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
     }
   ]
 }
