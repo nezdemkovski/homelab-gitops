@@ -10,12 +10,12 @@
   ],
   "argocd": {
     "fileMatch": [
-      "/^apps/(?:infra|workloads)/.+/application\\.ya?ml$/"
+      "^apps/(?:infra|workloads)/.+/application\\.ya?ml$"
     ]
   },
   "kubernetes": {
     "fileMatch": [
-      "/^apps/(?:infra|workloads)/.+\\.ya?ml$/"
+      "^apps/(?:infra|workloads)/.+\\.ya?ml$"
     ]
   },
   "packageRules": [
