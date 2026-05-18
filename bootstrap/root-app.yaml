@@ -9,7 +9,7 @@ spec:
   project: homelab
   source:
     repoURL: https://github.com/nezdemkovski/homelab-gitops.git
-    targetRevision: main
+    targetRevision: master
     path: apps
     directory:
       recurse: true
