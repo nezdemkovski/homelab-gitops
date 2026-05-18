@@ -12,21 +12,17 @@ chart default `stable` image tag.
 
 ## Mode
 
-This deployment uses standalone mode:
+This deployment uses standalone mode with PostgreSQL:
 
 ```text
 queueMode.enabled=false
-database.type=sqlite
+database.type=postgresdb
 persistence.storageClassName=local-path
 ```
 
-SQLite data is stored in a PVC backed by the local-path provisioner. This is
-fine for homelab experiments, but it is not HA. Moving to queue mode later
-requires PostgreSQL and Redis.
-
-A local PostgreSQL StatefulSet is staged for migration from the old Docker
-Compose instance. n8n should only be switched to `database.type=postgresdb`
-after the old database dump has been restored into `n8n-postgres`.
+PostgreSQL data and `/home/node/.n8n` appdata are stored on PVCs backed by the
+local-path provisioner. This is fine for homelab experiments, but it is not HA.
+Moving to queue mode later requires Redis.
 
 ## Secret
 

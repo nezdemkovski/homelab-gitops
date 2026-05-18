@@ -15,11 +15,26 @@ spec:
       valuesObject:
         image:
           tag: "2.20.9"
+        taskRunners:
+          enabled: true
+          image:
+            tag: "2.20.9"
+          authToken:
+            existingSecret: n8n-env
+            existingSecretKey: N8N_RUNNERS_AUTH_TOKEN
         queueMode:
           enabled: false
         database:
-          type: sqlite
-          useExternal: false
+          type: postgresdb
+          useExternal: true
+          host: n8n-postgres.n8n.svc.cluster.local
+          port: 5432
+          database: n8n
+          schema: public
+          user: n8n
+          passwordSecret:
+            name: n8n-env
+            key: DB_POSTGRESDB_PASSWORD
         redis:
           enabled: false
         persistence:
@@ -36,6 +51,14 @@ spec:
         config:
           timezone: Europe/Prague
           extraEnv:
+            - name: GENERIC_TIMEZONE
+              value: Europe/Prague
+            - name: NODE_ENV
+              value: production
+            - name: N8N_PROXY_HOPS
+              value: "1"
+            - name: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+              value: "true"
             - name: N8N_SECURE_COOKIE
               value: "true"
             - name: WEBHOOK_URL
