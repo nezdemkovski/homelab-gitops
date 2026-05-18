@@ -1,0 +1,31 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "Europe/Prague",
+  "dependencyDashboard": true,
+  "labels": [
+    "dependencies"
+  ],
+  "argocd": {
+    "fileMatch": [
+      "/^apps/(?:infra|workloads)/.+/application\\.ya?ml$/"
+    ]
+  },
+  "kubernetes": {
+    "fileMatch": [
+      "/^apps/(?:infra|workloads)/.+\\.ya?ml$/"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Keep GitOps updates as reviewable pull requests",
+      "matchManagers": [
+        "argocd",
+        "kubernetes"
+      ],
+      "automerge": false
+    }
+  ]
+}

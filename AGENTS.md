@@ -52,6 +52,12 @@ helm:
 Do not rely on chart defaults such as `latest` or `stable`. Updates should be a
 normal Git change so Renovate or another bot can open PRs later.
 
+Renovate is configured in `renovate.json`. Keep Argo CD applications under
+`apps/infra/**/application.yaml` or `apps/workloads/**/application.yaml` so the
+`argocd` manager can detect Helm chart and image pins. Raw Kubernetes manifests
+under `apps/infra/**` and `apps/workloads/**` are scanned by the `kubernetes`
+manager.
+
 ## Secrets
 
 Secrets and public hostnames live in the `Homelab` 1Password vault. External
