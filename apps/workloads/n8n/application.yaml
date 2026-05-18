@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: n8n
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: ghcr.io/n8n-io/n8n-helm-chart
+    chart: n8n
+    targetRevision: 1.0.0
+    helm:
+      valuesObject:
+        queueMode:
+          enabled: false
+        database:
+          type: sqlite
+          useExternal: false
+        redis:
+          enabled: false
+        persistence:
+          enabled: true
+          storageClassName: local-path
+          size: 5Gi
+        secretRefs:
+          existingSecret: n8n-env
+        service:
+          type: ClusterIP
+          port: 5678
+        ingress:
+          enabled: false
+        config:
+          timezone: Europe/Prague
+          extraEnv:
+            - name: N8N_SECURE_COOKIE
+              value: "false"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: n8n
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

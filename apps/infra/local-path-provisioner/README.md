@@ -1,0 +1,13 @@
+# Local Path Provisioner
+
+Single-node local persistent storage for the homelab cluster.
+
+The chart is pinned in `application.yaml`. It creates the default `local-path`
+StorageClass and stores provisioned volumes under:
+
+```text
+/var/mnt/local-path-provisioner
+```
+
+This is local node storage. PVC data stays on the Talos node and is not
+replicated elsewhere.
