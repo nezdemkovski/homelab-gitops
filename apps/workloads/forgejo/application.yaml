@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: forgejo
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: codeberg.org/forgejo-contrib
+    chart: forgejo
+    targetRevision: 17.1.0
+    helm:
+      valuesObject:
+        image:
+          tag: "15.0.2-rootless"
+          rootless: true
+        persistence:
+          enabled: true
+          storageClass: local-path
+          size: 20Gi
+        service:
+          http:
+            type: ClusterIP
+            port: 3000
+          ssh:
+            type: ClusterIP
+            port: 22
+        ingress:
+          enabled: false
+        gitea:
+          admin:
+            existingSecret: forgejo-env
+            email: root@localhost
+            passwordMode: initialOnlyRequireReset
+          additionalConfigFromEnvs:
+            - name: FORGEJO__server__DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-env
+                  key: FORGEJO__server__DOMAIN
+            - name: FORGEJO__server__ROOT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-env
+                  key: FORGEJO__server__ROOT_URL
+            - name: FORGEJO__server__SSH_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-env
+                  key: FORGEJO__server__SSH_DOMAIN
+          config:
+            APP_NAME: Forgejo
+            service:
+              DISABLE_REGISTRATION: true
+            session:
+              COOKIE_SECURE: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: forgejo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
