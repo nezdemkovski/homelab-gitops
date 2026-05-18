@@ -11,3 +11,6 @@ StorageClass and stores provisioned volumes under:
 
 This is local node storage. PVC data stays on the Talos node and is not
 replicated elsewhere.
+
+The namespace is labeled with `pod-security.kubernetes.io/enforce=privileged`
+because the provisioner creates helper pods that use `hostPath` volumes.
