@@ -60,11 +60,11 @@ manager.
 
 ## Secrets
 
-Secrets and public hostnames live in the `Homelab` 1Password vault. External
-Secrets Operator syncs them into Kubernetes.
+Secrets live in the `Homelab` 1Password vault. External Secrets Operator syncs
+them into Kubernetes.
 
 Do not commit generated secrets, Cloudflare Tunnel credentials, kubeconfigs, or
-public service hostnames.
+service credentials.
 
 ## Public Hostnames
 
@@ -72,8 +72,15 @@ Public hostnames are stable service contracts. Prefer naming them by purpose,
 not by the implementation currently serving them.
 
 Cloudflare Tunnel ingress rules and public hostnames are intentionally stored
-outside Git in 1Password at:
+in Git under:
 
 ```text
-Homelab/cloudflare-homelab-k8s/config.yaml
+apps/infra/cloudflared/configmap.yaml
 ```
+
+The Cloudflare Tunnel credentials file stays outside Git in 1Password at
+`Homelab/cloudflare-homelab-k8s/credentials.json`.
+
+When changing the tunnel ingress ConfigMap, also bump
+`homelab.nezdemkovski.cloud/config-revision` on the cloudflared Deployment pod
+template so Argo rolls the pods and cloudflared reads the new config.
