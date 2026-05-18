@@ -1,0 +1,9 @@
+.DS_Store
+*.tmp
+*.log
+
+# Keep cluster credentials out of this repo.
+kubeconfig
+talosconfig
+controlplane.yaml
+worker.yaml
