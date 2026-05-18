@@ -3,7 +3,9 @@
 External Secrets Operator syncs secrets from external backends into Kubernetes
 Secrets.
 
-The chart is pinned in `application.yaml`. CRDs are installed by the chart.
+The chart is pinned in `application.yaml`. CRDs are installed by the chart using
+server-side apply because some CRD definitions are too large for normal
+client-side apply annotations.
 
 ## 1Password Bootstrap
 
@@ -13,8 +15,8 @@ The chart is pinned in `application.yaml`. CRDs are installed by the chart.
 external-secrets/onepassword-token
 ```
 
-Create it manually after creating a 1Password service account with read access
-to the `Homelab` vault:
+Create it manually after creating a 1Password service account with `read_items`
+access to the `Homelab` vault:
 
 ```bash
 export KUBECONFIG=/Users/yuri/Sites/homelab-gitops/kubeconfig

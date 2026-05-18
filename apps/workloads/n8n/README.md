@@ -27,7 +27,11 @@ requires PostgreSQL and Redis.
 ## Secret
 
 The chart expects an existing Kubernetes Secret named `n8n-env` in the `n8n`
-namespace. It is created manually for now and must not be committed to git.
+namespace.
+
+The source of truth is the `n8n` item in the `Homelab` 1Password vault. External
+Secrets Operator reads that item through the `onepassword` `ClusterSecretStore`
+and merges the values into the existing Kubernetes Secret.
 
 Required keys:
 
