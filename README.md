@@ -7,7 +7,7 @@ Declarative Kubernetes configuration for the Talos homelab cluster.
 Install Argo CD once, then apply the root application:
 
 ```bash
-export KUBECONFIG=/Users/yuri/Sites/noona/app-storyous/kubeconfig
+export KUBECONFIG=/Users/yuri/Sites/homelab-gitops/kubeconfig
 
 kubectl create namespace argocd
 kubectl apply -n argocd --server-side --force-conflicts \

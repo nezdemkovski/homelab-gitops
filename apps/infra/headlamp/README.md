@@ -10,7 +10,7 @@ instead of tracking the chart's latest version implicitly.
 Open the UI with a local port-forward:
 
 ```bash
-export KUBECONFIG=/Users/yuri/Sites/noona/app-storyous/kubeconfig
+export KUBECONFIG=/Users/yuri/Sites/homelab-gitops/kubeconfig
 
 kubectl -n headlamp port-forward svc/headlamp 8081:80
 ```
