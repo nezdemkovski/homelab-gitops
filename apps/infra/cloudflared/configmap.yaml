@@ -16,6 +16,8 @@ data:
         service: http://forgejo-http.forgejo.svc.cluster.local:3000
       - hostname: analytics.nezdemkovski.cloud
         service: http://plausible.plausible.svc.cluster.local:80
+      - hostname: budget.nezdemkovski.cloud
+        service: http://actual-budget.actual-budget.svc.cluster.local:80
       - hostname: status.nezdemkovski.cloud
         service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
       - hostname: argo.nezdemkovski.cloud
