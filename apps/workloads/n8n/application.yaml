@@ -10,9 +10,11 @@ spec:
   source:
     repoURL: ghcr.io/n8n-io/n8n-helm-chart
     chart: n8n
-    targetRevision: 1.0.0
+    targetRevision: 1.5.1
     helm:
       valuesObject:
+        image:
+          tag: "2.20.9"
         queueMode:
           enabled: false
         database:

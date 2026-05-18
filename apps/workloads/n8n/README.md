@@ -6,7 +6,9 @@ n8n is installed by Argo CD from the official OCI Helm chart:
 ghcr.io/n8n-io/n8n-helm-chart/n8n
 ```
 
-The chart version is pinned in `application.yaml` as `targetRevision`.
+The chart version is pinned in `application.yaml` as `targetRevision`. The n8n
+container image tag is pinned separately under `image.tag`; do not rely on the
+chart default `stable` image tag.
 
 ## Mode
 
