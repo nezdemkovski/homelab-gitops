@@ -65,3 +65,15 @@ Secrets Operator syncs them into Kubernetes.
 
 Do not commit generated secrets, Cloudflare Tunnel credentials, kubeconfigs, or
 public service hostnames.
+
+## Public Hostnames
+
+Public hostnames are stable service contracts. Prefer naming them by purpose,
+not by the implementation currently serving them.
+
+Cloudflare Tunnel ingress rules and public hostnames are intentionally stored
+outside Git in 1Password at:
+
+```text
+Homelab/cloudflare-homelab-k8s/config.yaml
+```
