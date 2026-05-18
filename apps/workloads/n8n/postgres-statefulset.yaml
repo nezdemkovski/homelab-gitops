@@ -14,22 +14,10 @@ spec:
       labels:
         app.kubernetes.io/name: n8n-postgres
     spec:
-      securityContext:
-        fsGroup: 999
-        runAsGroup: 999
-        runAsNonRoot: true
-        runAsUser: 999
-        seccompProfile:
-          type: RuntimeDefault
       containers:
         - name: postgres
           image: postgres:17.10
           imagePullPolicy: IfNotPresent
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
           ports:
             - name: postgres
               containerPort: 5432
