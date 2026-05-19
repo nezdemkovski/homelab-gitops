@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-mcp
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: https://grafana-community.github.io/helm-charts
+    chart: grafana-mcp
+    targetRevision: 0.15.1
+    helm:
+      releaseName: grafana-mcp
+      valuesObject:
+        image:
+          tag: "0.14.0"
+        grafana:
+          url: http://grafana.grafana.svc.cluster.local:80
+          apiKeySecret:
+            name: grafana-mcp-token
+            key: token
+        disableWrite: false
+        service:
+          type: ClusterIP
+          port: 8000
+        ingress:
+          enabled: false
+        route:
+          main:
+            enabled: false
+        resources:
+          requests:
+            cpu: 25m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: grafana-mcp
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
