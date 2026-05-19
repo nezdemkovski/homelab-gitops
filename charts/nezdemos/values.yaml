@@ -42,8 +42,8 @@ whoop-scraper:
     - secretRef:
         name: whoop-scraper-env
   cronJob:
-    schedule: "0 6 * * *"
+    schedule: "0 14 * * *"
     timeZone: Europe/Prague
-    suspend: true
+    suspend: false
   initDb:
     enabled: false
