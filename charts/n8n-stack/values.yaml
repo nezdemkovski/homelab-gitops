@@ -1,5 +1,4 @@
 n8n:
-  replicaCount: 0
   image:
     tag: "2.20.9"
   taskRunners:
@@ -14,7 +13,7 @@ n8n:
   database:
     type: postgresdb
     useExternal: true
-    host: n8n-postgres.n8n.svc.cluster.local
+    host: n8n-postgres-cnpg-rw.n8n.svc.cluster.local
     port: 5432
     database: n8n
     schema: public
@@ -58,6 +57,3 @@ n8n:
           secretKeyRef:
             name: n8n-env
             key: N8N_EDITOR_BASE_URL
-
-n8n-postgres:
-  fullnameOverride: n8n-postgres
