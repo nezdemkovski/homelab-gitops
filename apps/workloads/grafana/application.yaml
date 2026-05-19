@@ -23,6 +23,10 @@ spec:
           server:
             domain: grafana.nezdemkovski.cloud
             root_url: https://grafana.nezdemkovski.cloud
+          plugins:
+            preinstall_disabled: true
+            preinstall_auto_update: false
+            disable_plugins: grafana-exploretraces-app,grafana-lokiexplore-app,grafana-metricsdrilldown-app,grafana-pyroscope-app
         service:
           type: ClusterIP
           port: 80
