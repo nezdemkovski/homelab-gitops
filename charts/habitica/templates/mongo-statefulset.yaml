@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "habitica.mongoServiceName" . }}
+  labels:
+    {{- include "habitica.mongoLabels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "habitica.mongoServiceName" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "habitica.mongoLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "habitica.mongoLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: mongo
+          image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag }}"
+          imagePullPolicy: {{ .Values.mongo.image.pullPolicy }}
+          command:
+            - /bin/bash
+            - -ec
+          args:
+            - |
+              mongod --replSet {{ .Values.mongo.replicaSetName }} --bind_ip_all --port {{ .Values.mongo.service.port }} &
+              pid="$!"
+              until mongo --port {{ .Values.mongo.service.port }} --quiet --eval 'db.adminCommand("ping").ok' >/dev/null 2>&1; do
+                sleep 1
+              done
+              mongo --port {{ .Values.mongo.service.port }} --quiet --eval 'try { var status = rs.status(); if (status.ok !== 1) { rs.initiate({_id:"{{ .Values.mongo.replicaSetName }}",members:[{_id:0,host:"{{ include "habitica.mongoPodHost" . }}:{{ .Values.mongo.service.port }}"}]}); } } catch (err) { rs.initiate({_id:"{{ .Values.mongo.replicaSetName }}",members:[{_id:0,host:"{{ include "habitica.mongoPodHost" . }}:{{ .Values.mongo.service.port }}"}]}); }'
+              wait "$pid"
+          ports:
+            - name: mongo
+              containerPort: {{ .Values.mongo.service.port }}
+          volumeMounts:
+            - name: data
+              mountPath: /data/db
+            - name: config
+              mountPath: /data/configdb
+          readinessProbe:
+            exec:
+              command:
+                - mongo
+                - --port
+                - {{ .Values.mongo.service.port | quote }}
+                - --quiet
+                - --eval
+                - if (!db.isMaster().ismaster) quit(1)
+            initialDelaySeconds: {{ .Values.mongo.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.mongo.readinessProbe.periodSeconds }}
+          livenessProbe:
+            exec:
+              command:
+                - mongo
+                - --port
+                - {{ .Values.mongo.service.port | quote }}
+                - --quiet
+                - --eval
+                - db.adminCommand("ping").ok
+            initialDelaySeconds: {{ .Values.mongo.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.mongo.livenessProbe.periodSeconds }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.mongo.storage.className }}
+        resources:
+          requests:
+            storage: {{ .Values.mongo.storage.dataSize }}
+    - metadata:
+        name: config
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.mongo.storage.className }}
+        resources:
+          requests:
+            storage: {{ .Values.mongo.storage.configSize }}

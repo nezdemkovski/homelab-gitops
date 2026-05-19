@@ -1,6 +1,12 @@
 # Habitica
 
-Habitica runs from the self-hosting images maintained by `awinterstein`.
+Habitica runs from the local Helm chart in:
+
+```text
+charts/habitica
+```
+
+The chart uses the self-hosting images maintained by `awinterstein`.
 
 Pinned images:
 

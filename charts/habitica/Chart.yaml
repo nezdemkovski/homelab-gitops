@@ -1,0 +1,6 @@
+apiVersion: v2
+name: habitica
+description: Self-hosted Habitica with MongoDB
+type: application
+version: 0.1.0
+appVersion: "5.46.0"

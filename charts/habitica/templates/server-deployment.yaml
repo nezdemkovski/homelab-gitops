@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "habitica.fullname" . }}
+  labels:
+    {{- include "habitica.serverLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.server.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "habitica.serverLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "habitica.serverLabels" . | nindent 8 }}
+    spec:
+      initContainers:
+        - name: wait-for-mongo
+          image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag }}"
+          imagePullPolicy: {{ .Values.mongo.image.pullPolicy }}
+          command:
+            - /bin/bash
+            - -ec
+          args:
+            - |
+              until mongo --host {{ include "habitica.mongoPodHost" . }} --port {{ .Values.mongo.service.port }} --quiet --eval 'if (!db.isMaster().ismaster) quit(1)' >/dev/null 2>&1; do
+                sleep 2
+              done
+      containers:
+        - name: habitica
+          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+          imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          env:
+            - name: NODE_DB_URI
+              value: {{ include "habitica.mongoUri" . | quote }}
+            - name: BASE_URL
+              value: {{ .Values.server.baseUrl | quote }}
+            - name: INVITE_ONLY
+              value: {{ .Values.server.inviteOnly | quote }}
+            - name: ADMIN_EMAIL
+              value: {{ .Values.server.adminEmail | quote }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.server.service.targetPort }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.server.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.server.readinessProbe.periodSeconds }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.server.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.server.livenessProbe.periodSeconds }}
