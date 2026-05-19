@@ -8,3 +8,5 @@ metadata:
 data:
   whoop-overview.json: |
 {{ .Files.Get "dashboards/whoop-overview.json" | indent 4 }}
+  whoop-daily-context.json: |
+{{ .Files.Get "dashboards/whoop-daily-context.json" | indent 4 }}

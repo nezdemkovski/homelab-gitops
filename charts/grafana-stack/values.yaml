@@ -68,6 +68,11 @@ grafana:
       subPath: whoop-overview.json
       configMap: grafana-dashboard-whoop
       readOnly: true
+    - name: whoop-daily-context-dashboard
+      mountPath: /var/lib/grafana/dashboards/whoop/whoop-daily-context.json
+      subPath: whoop-daily-context.json
+      configMap: grafana-dashboard-whoop
+      readOnly: true
 
 grafana-mcp:
   fullnameOverride: grafana-mcp
