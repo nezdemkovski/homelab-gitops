@@ -1,14 +1,9 @@
 onepassword:
-  adminItem: grafana
   mcpItem: grafana-mcp
   nezdemosReaderItem: nezdemos-grafana-reader
 
 grafana:
   fullnameOverride: grafana
-  admin:
-    existingSecret: grafana-admin
-    userKey: admin-user
-    passwordKey: admin-password
   deploymentStrategy:
     type: Recreate
   initChownData:
