@@ -2,9 +2,20 @@
 
 Shared dashboarding stack for homelab services.
 
-The stack contains Grafana and the internal Grafana MCP server. Grafana is
-exposed through the Cloudflare Tunnel at `grafana.nezdemkovski.cloud`; MCP stays
-cluster-internal at `grafana-mcp.grafana.svc.cluster.local:8000`.
+The stack contains Grafana and the Grafana MCP server. Grafana is exposed
+through the Cloudflare Tunnel at `grafana.nezdemkovski.cloud`.
+
+MCP is exposed only on the home LAN through a Kubernetes NodePort:
+
+```text
+http://10.77.77.44:30800
+```
+
+The in-cluster MCP endpoint is:
+
+```text
+grafana-mcp.grafana.svc.cluster.local:8000
+```
 
 1Password items:
 
