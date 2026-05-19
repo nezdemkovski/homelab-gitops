@@ -4,6 +4,6 @@ dependencies:
   version: 0.1.1
 - name: nezdemos-api
   repository: oci://ghcr.io/nezdemkovski/charts
-  version: 0.1.1
-digest: sha256:30d4d1f9a011ac3f2e7d377b0f4964ebd9385d8c3e581370e1d1aff8c86c0277
-generated: "2026-05-19T18:10:54.303964+02:00"
+  version: 0.1.2
+digest: sha256:dd6096f637538cd120518ebdba01e088ffbd72c9ff817a953b52d05de25ab3fa
+generated: "2026-05-19T18:39:51.951755+02:00"
