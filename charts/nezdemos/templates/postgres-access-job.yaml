@@ -17,7 +17,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: apply-access
-          image: postgres:17.10
+          image: "{{ .Values.postgres.accessJob.image.repository }}:{{ .Values.postgres.accessJob.image.tag }}"
           imagePullPolicy: IfNotPresent
           env:
             - name: PGHOST

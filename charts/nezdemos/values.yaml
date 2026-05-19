@@ -3,6 +3,10 @@ postgres:
   database: nezdemos
   owner: nezdemos
   imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
+  accessJob:
+    image:
+      repository: postgres
+      tag: "17.10"
   storage:
     storageClass: local-path
     size: 5Gi

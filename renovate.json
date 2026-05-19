@@ -27,13 +27,27 @@
       "^charts/.+/values\\.ya?ml$"
     ]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Track full imageName values used by Kubernetes operators",
+      "fileMatch": [
+        "^charts/.+/values\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "imageName:\\s*(?<depName>[^:\\s]+(?:/[^:\\s]+)+):(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ],
   "packageRules": [
     {
       "description": "Keep GitOps updates as reviewable pull requests",
       "matchManagers": [
         "argocd",
         "kubernetes",
-        "helm-values"
+        "helm-values",
+        "custom.regex"
       ],
       "automerge": false
     },
@@ -42,7 +56,8 @@
       "matchManagers": [
         "argocd",
         "kubernetes",
-        "helm-values"
+        "helm-values",
+        "custom.regex"
       ],
       "matchUpdateTypes": [
         "major"
