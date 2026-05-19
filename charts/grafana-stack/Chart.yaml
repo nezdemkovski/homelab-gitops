@@ -1,0 +1,12 @@
+apiVersion: v2
+name: grafana-stack
+description: Grafana with its internal MCP server
+type: application
+version: 0.1.0
+dependencies:
+  - name: grafana
+    version: 12.3.3
+    repository: https://grafana-community.github.io/helm-charts
+  - name: grafana-mcp
+    version: 0.15.1
+    repository: https://grafana-community.github.io/helm-charts

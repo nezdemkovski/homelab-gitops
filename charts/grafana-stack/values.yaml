@@ -1,0 +1,82 @@
+onepassword:
+  adminItem: grafana
+  mcpItem: grafana-mcp
+  nezdemosReaderItem: nezdemos-grafana-reader
+
+grafana:
+  fullnameOverride: grafana
+  admin:
+    existingSecret: grafana-admin
+    userKey: admin-user
+    passwordKey: admin-password
+  deploymentStrategy:
+    type: Recreate
+  initChownData:
+    enabled: false
+  envFromSecret: grafana-datasources
+  grafana.ini:
+    server:
+      domain: grafana.nezdemkovski.cloud
+      root_url: https://grafana.nezdemkovski.cloud
+    plugins:
+      preinstall_disabled: true
+      preinstall_auto_update: false
+      disable_plugins: grafana-exploretraces-app,grafana-lokiexplore-app,grafana-metricsdrilldown-app,grafana-pyroscope-app
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: false
+  persistence:
+    enabled: true
+    storageClassName: local-path
+    size: 5Gi
+  resources:
+    requests:
+      cpu: 50m
+      memory: 192Mi
+    limits:
+      memory: 512Mi
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: NezdemOS Postgres
+          uid: nezdemos-postgres
+          type: postgres
+          access: proxy
+          url: nezdemos-postgres-rw.nezdemos.svc.cluster.local:5432
+          database: nezdemos
+          user: grafana_reader
+          editable: false
+          jsonData:
+            sslmode: disable
+            postgresVersion: 1700
+            timescaledb: false
+          secureJsonData:
+            password: $NEZDEMOS_POSTGRES_PASSWORD
+
+grafana-mcp:
+  fullnameOverride: grafana-mcp
+  image:
+    tag: "0.14.0"
+  grafana:
+    url: http://grafana.grafana.svc.cluster.local:80
+    apiKeySecret:
+      name: grafana-mcp-token
+      key: token
+  disableWrite: false
+  service:
+    type: ClusterIP
+    port: 8000
+  ingress:
+    enabled: false
+  route:
+    main:
+      enabled: false
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 256Mi

@@ -8,62 +8,11 @@ metadata:
 spec:
   project: homelab
   source:
-    repoURL: https://grafana-community.github.io/helm-charts
-    chart: grafana
-    targetRevision: 12.3.3
+    repoURL: https://github.com/nezdemkovski/homelab-gitops.git
+    targetRevision: master
+    path: charts/grafana-stack
     helm:
-      releaseName: grafana
-      valuesObject:
-        admin:
-          existingSecret: grafana-admin
-          userKey: admin-user
-          passwordKey: admin-password
-        deploymentStrategy:
-          type: Recreate
-        initChownData:
-          enabled: false
-        envFromSecret: grafana-datasources
-        grafana.ini:
-          server:
-            domain: grafana.nezdemkovski.cloud
-            root_url: https://grafana.nezdemkovski.cloud
-          plugins:
-            preinstall_disabled: true
-            preinstall_auto_update: false
-            disable_plugins: grafana-exploretraces-app,grafana-lokiexplore-app,grafana-metricsdrilldown-app,grafana-pyroscope-app
-        service:
-          type: ClusterIP
-          port: 80
-        ingress:
-          enabled: false
-        persistence:
-          enabled: true
-          storageClassName: local-path
-          size: 5Gi
-        resources:
-          requests:
-            cpu: 50m
-            memory: 192Mi
-          limits:
-            memory: 512Mi
-        datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-              - name: NezdemOS Postgres
-                uid: nezdemos-postgres
-                type: postgres
-                access: proxy
-                url: nezdemos-postgres-rw.nezdemos.svc.cluster.local:5432
-                database: nezdemos
-                user: grafana_reader
-                editable: false
-                jsonData:
-                  sslmode: disable
-                  postgresVersion: 1700
-                  timescaledb: false
-                secureJsonData:
-                  password: $NEZDEMOS_POSTGRES_PASSWORD
+      releaseName: grafana-stack
   destination:
     server: https://kubernetes.default.svc
     namespace: grafana
