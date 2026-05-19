@@ -24,7 +24,7 @@ spec:
             - -ec
           args:
             - |
-              until mongo --host habitica-mongo.habitica.svc.cluster.local --port 27017 --quiet --eval 'db.adminCommand("ping").ok' >/dev/null 2>&1; do
+              until mongo --host habitica-mongo.habitica.svc.cluster.local --port 27017 --quiet --eval 'if (!db.isMaster().ismaster) quit(1)' >/dev/null 2>&1; do
                 sleep 2
               done
       containers:

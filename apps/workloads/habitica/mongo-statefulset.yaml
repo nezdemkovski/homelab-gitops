@@ -30,7 +30,7 @@ spec:
               until mongo --port 27017 --quiet --eval 'db.adminCommand("ping").ok' >/dev/null 2>&1; do
                 sleep 1
               done
-              mongo --port 27017 --quiet --eval 'try { rs.status().ok } catch (err) { rs.initiate({_id:"rs",members:[{_id:0,host:"habitica-mongo.habitica.svc.cluster.local:27017"}]}).ok }' || true
+              mongo --port 27017 --quiet --eval 'try { var status = rs.status(); if (status.ok !== 1) { rs.initiate({_id:"rs",members:[{_id:0,host:"habitica-mongo.habitica.svc.cluster.local:27017"}]}); } } catch (err) { rs.initiate({_id:"rs",members:[{_id:0,host:"habitica-mongo.habitica.svc.cluster.local:27017"}]}); }'
               wait "$pid"
           ports:
             - name: mongo
@@ -48,7 +48,7 @@ spec:
                 - "27017"
                 - --quiet
                 - --eval
-                - db.adminCommand("ping").ok
+                - if (!db.isMaster().ismaster) quit(1)
             initialDelaySeconds: 10
             periodSeconds: 10
           livenessProbe:
