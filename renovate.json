@@ -22,12 +22,18 @@
       "^apps/(?:infra|workloads)/.+\\.ya?ml$"
     ]
   },
+  "helm-values": {
+    "fileMatch": [
+      "^charts/.+/values\\.ya?ml$"
+    ]
+  },
   "packageRules": [
     {
       "description": "Keep GitOps updates as reviewable pull requests",
       "matchManagers": [
         "argocd",
-        "kubernetes"
+        "kubernetes",
+        "helm-values"
       ],
       "automerge": false
     },
@@ -35,7 +41,8 @@
       "description": "Require explicit dashboard approval for major infrastructure updates",
       "matchManagers": [
         "argocd",
-        "kubernetes"
+        "kubernetes",
+        "helm-values"
       ],
       "matchUpdateTypes": [
         "major"

@@ -77,6 +77,8 @@ grafana:
 grafana-mcp:
   fullnameOverride: grafana-mcp
   image:
+    registry: docker.io
+    repository: grafana/mcp-grafana
     tag: "0.14.0"
   grafana:
     url: http://grafana.grafana.svc.cluster.local:80

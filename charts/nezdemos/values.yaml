@@ -16,6 +16,7 @@ onepassword:
 nezdemos-api:
   fullnameOverride: nezdemos-api
   image:
+    repository: ghcr.io/nezdemkovski/nezdemos-api
     tag: "0.1.2"
   env:
     NEZDEMOS_ADDR: ":8080"
@@ -30,6 +31,7 @@ nezdemos-api:
 whoop-scraper:
   fullnameOverride: whoop-scraper
   image:
+    repository: ghcr.io/nezdemkovski/whoop-scraper
     tag: "0.1.1"
   env:
     WHOOP_DB_HOST: nezdemos-postgres-rw.nezdemos.svc.cluster.local
