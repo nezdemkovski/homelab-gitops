@@ -11,7 +11,7 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-05-19-2"
+configRevision: "2026-05-19-3"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
@@ -33,6 +33,8 @@ tunnel:
       service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
     - hostname: grafana.nezdemkovski.cloud
       service: http://grafana.grafana.svc.cluster.local:80
+    - hostname: api.nezdemos.nezdemkovski.cloud
+      service: http://nezdemos-api.nezdemos.svc.cluster.local:80
     - hostname: argo.nezdemkovski.cloud
       service: https://argocd-server.argocd.svc.cluster.local:443
       originRequest:
