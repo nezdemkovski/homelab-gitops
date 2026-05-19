@@ -18,6 +18,11 @@ spec:
         login: true
         passwordSecret:
           name: whoop-scraper-db
+      - name: grafana_reader
+        ensure: present
+        login: true
+        passwordSecret:
+          name: nezdemos-grafana-reader
   bootstrap:
     initdb:
       database: {{ .Values.postgres.database }}

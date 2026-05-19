@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: grafana
+    targetRevision: 10.5.15
+    helm:
+      releaseName: grafana
+      valuesObject:
+        admin:
+          existingSecret: grafana-admin
+          userKey: admin-user
+          passwordKey: admin-password
+        envFromSecret: grafana-datasources
+        grafana.ini:
+          server:
+            domain: grafana.nezdemkovski.cloud
+            root_url: https://grafana.nezdemkovski.cloud
+        service:
+          type: ClusterIP
+          port: 80
+        ingress:
+          enabled: false
+        persistence:
+          enabled: true
+          storageClassName: local-path
+          size: 5Gi
+        resources:
+          requests:
+            cpu: 50m
+            memory: 192Mi
+          limits:
+            memory: 512Mi
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+              - name: NezdemOS Postgres
+                uid: nezdemos-postgres
+                type: postgres
+                access: proxy
+                url: nezdemos-postgres-rw.nezdemos.svc.cluster.local:5432
+                database: nezdemos
+                user: grafana_reader
+                editable: false
+                jsonData:
+                  sslmode: disable
+                  postgresVersion: 1700
+                  timescaledb: false
+                secureJsonData:
+                  password: $NEZDEMOS_POSTGRES_PASSWORD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: grafana
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

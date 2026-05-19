@@ -10,6 +10,7 @@ postgres:
 onepassword:
   postgresItem: nezdemos-postgres
   whoopItem: nezdemos-whoop-scraper
+  grafanaReaderItem: nezdemos-grafana-reader
 
 whoop-scraper:
   fullnameOverride: whoop-scraper

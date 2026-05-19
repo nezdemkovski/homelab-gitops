@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: nezdemos-postgres-access
+  name: nezdemos-postgres-access-v2
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: nezdemos-postgres-access
@@ -35,6 +35,8 @@ spec:
                   key: password
             - name: APP_USER
               value: whoop_scraper
+            - name: GRAFANA_READER_USER
+              value: grafana_reader
           command:
             - /bin/sh
             - -ec
@@ -47,4 +49,14 @@ spec:
               psql -v ON_ERROR_STOP=1 \
                 -v app_user="$APP_USER" <<'SQL'
               GRANT CONNECT, CREATE ON DATABASE nezdemos TO :"app_user";
+              SQL
+
+              psql -v ON_ERROR_STOP=1 \
+                -v app_user="$APP_USER" \
+                -v grafana_reader_user="$GRAFANA_READER_USER" <<'SQL'
+              GRANT CONNECT ON DATABASE nezdemos TO :"grafana_reader_user";
+              GRANT USAGE ON SCHEMA whoop TO :"grafana_reader_user";
+              GRANT SELECT ON ALL TABLES IN SCHEMA whoop TO :"grafana_reader_user";
+              ALTER DEFAULT PRIVILEGES FOR ROLE :"app_user" IN SCHEMA whoop
+                GRANT SELECT ON TABLES TO :"grafana_reader_user";
               SQL
