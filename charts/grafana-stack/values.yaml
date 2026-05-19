@@ -50,6 +50,22 @@ grafana:
             timescaledb: false
           secureJsonData:
             password: $NEZDEMOS_POSTGRES_PASSWORD
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: whoop
+          orgId: 1
+          folder: WHOOP
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/whoop
+  dashboards:
+    whoop:
+      whoop-overview:
+        file: dashboards/whoop-overview.json
 
 grafana-mcp:
   fullnameOverride: grafana-mcp
