@@ -24,7 +24,7 @@ spec:
             - -ec
           args:
             - |
-              until mongo --host habitica-mongo.habitica.svc.cluster.local --port 27017 --quiet --eval 'if (!db.isMaster().ismaster) quit(1)' >/dev/null 2>&1; do
+              until mongo --host habitica-mongo-0.habitica-mongo.habitica.svc.cluster.local --port 27017 --quiet --eval 'if (!db.isMaster().ismaster) quit(1)' >/dev/null 2>&1; do
                 sleep 2
               done
       containers:
@@ -33,7 +33,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_DB_URI
-              value: mongodb://habitica-mongo.habitica.svc.cluster.local:27017/habitica?replicaSet=rs
+              value: mongodb://habitica-mongo-0.habitica-mongo.habitica.svc.cluster.local:27017/habitica?replicaSet=rs
             - name: BASE_URL
               value: https://habits.nezdemkovski.cloud
             - name: INVITE_ONLY
