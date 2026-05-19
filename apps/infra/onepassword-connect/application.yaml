@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: onepassword-connect
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: https://1password.github.io/connect-helm-charts
+    chart: connect
+    targetRevision: 2.4.1
+    helm:
+      valuesObject:
+        connect:
+          create: true
+          credentialsName: op-credentials
+          serviceType: ClusterIP
+          api:
+            logLevel: info
+          sync:
+            logLevel: info
+        operator:
+          create: false
+        acceptanceTests:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: external-secrets
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
