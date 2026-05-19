@@ -22,7 +22,7 @@
   "panels": [
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -80,7 +80,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -112,7 +112,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -194,7 +194,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -209,7 +209,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -267,7 +267,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -282,7 +282,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -363,7 +363,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -378,7 +378,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -483,7 +483,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -498,7 +498,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -579,7 +579,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -594,7 +594,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -675,7 +675,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -690,7 +690,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -770,7 +770,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -785,7 +785,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -865,7 +865,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",
@@ -880,7 +880,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "nezdemos-postgres"
       },
       "fieldConfig": {
@@ -961,7 +961,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "nezdemos-postgres"
           },
           "editorMode": "code",

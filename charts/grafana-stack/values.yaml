@@ -38,7 +38,7 @@ grafana:
       datasources:
         - name: NezdemOS Postgres
           uid: nezdemos-postgres
-          type: postgres
+          type: grafana-postgresql-datasource
           access: proxy
           url: nezdemos-postgres-rw.nezdemos.svc.cluster.local:5432
           database: nezdemos
