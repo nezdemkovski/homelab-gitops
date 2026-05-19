@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mongo
-          image: mongo:8.0.23
+          image: mongo:4.4.29
           imagePullPolicy: IfNotPresent
           command:
             - /bin/bash
@@ -27,10 +27,10 @@ spec:
             - |
               mongod --replSet rs --bind_ip_all --port 27017 &
               pid="$!"
-              until mongosh --port 27017 --quiet --eval 'db.adminCommand("ping").ok' >/dev/null 2>&1; do
+              until mongo --port 27017 --quiet --eval 'db.adminCommand("ping").ok' >/dev/null 2>&1; do
                 sleep 1
               done
-              mongosh --port 27017 --quiet --eval 'try { rs.status().ok } catch (err) { rs.initiate({_id:"rs",members:[{_id:0,host:"habitica-mongo.habitica.svc.cluster.local:27017"}]}).ok }' || true
+              mongo --port 27017 --quiet --eval 'try { rs.status().ok } catch (err) { rs.initiate({_id:"rs",members:[{_id:0,host:"habitica-mongo.habitica.svc.cluster.local:27017"}]}).ok }' || true
               wait "$pid"
           ports:
             - name: mongo
@@ -43,7 +43,7 @@ spec:
           readinessProbe:
             exec:
               command:
-                - mongosh
+                - mongo
                 - --port
                 - "27017"
                 - --quiet
@@ -54,7 +54,7 @@ spec:
           livenessProbe:
             exec:
               command:
-                - mongosh
+                - mongo
                 - --port
                 - "27017"
                 - --quiet

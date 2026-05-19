@@ -6,7 +6,7 @@ Pinned images:
 
 ```text
 awinterstein/habitica-server:5.46.0
-mongo:8.0.23
+mongo:4.4.29
 ```
 
 Data is stored in:
