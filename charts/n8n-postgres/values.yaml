@@ -10,12 +10,12 @@ replicaCount: 1
 service:
   port: 5432
 
-secret:
-  name: n8n-postgres-env
-  remoteKeyPrefix: n8n
-
 postgres:
   pgdata: /var/lib/postgresql/data/pgdata
+  existingSecret: n8n-env
+  databaseKey: DB_POSTGRESDB_DATABASE
+  userKey: DB_POSTGRESDB_USER
+  passwordKey: DB_POSTGRESDB_PASSWORD
 
 persistence:
   storageClassName: local-path

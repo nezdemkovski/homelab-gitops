@@ -17,8 +17,8 @@ PostgreSQL is managed by the local chart:
 charts/n8n-postgres
 ```
 
-The local chart keeps the existing `StatefulSet`, `Service`, `ExternalSecret`,
-and PVC naming stable. The database PVC is `data-n8n-postgres-0`.
+The local chart keeps the existing `StatefulSet`, `Service`, and PVC naming
+stable. The database PVC is `data-n8n-postgres-0`.
 
 ## Mode
 
@@ -52,6 +52,9 @@ N8N_PORT
 N8N_PROTOCOL
 WEBHOOK_URL
 N8N_EDITOR_BASE_URL
+DB_POSTGRESDB_DATABASE
+DB_POSTGRESDB_USER
+DB_POSTGRESDB_PASSWORD
 ```
 
 The encryption key protects stored n8n credentials. Losing or changing it can
