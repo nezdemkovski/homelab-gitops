@@ -15,6 +15,18 @@ spec:
       labels:
         app.kubernetes.io/name: habitica
     spec:
+      initContainers:
+        - name: wait-for-mongo
+          image: mongo:4.4.29
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - -ec
+          args:
+            - |
+              until mongo --host habitica-mongo.habitica.svc.cluster.local --port 27017 --quiet --eval 'db.adminCommand("ping").ok' >/dev/null 2>&1; do
+                sleep 2
+              done
       containers:
         - name: habitica
           image: awinterstein/habitica-server:5.46.0

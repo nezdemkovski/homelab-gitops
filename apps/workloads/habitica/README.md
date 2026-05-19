@@ -19,3 +19,5 @@ habitica/habitica-mongo-config
 The first registered user gets admin rights. Registration is currently open for
 initial testing; set `INVITE_ONLY=true` after creating the first user if this
 stays deployed.
+
+The Habitica server waits for MongoDB in an init container before starting.
