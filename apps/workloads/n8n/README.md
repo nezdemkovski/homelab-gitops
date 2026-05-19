@@ -10,6 +10,15 @@ The chart version is pinned in `application.yaml` as `targetRevision`. The n8n
 container image tag is pinned separately under `image.tag`; do not rely on the
 chart default `stable` image tag.
 
+PostgreSQL is managed by a small local Helm chart:
+
+```text
+charts/n8n-postgres
+```
+
+The local chart keeps the existing `StatefulSet`, `Service`, `ExternalSecret`,
+and PVC naming stable. The database PVC is `data-n8n-postgres-0`.
+
 ## Mode
 
 This deployment uses standalone mode with PostgreSQL:

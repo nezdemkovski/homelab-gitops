@@ -1,0 +1,32 @@
+image:
+  repository: postgres
+  tag: "17.10"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  port: 5432
+
+secret:
+  name: n8n-postgres-env
+  remoteKeyPrefix: n8n
+
+postgres:
+  pgdata: /var/lib/postgresql/data/pgdata
+
+persistence:
+  storageClassName: local-path
+  size: 5Gi
+
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 6
