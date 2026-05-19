@@ -1,16 +1,17 @@
 # n8n
 
-n8n is installed by Argo CD from the official OCI Helm chart:
+n8n is installed by Argo CD from the local stack chart:
 
 ```text
-ghcr.io/n8n-io/n8n-helm-chart/n8n
+charts/n8n-stack
 ```
 
-The chart version is pinned in `application.yaml` as `targetRevision`. The n8n
-container image tag is pinned separately under `image.tag`; do not rely on the
-chart default `stable` image tag.
+The stack chart depends on the official `n8n` chart and the local
+`n8n-postgres` chart. The upstream chart version is pinned in
+`charts/n8n-stack/Chart.yaml`; the n8n container image tag is pinned separately
+in `charts/n8n-stack/values.yaml`.
 
-PostgreSQL is managed by a small local Helm chart:
+PostgreSQL is managed by the local chart:
 
 ```text
 charts/n8n-postgres

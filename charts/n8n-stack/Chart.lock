@@ -1,0 +1,9 @@
+dependencies:
+- name: n8n
+  repository: oci://ghcr.io/n8n-io/n8n-helm-chart
+  version: 1.5.1
+- name: n8n-postgres
+  repository: file://../n8n-postgres
+  version: 0.1.0
+digest: sha256:21cf0f896a1a2147f4e5930b6e96104ca6a8bb48f3ed40bde6a55756e43e1173
+generated: "2026-05-19T04:11:14.062918+02:00"

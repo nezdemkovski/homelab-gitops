@@ -3,6 +3,8 @@ image:
   tag: "17.10"
   pullPolicy: IfNotPresent
 
+fullnameOverride: ""
+
 replicaCount: 1
 
 service:

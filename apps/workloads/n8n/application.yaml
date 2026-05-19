@@ -8,69 +8,11 @@ metadata:
 spec:
   project: homelab
   source:
-    repoURL: ghcr.io/n8n-io/n8n-helm-chart
-    chart: n8n
-    targetRevision: 1.5.1
+    repoURL: https://github.com/nezdemkovski/homelab-gitops.git
+    targetRevision: master
+    path: charts/n8n-stack
     helm:
-      valuesObject:
-        image:
-          tag: "2.20.9"
-        taskRunners:
-          enabled: true
-          image:
-            tag: "2.20.9"
-          authToken:
-            existingSecret: n8n-env
-            existingSecretKey: N8N_RUNNERS_AUTH_TOKEN
-        queueMode:
-          enabled: false
-        database:
-          type: postgresdb
-          useExternal: true
-          host: n8n-postgres.n8n.svc.cluster.local
-          port: 5432
-          database: n8n
-          schema: public
-          user: n8n
-          passwordSecret:
-            name: n8n-env
-            key: DB_POSTGRESDB_PASSWORD
-        redis:
-          enabled: false
-        persistence:
-          enabled: true
-          storageClassName: local-path
-          size: 5Gi
-        secretRefs:
-          existingSecret: n8n-env
-        service:
-          type: ClusterIP
-          port: 5678
-        ingress:
-          enabled: false
-        config:
-          timezone: Europe/Prague
-          extraEnv:
-            - name: GENERIC_TIMEZONE
-              value: Europe/Prague
-            - name: NODE_ENV
-              value: production
-            - name: N8N_PROXY_HOPS
-              value: "1"
-            - name: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
-              value: "true"
-            - name: N8N_SECURE_COOKIE
-              value: "true"
-            - name: WEBHOOK_URL
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-env
-                  key: WEBHOOK_URL
-            - name: N8N_EDITOR_BASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-env
-                  key: N8N_EDITOR_BASE_URL
+      releaseName: n8n
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n
