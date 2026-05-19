@@ -1,0 +1,54 @@
+replicaCount: 2
+
+image:
+  repository: cloudflare/cloudflared
+  tag: "2026.5.0"
+  pullPolicy: IfNotPresent
+
+logLevel: info
+
+metrics:
+  address: 0.0.0.0
+  port: 2000
+
+configRevision: "2026-05-19-1"
+
+tunnel:
+  id: fb9144ee-d450-448f-94ab-530094b85247
+  credentialsFile: /etc/cloudflared/credentials/credentials.json
+  ingress:
+    - hostname: automations.nezdemkovski.cloud
+      service: http://n8n-main.n8n.svc.cluster.local:5678
+    - hostname: nezdemkovski.cloud
+      service: http://homarr.homarr.svc.cluster.local:7575
+    - hostname: git.nezdemkovski.cloud
+      service: http://forgejo-http.forgejo.svc.cluster.local:3000
+    - hostname: habits.nezdemkovski.cloud
+      service: http://habitica.habitica.svc.cluster.local:80
+    - hostname: analytics.nezdemkovski.cloud
+      service: http://plausible.plausible.svc.cluster.local:80
+    - hostname: budget.nezdemkovski.cloud
+      service: http://actual-budget.actual-budget.svc.cluster.local:80
+    - hostname: status.nezdemkovski.cloud
+      service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
+    - hostname: argo.nezdemkovski.cloud
+      service: https://argocd-server.argocd.svc.cluster.local:443
+      originRequest:
+        noTLSVerify: true
+    - service: http_status:404
+
+credentials:
+  secretName: cloudflare-tunnel-credentials
+  externalSecret:
+    refreshInterval: 1h
+    secretStore:
+      kind: ClusterSecretStore
+      name: onepassword
+    remoteRef:
+      key: cloudflare-homelab-k8s
+      property: credentials.json
+
+livenessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 3
