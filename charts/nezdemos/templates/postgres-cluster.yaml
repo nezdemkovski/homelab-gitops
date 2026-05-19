@@ -6,12 +6,24 @@ metadata:
 spec:
   instances: 1
   imageName: {{ .Values.postgres.imageName }}
+  managed:
+    roles:
+      - name: {{ .Values.postgres.owner }}
+        ensure: present
+        login: true
+        passwordSecret:
+          name: nezdemos-postgres-owner
+      - name: whoop_scraper
+        ensure: present
+        login: true
+        passwordSecret:
+          name: whoop-scraper-db
   bootstrap:
     initdb:
       database: {{ .Values.postgres.database }}
       owner: {{ .Values.postgres.owner }}
       secret:
-        name: whoop-scraper-db
+        name: nezdemos-postgres-owner
   storage:
     storageClass: {{ .Values.postgres.storage.storageClass }}
     size: {{ .Values.postgres.storage.size }}

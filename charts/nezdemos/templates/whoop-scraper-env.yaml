@@ -14,21 +14,21 @@ spec:
   data:
     - secretKey: WHOOP_DB_PASSWORD
       remoteRef:
-        key: {{ .Values.onepassword.item }}
+        key: {{ .Values.onepassword.whoopItem }}
         property: password
     - secretKey: WHOOP_CLIENT_ID
       remoteRef:
-        key: {{ .Values.onepassword.item }}
+        key: {{ .Values.onepassword.whoopItem }}
         property: WHOOP_CLIENT_ID
     - secretKey: WHOOP_CLIENT_SECRET
       remoteRef:
-        key: {{ .Values.onepassword.item }}
+        key: {{ .Values.onepassword.whoopItem }}
         property: WHOOP_CLIENT_SECRET
     - secretKey: WHOOP_ENCRYPTION_KEY
       remoteRef:
-        key: {{ .Values.onepassword.item }}
+        key: {{ .Values.onepassword.whoopItem }}
         property: WHOOP_ENCRYPTION_KEY
     - secretKey: WHOOP_TOKEN_STORAGE
       remoteRef:
-        key: {{ .Values.onepassword.item }}
+        key: {{ .Values.onepassword.whoopItem }}
         property: WHOOP_TOKEN_STORAGE

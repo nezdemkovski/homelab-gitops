@@ -1,14 +1,15 @@
 postgres:
   clusterName: nezdemos-postgres
   database: nezdemos
-  owner: whoop_scraper
+  owner: nezdemos
   imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
   storage:
     storageClass: local-path
     size: 5Gi
 
 onepassword:
-  item: nezdemos-whoop-scraper
+  postgresItem: nezdemos-postgres
+  whoopItem: nezdemos-whoop-scraper
 
 whoop-scraper:
   fullnameOverride: whoop-scraper
