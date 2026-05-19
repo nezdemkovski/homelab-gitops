@@ -53,7 +53,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 6,
         "x": 0,
         "y": 0
@@ -72,11 +72,10 @@
           "fields": "",
           "values": false
         },
-        "showPercentChange": true,
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.1-security-01",
       "targets": [
         {
           "datasource": {
@@ -87,27 +86,82 @@
           "format": "time_series",
           "rawQuery": true,
           "rawSql": "SELECT c.start_time AS \"time\", r.score_recovery_score AS recovery\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)\nORDER BY 1",
-          "refId": "A",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          }
+          "refId": "A"
         }
       ],
-      "title": "Latest Recovery",
+      "title": "Current Recovery",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "nezdemos-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 67
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "nezdemos-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(r.score_recovery_score)::float8 AS avg_recovery\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Recovery",
       "type": "stat"
     },
     {
@@ -169,8 +223,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 18,
-        "x": 6,
+        "w": 12,
+        "x": 12,
         "y": 0
       },
       "id": 2,
@@ -240,10 +294,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 6,
         "x": 0,
-        "y": 5
+        "y": 4
       },
       "id": 3,
       "options": {
@@ -259,11 +313,10 @@
           "fields": "",
           "values": false
         },
-        "showPercentChange": true,
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.1-security-01",
       "targets": [
         {
           "datasource": {
@@ -277,7 +330,79 @@
           "refId": "A"
         }
       ],
-      "title": "Latest Strain",
+      "title": "Current Strain",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "nezdemos-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 14
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 4
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "nezdemos-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(score_strain)::float8 AS avg_strain\nFROM whoop.whoop_cycle\nWHERE $__timeFilter(start_time)",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Strain",
       "type": "stat"
     },
     {
@@ -340,7 +465,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 8
       },
       "id": 4,
       "options": {
@@ -460,7 +585,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 8
       },
       "id": 5,
       "options": {
@@ -556,7 +681,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 16
       },
       "id": 6,
       "options": {
@@ -652,7 +777,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 16
       },
       "id": 7,
       "options": {
@@ -748,7 +873,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 26
+        "y": 24
       },
       "id": 8,
       "options": {
@@ -843,7 +968,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 26
+        "y": 24
       },
       "id": 9,
       "options": {
@@ -942,7 +1067,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 32
       },
       "id": 10,
       "options": {
