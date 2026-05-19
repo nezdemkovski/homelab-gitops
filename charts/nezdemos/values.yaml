@@ -29,6 +29,4 @@ whoop-scraper:
     timeZone: Europe/Prague
     suspend: true
   initDb:
-    enabled: true
-    annotations: {}
-
+    enabled: false
