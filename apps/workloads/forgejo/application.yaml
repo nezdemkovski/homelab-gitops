@@ -25,8 +25,9 @@ spec:
             type: ClusterIP
             port: 3000
           ssh:
-            type: ClusterIP
+            type: NodePort
             port: 22
+            nodePort: 30022
         ingress:
           enabled: false
         gitea:
@@ -54,6 +55,9 @@ spec:
             APP_NAME: Forgejo
             service:
               DISABLE_REGISTRATION: true
+            server:
+              SSH_PORT: 30022
+              SSH_LISTEN_PORT: 2222
             session:
               COOKIE_SECURE: true
   destination:
