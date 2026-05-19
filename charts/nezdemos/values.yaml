@@ -11,6 +11,21 @@ onepassword:
   postgresItem: nezdemos-postgres
   whoopItem: nezdemos-whoop-scraper
   grafanaReaderItem: nezdemos-grafana-reader
+  apiItem: nezdemos-api
+
+nezdemos-api:
+  fullnameOverride: nezdemos-api
+  image:
+    tag: "0.1.0"
+  env:
+    NEZDEMOS_ADDR: ":8080"
+    POSTGRES_HOST: nezdemos-postgres-rw.nezdemos.svc.cluster.local
+    POSTGRES_PORT: "5432"
+    POSTGRES_DB: nezdemos
+    POSTGRES_USER: nezdemos_api
+  envFrom:
+    - secretRef:
+        name: nezdemos-api-env
 
 whoop-scraper:
   fullnameOverride: whoop-scraper

@@ -2,5 +2,8 @@ dependencies:
 - name: whoop-scraper
   repository: oci://ghcr.io/nezdemkovski/charts
   version: 0.1.1
-digest: sha256:aa6e1eaf9f4c21480f4d1233cede6b50cb5b6e7e15dd7cf0b33879131fce96ca
-generated: "2026-05-19T16:20:32.498361+02:00"
+- name: nezdemos-api
+  repository: oci://ghcr.io/nezdemkovski/charts
+  version: 0.1.0
+digest: sha256:5a0358c69cb7b057000df2b5b769c30a44899667bdf5e9b8f0f916b037c90200
+generated: "2026-05-19T17:49:59.748381+02:00"

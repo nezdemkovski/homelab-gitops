@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: nezdemos-postgres-access-v3
+  name: nezdemos-postgres-access-v4
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: nezdemos-postgres-access
@@ -42,6 +42,8 @@ spec:
                   key: password
             - name: GRAFANA_READER_USER
               value: grafana_reader
+            - name: API_USER
+              value: nezdemos_api
           command:
             - /bin/sh
             - -ec
@@ -53,16 +55,26 @@ spec:
 
               psql -v ON_ERROR_STOP=1 \
                 -v app_user="$APP_USER" \
-                -v grafana_reader_user="$GRAFANA_READER_USER" <<'SQL'
+                -v grafana_reader_user="$GRAFANA_READER_USER" \
+                -v api_user="$API_USER" <<'SQL'
               GRANT CONNECT, CREATE ON DATABASE nezdemos TO :"app_user";
               GRANT CONNECT ON DATABASE nezdemos TO :"grafana_reader_user";
+              GRANT CONNECT, CREATE ON DATABASE nezdemos TO :"api_user";
               SQL
 
               PGUSER="$APP_USER" PGPASSWORD="$APP_PASSWORD" psql -v ON_ERROR_STOP=1 \
                 -v app_user="$APP_USER" \
-                -v grafana_reader_user="$GRAFANA_READER_USER" <<'SQL'
+                -v grafana_reader_user="$GRAFANA_READER_USER" \
+                -v api_user="$API_USER" <<'SQL'
               GRANT USAGE ON SCHEMA whoop TO :"grafana_reader_user";
               GRANT SELECT ON ALL TABLES IN SCHEMA whoop TO :"grafana_reader_user";
               ALTER DEFAULT PRIVILEGES FOR ROLE :"app_user" IN SCHEMA whoop
                 GRANT SELECT ON TABLES TO :"grafana_reader_user";
+              GRANT USAGE, CREATE ON SCHEMA whoop TO :"api_user";
+              GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA whoop TO :"api_user";
+              GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA whoop TO :"api_user";
+              ALTER DEFAULT PRIVILEGES FOR ROLE :"app_user" IN SCHEMA whoop
+                GRANT ALL PRIVILEGES ON TABLES TO :"api_user";
+              ALTER DEFAULT PRIVILEGES FOR ROLE :"app_user" IN SCHEMA whoop
+                GRANT ALL PRIVILEGES ON SEQUENCES TO :"api_user";
               SQL

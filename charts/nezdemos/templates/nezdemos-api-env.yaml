@@ -1,0 +1,32 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: nezdemos-api-env
+  namespace: {{ .Release.Namespace }}
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: nezdemos-api-env
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+  data:
+    - secretKey: username
+      remoteRef:
+        key: {{ .Values.onepassword.apiItem }}
+        property: username
+    - secretKey: password
+      remoteRef:
+        key: {{ .Values.onepassword.apiItem }}
+        property: password
+    - secretKey: POSTGRES_PASSWORD
+      remoteRef:
+        key: {{ .Values.onepassword.apiItem }}
+        property: password
+    - secretKey: NEZDEMOS_API_KEY
+      remoteRef:
+        key: {{ .Values.onepassword.apiItem }}
+        property: NEZDEMOS_API_KEY

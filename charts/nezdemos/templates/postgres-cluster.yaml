@@ -23,6 +23,11 @@ spec:
         login: true
         passwordSecret:
           name: nezdemos-grafana-reader
+      - name: nezdemos_api
+        ensure: present
+        login: true
+        passwordSecret:
+          name: nezdemos-api-env
   bootstrap:
     initdb:
       database: {{ .Values.postgres.database }}
