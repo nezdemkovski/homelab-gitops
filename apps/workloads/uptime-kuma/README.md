@@ -1,9 +1,12 @@
 # Uptime Kuma
 
-Uptime Kuma runs from plain Kubernetes manifests because the upstream project
-does not publish an official Helm chart.
+Uptime Kuma runs from the local Helm chart in:
 
-The image version is pinned in `deployment.yaml`:
+```text
+charts/uptime-kuma
+```
+
+The image version is pinned in `charts/uptime-kuma/values.yaml`:
 
 ```text
 louislam/uptime-kuma:2.3.2

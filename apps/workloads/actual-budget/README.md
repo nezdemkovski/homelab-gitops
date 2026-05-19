@@ -1,7 +1,12 @@
 # Actual Budget
 
-Actual Budget runs from plain Kubernetes manifests. The image version is pinned
-in `deployment.yaml`:
+Actual Budget runs from the local Helm chart in:
+
+```text
+charts/actual-budget
+```
+
+The image version is pinned in `charts/actual-budget/values.yaml`:
 
 ```text
 actualbudget/actual-server:26.5.2-alpine

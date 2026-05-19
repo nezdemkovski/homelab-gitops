@@ -1,0 +1,29 @@
+replicaCount: 1
+
+image:
+  repository: actualbudget/actual-server
+  tag: "26.5.2-alpine"
+  pullPolicy: IfNotPresent
+
+env:
+  actualPort: "5006"
+  actualHostname: "0.0.0.0"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5006
+
+persistence:
+  enabled: true
+  existingClaim: actual-budget-data
+  storageClassName: local-path
+  size: 5Gi
+
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+livenessProbe:
+  initialDelaySeconds: 60
+  periodSeconds: 30
