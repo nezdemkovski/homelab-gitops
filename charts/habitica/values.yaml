@@ -2,7 +2,7 @@ server:
   replicaCount: 1
   image:
     repository: awinterstein/habitica-server
-    tag: "5.46.0"
+    tag: "5.47.9"
     pullPolicy: IfNotPresent
   baseUrl: https://habits.nezdemkovski.cloud
   inviteOnly: false
