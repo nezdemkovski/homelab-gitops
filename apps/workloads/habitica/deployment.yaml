@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: habitica
+  namespace: habitica
+  labels:
+    app.kubernetes.io/name: habitica
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: habitica
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: habitica
+    spec:
+      containers:
+        - name: habitica
+          image: awinterstein/habitica-server:5.46.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_DB_URI
+              value: mongodb://habitica-mongo.habitica.svc.cluster.local:27017/habitica?replicaSet=rs
+            - name: BASE_URL
+              value: https://habits.nezdemkovski.cloud
+            - name: INVITE_ONLY
+              value: "false"
+            - name: ADMIN_EMAIL
+              value: yuri@nezdemkovski.com
+          ports:
+            - name: http
+              containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 90
+            periodSeconds: 30

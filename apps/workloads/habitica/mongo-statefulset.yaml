@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: habitica-mongo
+  namespace: habitica
+  labels:
+    app.kubernetes.io/name: habitica-mongo
+spec:
+  serviceName: habitica-mongo
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: habitica-mongo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: habitica-mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:8.0.23
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - -ec
+          args:
+            - |
+              mongod --replSet rs --bind_ip_all --port 27017 &
+              pid="$!"
+              until mongosh --port 27017 --quiet --eval 'db.adminCommand("ping").ok' >/dev/null 2>&1; do
+                sleep 1
+              done
+              mongosh --port 27017 --quiet --eval 'try { rs.status().ok } catch (err) { rs.initiate({_id:"rs",members:[{_id:0,host:"habitica-mongo.habitica.svc.cluster.local:27017"}]}).ok }' || true
+              wait "$pid"
+          ports:
+            - name: mongo
+              containerPort: 27017
+          volumeMounts:
+            - name: data
+              mountPath: /data/db
+            - name: config
+              mountPath: /data/configdb
+          readinessProbe:
+            exec:
+              command:
+                - mongosh
+                - --port
+                - "27017"
+                - --quiet
+                - --eval
+                - db.adminCommand("ping").ok
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - mongosh
+                - --port
+                - "27017"
+                - --quiet
+                - --eval
+                - db.adminCommand("ping").ok
+            initialDelaySeconds: 60
+            periodSeconds: 30
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 10Gi
+    - metadata:
+        name: config
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 1Gi

@@ -14,6 +14,8 @@ data:
         service: http://homarr.homarr.svc.cluster.local:7575
       - hostname: git.nezdemkovski.cloud
         service: http://forgejo-http.forgejo.svc.cluster.local:3000
+      - hostname: habits.nezdemkovski.cloud
+        service: http://habitica.habitica.svc.cluster.local:80
       - hostname: analytics.nezdemkovski.cloud
         service: http://plausible.plausible.svc.cluster.local:80
       - hostname: budget.nezdemkovski.cloud
