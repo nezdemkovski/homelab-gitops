@@ -46,7 +46,7 @@ whoop-scraper:
     timeZone: Europe/Prague
     suspend: false
   backfillJob:
-    enabled: true
+    enabled: false
     days: 1000
     nameSuffix: backfill-1000-20260519
   initDb:
