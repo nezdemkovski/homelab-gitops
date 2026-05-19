@@ -16,7 +16,7 @@ onepassword:
 nezdemos-api:
   fullnameOverride: nezdemos-api
   image:
-    tag: "0.1.0"
+    tag: "0.1.1"
   env:
     NEZDEMOS_ADDR: ":8080"
     POSTGRES_HOST: nezdemos-postgres-rw.nezdemos.svc.cluster.local
