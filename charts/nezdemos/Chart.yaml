@@ -1,0 +1,10 @@
+apiVersion: v2
+name: nezdemos
+description: Personal services stack
+type: application
+version: 0.1.0
+dependencies:
+  - name: whoop-scraper
+    version: 0.1.1
+    repository: oci://ghcr.io/nezdemkovski/charts
+

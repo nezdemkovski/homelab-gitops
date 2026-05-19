@@ -2,7 +2,7 @@ apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: whoop-scraper-env
-  namespace: nezdemos
+  namespace: {{ .Release.Namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -16,21 +16,22 @@ spec:
   data:
     - secretKey: WHOOP_DB_PASSWORD
       remoteRef:
-        key: nezdemos-whoop-scraper
+        key: {{ .Values.onepassword.item }}
         property: password
     - secretKey: WHOOP_CLIENT_ID
       remoteRef:
-        key: nezdemos-whoop-scraper
+        key: {{ .Values.onepassword.item }}
         property: WHOOP_CLIENT_ID
     - secretKey: WHOOP_CLIENT_SECRET
       remoteRef:
-        key: nezdemos-whoop-scraper
+        key: {{ .Values.onepassword.item }}
         property: WHOOP_CLIENT_SECRET
     - secretKey: WHOOP_ENCRYPTION_KEY
       remoteRef:
-        key: nezdemos-whoop-scraper
+        key: {{ .Values.onepassword.item }}
         property: WHOOP_ENCRYPTION_KEY
     - secretKey: WHOOP_TOKEN_STORAGE
       remoteRef:
-        key: nezdemos-whoop-scraper
+        key: {{ .Values.onepassword.item }}
         property: WHOOP_TOKEN_STORAGE
+

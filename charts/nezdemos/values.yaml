@@ -1,0 +1,34 @@
+postgres:
+  clusterName: nezdemos-postgres
+  database: nezdemos
+  owner: whoop_scraper
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
+  storage:
+    storageClass: local-path
+    size: 5Gi
+
+onepassword:
+  item: nezdemos-whoop-scraper
+
+whoop-scraper:
+  fullnameOverride: whoop-scraper
+  image:
+    tag: "0.1.1"
+  env:
+    WHOOP_DB_HOST: nezdemos-postgres-rw.nezdemos.svc.cluster.local
+    WHOOP_DB_PORT: "5432"
+    WHOOP_DB_NAME: nezdemos
+    WHOOP_DB_USER: whoop_scraper
+    WHOOP_DB_SCHEMA: whoop
+    WHOOP_SCRAPE_DAYS: "7"
+  envFrom:
+    - secretRef:
+        name: whoop-scraper-env
+  cronJob:
+    schedule: "0 6 * * *"
+    timeZone: Europe/Prague
+    suspend: true
+  initDb:
+    enabled: true
+    annotations: {}
+

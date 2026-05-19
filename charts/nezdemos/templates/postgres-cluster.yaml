@@ -1,0 +1,20 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.postgres.clusterName }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  instances: 1
+  imageName: {{ .Values.postgres.imageName }}
+  bootstrap:
+    initdb:
+      database: {{ .Values.postgres.database }}
+      owner: {{ .Values.postgres.owner }}
+      secret:
+        name: whoop-scraper-db
+  storage:
+    storageClass: {{ .Values.postgres.storage.storageClass }}
+    size: {{ .Values.postgres.storage.size }}
+
