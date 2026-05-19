@@ -21,7 +21,7 @@ server:
 mongo:
   image:
     repository: mongo
-    tag: "4.4.30"
+    tag: "8.3.2"
     pullPolicy: IfNotPresent
   replicaSetName: rs
   service:
