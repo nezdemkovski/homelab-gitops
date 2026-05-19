@@ -58,78 +58,6 @@
         "x": 0,
         "y": 0
       },
-      "id": 1,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "nezdemos-postgres"
-          },
-          "editorMode": "code",
-          "format": "time_series",
-          "rawQuery": true,
-          "rawSql": "SELECT c.start_time AS \"time\", r.score_recovery_score AS recovery\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)\nORDER BY 1",
-          "refId": "A"
-        }
-      ],
-      "title": "Current Recovery",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "nezdemos-postgres"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 50
-              },
-              {
-                "color": "green",
-                "value": 67
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 0
-      },
       "id": 11,
       "options": {
         "colorMode": "value",
@@ -157,11 +85,83 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT AVG(r.score_recovery_score)::float8 AS avg_recovery\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)",
+          "rawSql": "SELECT AVG(r.score_recovery_score)::float8 AS \"Avg Recovery\"\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)",
           "refId": "A"
         }
       ],
       "title": "Avg Recovery",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "nezdemos-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 14
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "nezdemos-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(score_strain)::float8 AS \"Avg Strain\"\nFROM whoop.whoop_cycle\nWHERE $__timeFilter(start_time)",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Strain",
       "type": "stat"
     },
     {
@@ -254,156 +254,12 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT c.start_time AS \"time\", r.score_recovery_score AS recovery_score\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)\nORDER BY 1",
+          "rawSql": "SELECT c.start_time AS \"time\", r.score_recovery_score AS \"Recovery Score\"\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)\nORDER BY 1",
           "refId": "A"
         }
       ],
       "title": "Recovery Score",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "nezdemos-postgres"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 10
-              },
-              {
-                "color": "red",
-                "value": 14
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 0,
-        "y": 4
-      },
-      "id": 3,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "nezdemos-postgres"
-          },
-          "editorMode": "code",
-          "format": "time_series",
-          "rawQuery": true,
-          "rawSql": "SELECT start_time AS \"time\", score_strain AS strain\nFROM whoop.whoop_cycle\nWHERE $__timeFilter(start_time)\nORDER BY 1",
-          "refId": "A"
-        }
-      ],
-      "title": "Current Strain",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "nezdemos-postgres"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 10
-              },
-              {
-                "color": "red",
-                "value": 14
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 4
-      },
-      "id": 12,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "nezdemos-postgres"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "SELECT AVG(score_strain)::float8 AS avg_strain\nFROM whoop.whoop_cycle\nWHERE $__timeFilter(start_time)",
-          "refId": "A"
-        }
-      ],
-      "title": "Avg Strain",
-      "type": "stat"
     },
     {
       "datasource": {
@@ -465,7 +321,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 4
       },
       "id": 4,
       "options": {
@@ -494,7 +350,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT start_time AS \"time\", score_strain AS strain\nFROM whoop.whoop_cycle\nWHERE $__timeFilter(start_time)\nORDER BY 1",
+          "rawSql": "SELECT start_time AS \"time\", score_strain AS \"Daily Strain\"\nFROM whoop.whoop_cycle\nWHERE $__timeFilter(start_time)\nORDER BY 1",
           "refId": "A"
         }
       ],
@@ -582,10 +438,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 8
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 12
       },
       "id": 5,
       "options": {
@@ -614,7 +470,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT c.start_time AS \"time\",\n       r.score_hrv_rmssd_milli AS hrv_rmssd_milli,\n       r.score_resting_heart_rate AS resting_heart_rate\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)\nORDER BY 1",
+          "rawSql": "SELECT c.start_time AS \"time\",\n       r.score_hrv_rmssd_milli AS \"HRV RMSSD\",\n       r.score_resting_heart_rate AS \"Resting HR\"\nFROM whoop.whoop_recovery r\nJOIN whoop.whoop_cycle c ON c.id = r.cycle_id\nWHERE $__timeFilter(c.start_time)\nORDER BY 1",
           "refId": "A"
         }
       ],
@@ -681,7 +537,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 21
       },
       "id": 6,
       "options": {
@@ -710,7 +566,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT COALESCE(end_time, start_time) AS \"time\",\n       score_stage_summary_total_in_bed_time_milli::float8 / 1000 / 60 / 60 AS sleep_hours\nFROM whoop.whoop_sleep\nWHERE $__timeFilter(COALESCE(end_time, start_time))\nORDER BY 1",
+          "rawSql": "SELECT COALESCE(end_time, start_time) AS \"time\",\n       score_stage_summary_total_in_bed_time_milli::float8 / 1000 / 60 / 60 AS \"Sleep Hours\"\nFROM whoop.whoop_sleep\nWHERE $__timeFilter(COALESCE(end_time, start_time))\nORDER BY 1",
           "refId": "A"
         }
       ],
@@ -777,7 +633,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 21
       },
       "id": 7,
       "options": {
@@ -806,7 +662,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT COALESCE(end_time, start_time) AS \"time\",\n       score_sleep_performance_percentage AS sleep_performance,\n       score_sleep_efficiency_percentage AS sleep_efficiency\nFROM whoop.whoop_sleep\nWHERE $__timeFilter(COALESCE(end_time, start_time))\nORDER BY 1",
+          "rawSql": "SELECT COALESCE(end_time, start_time) AS \"time\",\n       score_sleep_performance_percentage AS \"Sleep Performance\",\n       score_sleep_efficiency_percentage AS \"Sleep Efficiency\"\nFROM whoop.whoop_sleep\nWHERE $__timeFilter(COALESCE(end_time, start_time))\nORDER BY 1",
           "refId": "A"
         }
       ],
@@ -873,7 +729,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 24
+        "y": 29
       },
       "id": 8,
       "options": {
@@ -901,7 +757,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT date_trunc('day', start_time) AS \"time\", COUNT(*)::float8 AS workouts\nFROM whoop.whoop_workout\nWHERE $__timeFilter(start_time)\nGROUP BY 1\nORDER BY 1",
+          "rawSql": "SELECT date_trunc('day', start_time) AS \"time\", COUNT(*)::float8 AS \"Workouts\"\nFROM whoop.whoop_workout\nWHERE $__timeFilter(start_time)\nGROUP BY 1\nORDER BY 1",
           "refId": "A"
         }
       ],
@@ -968,7 +824,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 24
+        "y": 29
       },
       "id": 9,
       "options": {
@@ -996,7 +852,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT date_trunc('day', start_time) AS \"time\", SUM(score_strain)::float8 AS workout_strain\nFROM whoop.whoop_workout\nWHERE $__timeFilter(start_time)\nGROUP BY 1\nORDER BY 1",
+          "rawSql": "SELECT date_trunc('day', start_time) AS \"time\", SUM(score_strain)::float8 AS \"Workout Strain\"\nFROM whoop.whoop_workout\nWHERE $__timeFilter(start_time)\nGROUP BY 1\nORDER BY 1",
           "refId": "A"
         }
       ],
@@ -1067,7 +923,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 37
       },
       "id": 10,
       "options": {
@@ -1092,7 +948,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT p.first_name,\n       p.last_name,\n       p.email,\n       b.height_meter,\n       b.weight_kilogram,\n       b.max_heart_rate,\n       GREATEST(p.updated_at, b.updated_at) AS updated_at\nFROM (SELECT * FROM whoop.whoop_user_profile ORDER BY updated_at DESC LIMIT 1) p\nLEFT JOIN (SELECT * FROM whoop.whoop_body_measurement ORDER BY updated_at DESC LIMIT 1) b ON true",
+          "rawSql": "SELECT p.first_name AS \"First Name\",\n       p.last_name AS \"Last Name\",\n       p.email AS \"Email\",\n       b.height_meter AS \"Height (m)\",\n       b.weight_kilogram AS \"Weight (kg)\",\n       b.max_heart_rate AS \"Max HR\",\n       GREATEST(p.updated_at, b.updated_at) AS \"Updated At\"\nFROM (SELECT * FROM whoop.whoop_user_profile ORDER BY updated_at DESC LIMIT 1) p\nLEFT JOIN (SELECT * FROM whoop.whoop_body_measurement ORDER BY updated_at DESC LIMIT 1) b ON true",
           "refId": "A"
         }
       ],
