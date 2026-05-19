@@ -30,5 +30,6 @@ The source of truth is 1Password:
 Homelab/nezdemos-whoop-scraper
 ```
 
-The item contains the database password and WHOOP OAuth fields. Token/client
-fields can stay empty until the WHOOP app credentials are ready.
+The item contains the database password, WHOOP client credentials, and the
+token encryption key. Access and refresh tokens are not stored in 1Password;
+the `whoop-scraper auth` flow writes them into `whoop.whoop_oauth_tokens`.

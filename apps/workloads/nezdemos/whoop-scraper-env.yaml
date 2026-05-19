@@ -26,14 +26,6 @@ spec:
       remoteRef:
         key: nezdemos-whoop-scraper
         property: WHOOP_CLIENT_SECRET
-    - secretKey: WHOOP_ACCESS_TOKEN
-      remoteRef:
-        key: nezdemos-whoop-scraper
-        property: WHOOP_ACCESS_TOKEN
-    - secretKey: WHOOP_REFRESH_TOKEN
-      remoteRef:
-        key: nezdemos-whoop-scraper
-        property: WHOOP_REFRESH_TOKEN
     - secretKey: WHOOP_ENCRYPTION_KEY
       remoteRef:
         key: nezdemos-whoop-scraper
@@ -42,4 +34,3 @@ spec:
       remoteRef:
         key: nezdemos-whoop-scraper
         property: WHOOP_TOKEN_STORAGE
-
