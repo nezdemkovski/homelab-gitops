@@ -18,6 +18,10 @@ spec:
           existingSecret: grafana-admin
           userKey: admin-user
           passwordKey: admin-password
+        deploymentStrategy:
+          type: Recreate
+        initChownData:
+          enabled: false
         envFromSecret: grafana-datasources
         grafana.ini:
           server:
