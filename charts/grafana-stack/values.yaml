@@ -62,10 +62,12 @@ grafana:
           editable: true
           options:
             path: /var/lib/grafana/dashboards/whoop
-  dashboards:
-    whoop:
-      whoop-overview:
-        file: dashboards/whoop-overview.json
+  extraConfigmapMounts:
+    - name: whoop-dashboard
+      mountPath: /var/lib/grafana/dashboards/whoop/whoop-overview.json
+      subPath: whoop-overview.json
+      configMap: grafana-dashboard-whoop
+      readOnly: true
 
 grafana-mcp:
   fullnameOverride: grafana-mcp
