@@ -3,8 +3,6 @@ kind: ExternalSecret
 metadata:
   name: whoop-scraper-env
   namespace: {{ .Release.Namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   refreshInterval: 1h
   secretStoreRef:
@@ -34,4 +32,3 @@ spec:
       remoteRef:
         key: {{ .Values.onepassword.item }}
         property: WHOOP_TOKEN_STORAGE
-

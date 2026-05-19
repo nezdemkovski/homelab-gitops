@@ -4,8 +4,6 @@ kind: Job
 metadata:
   name: whoop-scraper-init-db
   namespace: {{ .Release.Namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
   labels:
     app.kubernetes.io/name: whoop-scraper
     app.kubernetes.io/instance: {{ .Release.Name }}
