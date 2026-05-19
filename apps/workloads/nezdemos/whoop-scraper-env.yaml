@@ -1,0 +1,45 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: whoop-scraper-env
+  namespace: nezdemos
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: whoop-scraper-env
+    creationPolicy: Owner
+  data:
+    - secretKey: WHOOP_DB_PASSWORD
+      remoteRef:
+        key: nezdemos-whoop-scraper
+        property: password
+    - secretKey: WHOOP_CLIENT_ID
+      remoteRef:
+        key: nezdemos-whoop-scraper
+        property: WHOOP_CLIENT_ID
+    - secretKey: WHOOP_CLIENT_SECRET
+      remoteRef:
+        key: nezdemos-whoop-scraper
+        property: WHOOP_CLIENT_SECRET
+    - secretKey: WHOOP_ACCESS_TOKEN
+      remoteRef:
+        key: nezdemos-whoop-scraper
+        property: WHOOP_ACCESS_TOKEN
+    - secretKey: WHOOP_REFRESH_TOKEN
+      remoteRef:
+        key: nezdemos-whoop-scraper
+        property: WHOOP_REFRESH_TOKEN
+    - secretKey: WHOOP_ENCRYPTION_KEY
+      remoteRef:
+        key: nezdemos-whoop-scraper
+        property: WHOOP_ENCRYPTION_KEY
+    - secretKey: WHOOP_TOKEN_STORAGE
+      remoteRef:
+        key: nezdemos-whoop-scraper
+        property: WHOOP_TOKEN_STORAGE
+

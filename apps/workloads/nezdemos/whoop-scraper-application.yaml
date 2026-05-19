@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nezdemos-whoop-scraper
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: ghcr.io/nezdemkovski/charts
+    chart: whoop-scraper
+    targetRevision: 0.1.1
+    helm:
+      releaseName: whoop-scraper
+      valuesObject:
+        image:
+          tag: "0.1.1"
+        env:
+          WHOOP_DB_HOST: nezdemos-postgres-rw.nezdemos.svc.cluster.local
+          WHOOP_DB_PORT: "5432"
+          WHOOP_DB_NAME: nezdemos
+          WHOOP_DB_USER: whoop_scraper
+          WHOOP_DB_SCHEMA: whoop
+          WHOOP_SCRAPE_DAYS: "7"
+        envFrom:
+          - secretRef:
+              name: whoop-scraper-env
+        cronJob:
+          schedule: "0 6 * * *"
+          timeZone: Europe/Prague
+          suspend: true
+        initDb:
+          enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nezdemos
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
