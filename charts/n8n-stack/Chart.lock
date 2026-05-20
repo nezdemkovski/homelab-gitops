@@ -1,6 +1,6 @@
 dependencies:
 - name: n8n
   repository: oci://ghcr.io/n8n-io/n8n-helm-chart
-  version: 1.5.1
-digest: sha256:01e2df3f55c02ec0cc8dc11646cfcb281a21fa5d4cd587042d44d937631227db
-generated: "2026-05-19T14:38:30.306175+02:00"
+  version: 1.8.0
+digest: sha256:87a0aff25e5d17737624e84eb11c8835184544dd82af40c25d158d654ab1eb28
+generated: "2026-05-20T15:51:02.127453129Z"
