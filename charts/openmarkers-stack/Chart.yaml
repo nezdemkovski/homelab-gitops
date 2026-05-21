@@ -5,5 +5,5 @@ type: application
 version: 0.1.0
 dependencies:
   - name: openmarkers
-    version: 0.1.4
+    version: 0.1.5
     repository: oci://ghcr.io/nezdemkovski/charts
