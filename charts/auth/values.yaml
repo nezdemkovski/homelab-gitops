@@ -12,7 +12,7 @@ service:
 env:
   autoMigrate: "true"
   publicBaseUrl: https://auth.nezdemkovski.cloud
-  adminEmail: admin@nezdemkovski.cloud
+  adminEmail: yuri@nezdemkovski.com
   postgresHost: auth-postgres-rw.auth.svc.cluster.local
   postgresPort: "5432"
   postgresDb: auth
