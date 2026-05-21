@@ -1,0 +1,26 @@
+postgres:
+  clusterName: openmarkers-postgres
+  database: openmarkers
+  owner: openmarkers
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
+  storage:
+    storageClass: local-path
+    size: 2Gi
+
+onepassword:
+  postgresItem: openmarkers-postgres
+  appItem: openmarkers
+
+openmarkers:
+  fullnameOverride: openmarkers
+  image:
+    repository: ghcr.io/nezdemkovski/openmarkers
+    tag: "1.0.0"
+  config:
+    authBaseUrl: https://auth.nezdemkovski.cloud/openmarkers/api/auth
+    authJwksUrl: https://auth.nezdemkovski.cloud/openmarkers/api/auth/.well-known/jwks.json
+    authJwtIssuer: https://auth.nezdemkovski.cloud/openmarkers
+    authJwtAudience: openmarkers
+  secret:
+    create: false
+    name: openmarkers-env

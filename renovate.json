@@ -114,6 +114,16 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
+        "apps/workloads/openmarkers/**",
+        "charts/openmarkers-stack/**"
+      ],
+      "groupName": "openmarkers stack",
+      "groupSlug": "openmarkers-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
         "apps/workloads/uptime-kuma/**",
         "charts/uptime-kuma/**"
       ],
