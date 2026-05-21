@@ -1,6 +1,6 @@
 dependencies:
 - name: openmarkers
   repository: oci://ghcr.io/nezdemkovski/charts
-  version: 0.1.2
-digest: sha256:e017a37974d1a650fa644337eed819de77a6373007b8db001060b7385b77596d
-generated: "2026-05-21T20:56:11.937596+03:00"
+  version: 0.1.3
+digest: sha256:30c04d3dcdd7b2b6b6a5be38e171a8d000259f0a27c8009810aa08f3a4f9c19f
+generated: "2026-05-21T21:09:57.370416+03:00"
