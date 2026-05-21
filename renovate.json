@@ -54,6 +54,16 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
+        "apps/workloads/auth/**",
+        "charts/auth/**"
+      ],
+      "groupName": "auth stack",
+      "groupSlug": "auth-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
         "apps/infra/cloudflared/**",
         "charts/cloudflared/**"
       ],

@@ -1,0 +1,44 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/nezdemkovski/auth
+  tag: "v0.1.0"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+  targetPort: 3000
+
+env:
+  publicBaseUrl: https://auth.nezdemkovski.cloud
+  postgresHost: auth-postgres-rw.auth.svc.cluster.local
+  postgresPort: "5432"
+  postgresDb: auth
+
+postgres:
+  clusterName: auth-postgres
+  database: auth
+  owner: auth
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
+  storage:
+    storageClass: local-path
+    size: 2Gi
+
+onepassword:
+  appItem: auth
+  postgresItem: auth-postgres
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+livenessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 20
