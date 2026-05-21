@@ -30,6 +30,8 @@ spec:
               value: {{ .Values.service.targetPort | quote }}
             - name: AUTH_PUBLIC_BASE_URL
               value: {{ .Values.env.publicBaseUrl | quote }}
+            - name: AUTH_AUTO_MIGRATE
+              value: {{ .Values.env.autoMigrate | quote }}
             - name: POSTGRES_HOST
               value: {{ .Values.env.postgresHost | quote }}
             - name: POSTGRES_PORT

@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/nezdemkovski/auth
-  tag: "v0.1.1"
+  tag: "v0.1.2"
   pullPolicy: IfNotPresent
 
 service:
@@ -10,6 +10,7 @@ service:
   targetPort: 3000
 
 env:
+  autoMigrate: "true"
   publicBaseUrl: https://auth.nezdemkovski.cloud
   postgresHost: auth-postgres-rw.auth.svc.cluster.local
   postgresPort: "5432"
