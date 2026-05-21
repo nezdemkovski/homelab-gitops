@@ -36,11 +36,17 @@ spec:
               value: {{ .Values.env.adminEmail | quote }}
             - name: EMAIL_PROVIDER
               value: {{ .Values.env.email.provider | quote }}
-            - name: EMAIL_FROM
-              value: {{ .Values.env.email.from | quote }}
             {{- if eq .Values.env.email.provider "cloudflare" }}
+            - name: EMAIL_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: auth-env
+                  key: EMAIL_FROM
             - name: CLOUDFLARE_ACCOUNT_ID
-              value: {{ .Values.env.email.cloudflareAccountId | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: auth-env
+                  key: CLOUDFLARE_ACCOUNT_ID
             {{- end }}
             - name: POSTGRES_HOST
               value: {{ .Values.env.postgresHost | quote }}

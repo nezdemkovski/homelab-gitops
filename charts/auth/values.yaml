@@ -18,8 +18,6 @@ env:
     key: REDIS_URL
   email:
     provider: none
-    from: auth@nezdemkovski.cloud
-    cloudflareAccountId: ""
   postgresHost: auth-postgres-rw.auth.svc.cluster.local
   postgresPort: "5432"
   postgresDb: auth
@@ -56,6 +54,8 @@ onepassword:
   postgresItem: auth-postgres
   redisItem: auth-redis
   redisPasswordProperty: password
+  cloudflareAccountIdProperty: CLOUDFLARE_ACCOUNT_ID
+  cloudflareEmailFromProperty: EMAIL_FROM
   cloudflareEmailApiTokenProperty: CLOUDFLARE_EMAIL_API_TOKEN
 
 resources:
