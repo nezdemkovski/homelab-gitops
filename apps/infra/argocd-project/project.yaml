@@ -4,7 +4,7 @@ metadata:
   name: homelab
   namespace: argocd
   annotations:
-    homelab.nezdemkovski.cloud/bootstrap-copy: apps/infra/argocd-project/project.yaml
+    homelab.nezdemkovski.cloud/bootstrap-copy: bootstrap/project.yaml
 spec:
   description: Homelab cluster applications
   sourceRepos:
