@@ -42,12 +42,154 @@
   ],
   "packageRules": [
     {
-      "description": "Group chart and image updates that deploy the same n8n stack",
+      "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
+        "apps/workloads/actual-budget/**",
+        "charts/actual-budget/**"
+      ],
+      "groupName": "actual budget stack",
+      "groupSlug": "actual-budget-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
+        "apps/infra/cloudflared/**",
+        "charts/cloudflared/**"
+      ],
+      "groupName": "cloudflared stack",
+      "groupSlug": "cloudflared-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
+        "apps/workloads/grafana/**",
+        "charts/grafana-stack/**"
+      ],
+      "groupName": "grafana stack",
+      "groupSlug": "grafana-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
+        "apps/workloads/habitica/**",
+        "charts/habitica/**"
+      ],
+      "groupName": "habitica stack",
+      "groupSlug": "habitica-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
+        "apps/workloads/n8n/**",
         "charts/n8n-stack/**"
       ],
       "groupName": "n8n stack",
       "groupSlug": "n8n-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
+        "apps/workloads/nezdemos/**",
+        "charts/nezdemos/**"
+      ],
+      "groupName": "nezdemos stack",
+      "groupSlug": "nezdemos-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
+        "apps/workloads/uptime-kuma/**",
+        "charts/uptime-kuma/**"
+      ],
+      "groupName": "uptime kuma stack",
+      "groupSlug": "uptime-kuma-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/infra/cloudnative-pg/**"
+      ],
+      "groupName": "cloudnative-pg",
+      "groupSlug": "cloudnative-pg",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/infra/external-secrets/**"
+      ],
+      "groupName": "external secrets",
+      "groupSlug": "external-secrets",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/infra/headlamp/**"
+      ],
+      "groupName": "headlamp",
+      "groupSlug": "headlamp",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/infra/local-path-provisioner/**"
+      ],
+      "groupName": "local path provisioner",
+      "groupSlug": "local-path-provisioner",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/infra/metrics-server/**"
+      ],
+      "groupName": "metrics server",
+      "groupSlug": "metrics-server",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/infra/onepassword-connect/**"
+      ],
+      "groupName": "onepassword connect",
+      "groupSlug": "onepassword-connect",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/workloads/forgejo/**"
+      ],
+      "groupName": "forgejo",
+      "groupSlug": "forgejo",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/workloads/homarr/**"
+      ],
+      "groupName": "homarr",
+      "groupSlug": "homarr",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/workloads/plausible/**"
+      ],
+      "groupName": "plausible",
+      "groupSlug": "plausible",
       "separateMajorMinor": false
     },
     {
