@@ -42,9 +42,6 @@ redis:
     pullPolicy: IfNotPresent
   service:
     port: 6379
-  auth:
-    # TODO: move this temporary password to 1Password.
-    password: "authredisratelimit2026temporarychangeit"
   maxmemory: 64mb
   maxmemoryPolicy: allkeys-lru
   resources:
@@ -57,6 +54,8 @@ redis:
 onepassword:
   appItem: auth
   postgresItem: auth-postgres
+  redisItem: auth-redis
+  redisPasswordProperty: password
   cloudflareEmailApiTokenProperty: CLOUDFLARE_EMAIL_API_TOKEN
 
 resources:
