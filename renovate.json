@@ -42,6 +42,15 @@
   ],
   "packageRules": [
     {
+      "description": "Group chart and image updates that deploy the same n8n stack",
+      "matchFileNames": [
+        "charts/n8n-stack/**"
+      ],
+      "groupName": "n8n stack",
+      "groupSlug": "n8n-stack",
+      "separateMajorMinor": false
+    },
+    {
       "description": "Keep GitOps updates as reviewable pull requests",
       "matchManagers": [
         "argocd",
