@@ -58,6 +58,12 @@ Renovate is configured in `renovate.json`. Keep Argo CD applications under
 under `apps/infra/**` and `apps/workloads/**` are scanned by the `kubernetes`
 manager.
 
+When adding a new service, also add a matching Renovate `packageRules` entry
+that groups updates by the deployed app boundary. If the app has both an Argo CD
+application and a local chart, include both paths, for example
+`apps/workloads/<app>/**` and `charts/<app>/**`. This keeps chart bumps, app
+image bumps, and sidecar image bumps in one reviewable PR for that service.
+
 ## Secrets
 
 Secrets live in the `Homelab` 1Password vault. External Secrets Operator syncs
