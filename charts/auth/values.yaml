@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/nezdemkovski/auth
-  tag: "v0.1.12"
+  tag: "v0.1.13"
   pullPolicy: IfNotPresent
 
 service:
@@ -13,6 +13,10 @@ env:
   autoMigrate: "true"
   publicBaseUrl: https://auth.nezdemkovski.cloud
   adminEmail: yuri@nezdemkovski.com
+  email:
+    provider: none
+    from: auth@nezdemkovski.cloud
+    cloudflareAccountId: ""
   postgresHost: auth-postgres-rw.auth.svc.cluster.local
   postgresPort: "5432"
   postgresDb: auth
@@ -29,6 +33,7 @@ postgres:
 onepassword:
   appItem: auth
   postgresItem: auth-postgres
+  cloudflareEmailApiTokenProperty: CLOUDFLARE_EMAIL_API_TOKEN
 
 resources:
   requests:

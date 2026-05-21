@@ -34,6 +34,14 @@ spec:
               value: {{ .Values.env.autoMigrate | quote }}
             - name: AUTH_ADMIN_EMAIL
               value: {{ .Values.env.adminEmail | quote }}
+            - name: EMAIL_PROVIDER
+              value: {{ .Values.env.email.provider | quote }}
+            - name: EMAIL_FROM
+              value: {{ .Values.env.email.from | quote }}
+            {{- if eq .Values.env.email.provider "cloudflare" }}
+            - name: CLOUDFLARE_ACCOUNT_ID
+              value: {{ .Values.env.email.cloudflareAccountId | quote }}
+            {{- end }}
             - name: POSTGRES_HOST
               value: {{ .Values.env.postgresHost | quote }}
             - name: POSTGRES_PORT
