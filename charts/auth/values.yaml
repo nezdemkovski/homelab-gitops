@@ -13,6 +13,9 @@ env:
   autoMigrate: "true"
   publicBaseUrl: https://auth.nezdemkovski.cloud
   adminEmail: yuri@nezdemkovski.com
+  redisUrlSecret:
+    name: auth-redis
+    key: REDIS_URL
   email:
     provider: none
     from: auth@nezdemkovski.cloud
@@ -29,6 +32,27 @@ postgres:
   storage:
     storageClass: local-path
     size: 2Gi
+
+redis:
+  enabled: true
+  fullname: auth-redis
+  image:
+    repository: redis
+    tag: "8.6.2-trixie"
+    pullPolicy: IfNotPresent
+  service:
+    port: 6379
+  auth:
+    # TODO: move this temporary password to 1Password.
+    password: "authredisratelimit2026temporarychangeit"
+  maxmemory: 64mb
+  maxmemoryPolicy: allkeys-lru
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
 
 onepassword:
   appItem: auth
