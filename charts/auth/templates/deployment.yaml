@@ -32,6 +32,8 @@ spec:
               value: {{ .Values.env.publicBaseUrl | quote }}
             - name: AUTH_AUTO_MIGRATE
               value: {{ .Values.env.autoMigrate | quote }}
+            - name: TRUST_PROXY_HEADERS
+              value: {{ .Values.env.trustProxyHeaders | quote }}
             - name: AUTH_ADMIN_EMAIL
               value: {{ .Values.env.adminEmail | quote }}
             - name: EMAIL_PROVIDER
