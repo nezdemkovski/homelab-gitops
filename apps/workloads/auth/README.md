@@ -8,9 +8,9 @@ Runtime secrets live in 1Password:
 - `Homelab/auth`
 - `Homelab/auth-postgres`
 
-`AUTH_PROJECTS` currently lives in `Homelab/auth` and starts as an empty JSON
-array. Add projects there after the application has project schema lifecycle and
-migrations.
+Application realms are managed from the admin dashboard. The service keeps realm
+metadata in Postgres and creates the per-realm schema and Better Auth tables
+automatically when a new realm is added.
 
 ## Email
 
