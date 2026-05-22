@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/nezdemkovski/auth
-  tag: "v0.1.40"
+  tag: "v0.1.41"
   pullPolicy: IfNotPresent
 
 service:
