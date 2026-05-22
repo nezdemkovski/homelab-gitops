@@ -36,7 +36,7 @@ whoop-scraper:
   fullnameOverride: whoop-scraper
   image:
     repository: ghcr.io/nezdemkovski/whoop-scraper
-    tag: "0.1.1"
+    tag: "0.1.2"
   env:
     WHOOP_DB_HOST: nezdemos-postgres-rw.nezdemos.svc.cluster.local
     WHOOP_DB_PORT: "5432"
