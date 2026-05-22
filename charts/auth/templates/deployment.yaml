@@ -36,29 +36,6 @@ spec:
               value: {{ .Values.env.trustProxyHeaders | quote }}
             - name: AUTH_ADMIN_EMAIL
               value: {{ .Values.env.adminEmail | quote }}
-            - name: EMAIL_PROVIDER
-              value: {{ .Values.env.email.provider | quote }}
-            {{- if or (eq .Values.env.email.provider "cloudflare") (eq .Values.env.email.provider "resend") }}
-            - name: EMAIL_FROM
-              valueFrom:
-                secretKeyRef:
-                  name: auth-env
-                  key: EMAIL_FROM
-            {{- end }}
-            {{- if eq .Values.env.email.provider "cloudflare" }}
-            - name: CLOUDFLARE_ACCOUNT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: auth-env
-                  key: CLOUDFLARE_ACCOUNT_ID
-            {{- end }}
-            {{- if eq .Values.env.email.provider "resend" }}
-            - name: RESEND_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: auth-env
-                  key: RESEND_API_KEY
-            {{- end }}
             - name: POSTGRES_HOST
               value: {{ .Values.env.postgresHost | quote }}
             - name: POSTGRES_PORT
