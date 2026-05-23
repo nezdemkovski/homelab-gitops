@@ -25,7 +25,7 @@ https://openmarkers.app/mcp
 OpenMarkers is the OAuth protected resource server. It delegates auth to:
 
 ```text
-https://auth.nezdemkovski.cloud/openmarkers
+https://auth.nezdemkovski.cloud/api/openmarkers
 ```
 
 The workload accepts both browser session JWTs and OAuth access JWTs through
