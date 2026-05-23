@@ -54,8 +54,7 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
-        "apps/workloads/auth/**",
-        "charts/auth/**"
+        "apps/workloads/auth/**"
       ],
       "groupName": "auth stack",
       "groupSlug": "auth-stack",

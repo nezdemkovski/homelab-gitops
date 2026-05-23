@@ -17,6 +17,7 @@ spec:
     - https://kubernetes-sigs.github.io/headlamp/
     - https://kubernetes-sigs.github.io/metrics-server/
     - codeberg.org/forgejo-contrib
+    - ghcr.io/nezdemkovski/charts
     - ghcr.io/homarr-labs/charts
   destinations:
     - namespace: actual-budget

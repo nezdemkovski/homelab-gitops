@@ -3,10 +3,24 @@
 Central Better Auth service for project-scoped user pools.
 
 The service is exposed at `auth.nezdemkovski.cloud` through Cloudflare Tunnel.
+The workload uses the published OCI Helm chart:
+
+```text
+oci://ghcr.io/nezdemkovski/charts/auth
+```
+
 Runtime secrets live in 1Password:
 
 - `Homelab/auth`
 - `Homelab/auth-postgres`
+- `Homelab/auth-redis`
+
+The chart deploys the auth stack as separate components:
+
+- `auth-api` - Bun/Hono Better Auth API.
+- `auth-admin` - static admin dashboard.
+- `auth-login` - static user-facing login experience.
+- `auth-router` - internal Caddy router behind the stable `auth` Service.
 
 Application realms are managed from the admin dashboard. The service keeps realm
 metadata in Postgres and creates the per-realm schema and Better Auth tables
