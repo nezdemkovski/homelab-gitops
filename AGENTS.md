@@ -72,6 +72,35 @@ them into Kubernetes.
 Do not commit generated secrets, Cloudflare Tunnel credentials, kubeconfigs, or
 service credentials.
 
+## Network Policies
+
+Cilium enforces Kubernetes `NetworkPolicy` resources in this cluster.
+
+Workload namespaces are deny-by-default through:
+
+```text
+apps/infra/network-policies/workload-baseline.yaml
+```
+
+When adding a new public service:
+
+1. Add its namespace to `homelab-default-deny`.
+2. Add `homelab-workload-egress` for DNS, Kubernetes API, same-namespace pod
+   traffic, and public internet egress.
+3. Add `homelab-same-namespace-ingress` unless the chart already creates
+   tighter app-specific policies.
+4. Add `homelab-cloudflared-ingress` if Cloudflare Tunnel should expose it.
+5. Add its namespace to `homelab-cloudflared-egress` so cloudflared can reach
+   the service.
+
+Do not allow broad cross-namespace traffic by default. Add explicit policies for
+real dependencies, for example Grafana to PostgreSQL or OpenMarkers to Auth.
+
+LAN egress is intentionally blocked by the workload baseline because private
+ranges are excluded from public internet egress. If a service needs to reach
+home-network hosts such as `10.77.77.0/24`, add a narrow, named policy for that
+service and document why it exists.
+
 ## Public Hostnames
 
 Public hostnames are stable service contracts. Prefer naming them by purpose,
