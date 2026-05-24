@@ -133,6 +133,15 @@
     {
       "description": "Group upstream chart and image overrides by app",
       "matchFileNames": [
+        "apps/infra/cilium/**"
+      ],
+      "groupName": "cilium",
+      "groupSlug": "cilium",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
         "apps/infra/cloudnative-pg/**"
       ],
       "groupName": "cloudnative-pg",
