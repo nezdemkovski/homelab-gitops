@@ -9,6 +9,22 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: homelab
+  ignoreDifferences:
+    - kind: Secret
+      namespace: kube-system
+      name: cilium-ca
+      jsonPointers:
+        - /data
+    - kind: Secret
+      namespace: kube-system
+      name: hubble-relay-client-certs
+      jsonPointers:
+        - /data
+    - kind: Secret
+      namespace: kube-system
+      name: hubble-server-certs
+      jsonPointers:
+        - /data
   source:
     repoURL: https://helm.cilium.io
     chart: cilium
@@ -57,3 +73,4 @@ spec:
       selfHeal: true
     syncOptions:
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
