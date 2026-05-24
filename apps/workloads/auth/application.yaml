@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: auth
-    targetRevision: 0.2.8
+    targetRevision: 0.2.10
     helm:
       releaseName: auth
       values: |
@@ -34,6 +34,14 @@ spec:
           storage:
             storageClass: local-path
             size: 2Gi
+
+        objectStorage:
+          enabled: true
+          bucket: auth-public
+          region: us-east-1
+          storage:
+            storageClass: local-path
+            size: 5Gi
 
         onepassword:
           appItem: auth
