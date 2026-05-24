@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: auth
-    targetRevision: 0.2.11
+    targetRevision: 0.2.12
     helm:
       releaseName: auth
       values: |
