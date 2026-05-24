@@ -11,7 +11,7 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-05-21-4"
+configRevision: "2026-05-24-1"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
@@ -23,8 +23,6 @@ tunnel:
       service: http://homarr.homarr.svc.cluster.local:7575
     - hostname: git.nezdemkovski.cloud
       service: http://forgejo-http.forgejo.svc.cluster.local:3000
-    - hostname: habits.nezdemkovski.cloud
-      service: http://habitica.habitica.svc.cluster.local:80
     - hostname: analytics.nezdemkovski.cloud
       service: http://plausible.plausible.svc.cluster.local:80
     - hostname: budget.nezdemkovski.cloud

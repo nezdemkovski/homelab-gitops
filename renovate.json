@@ -83,16 +83,6 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
-        "apps/workloads/habitica/**",
-        "charts/habitica/**"
-      ],
-      "groupName": "habitica stack",
-      "groupSlug": "habitica-stack",
-      "separateMajorMinor": false
-    },
-    {
-      "description": "Group updates by deployed homelab app boundary",
-      "matchFileNames": [
         "apps/workloads/n8n/**",
         "charts/n8n-stack/**"
       ],
@@ -155,15 +145,6 @@
       ],
       "groupName": "external secrets",
       "groupSlug": "external-secrets",
-      "separateMajorMinor": false
-    },
-    {
-      "description": "Group upstream chart and image overrides by app",
-      "matchFileNames": [
-        "apps/infra/headlamp/**"
-      ],
-      "groupName": "headlamp",
-      "groupSlug": "headlamp",
       "separateMajorMinor": false
     },
     {

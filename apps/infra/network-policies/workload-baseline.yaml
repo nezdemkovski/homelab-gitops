@@ -57,17 +57,6 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: homelab-default-deny
-  namespace: habitica
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-    - Egress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-default-deny
   namespace: homarr
 spec:
   podSelector: {}
@@ -314,50 +303,6 @@ spec:
       ports:
         - protocol: TCP
           port: 5432
-    - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
-            except:
-              - 10.0.0.0/8
-              - 172.16.0.0/12
-              - 192.168.0.0/16
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-workload-egress
-  namespace: habitica
-spec:
-  podSelector: {}
-  policyTypes:
-    - Egress
-  egress:
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
-        - protocol: UDP
-          port: 53
-        - protocol: TCP
-          port: 53
-    - to:
-        - ipBlock:
-            cidr: 10.96.0.1/32
-      ports:
-        - protocol: TCP
-          port: 443
-    - to:
-        - ipBlock:
-            cidr: 10.77.77.44/32
-      ports:
-        - protocol: TCP
-          port: 6443
-    - to:
-        - podSelector: {}
     - to:
         - ipBlock:
             cidr: 0.0.0.0/0
@@ -675,8 +620,6 @@ spec:
                   - auth
                   - forgejo
                   - grafana
-                  - habitica
-                  - headlamp
                   - homarr
                   - n8n
                   - nezdemos
@@ -736,19 +679,6 @@ kind: NetworkPolicy
 metadata:
   name: homelab-same-namespace-ingress
   namespace: grafana
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - podSelector: {}
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-same-namespace-ingress
-  namespace: habitica
 spec:
   podSelector: {}
   policyTypes:
@@ -914,42 +844,6 @@ kind: NetworkPolicy
 metadata:
   name: homelab-cloudflared-ingress
   namespace: grafana
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: cloudflared
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: cloudflared
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-cloudflared-ingress
-  namespace: habitica
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: cloudflared
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: cloudflared
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-cloudflared-ingress
-  namespace: headlamp
 spec:
   podSelector: {}
   policyTypes:

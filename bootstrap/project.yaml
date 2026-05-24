@@ -14,7 +14,6 @@ spec:
     - https://charts.external-secrets.io
     - https://cloudnative-pg.github.io/charts
     - https://imio.github.io/helm-charts
-    - https://kubernetes-sigs.github.io/headlamp/
     - https://kubernetes-sigs.github.io/metrics-server/
     - codeberg.org/forgejo-contrib
     - ghcr.io/nezdemkovski/charts
@@ -35,10 +34,6 @@ spec:
     - namespace: forgejo
       server: https://kubernetes.default.svc
     - namespace: grafana
-      server: https://kubernetes.default.svc
-    - namespace: habitica
-      server: https://kubernetes.default.svc
-    - namespace: headlamp
       server: https://kubernetes.default.svc
     - namespace: homarr
       server: https://kubernetes.default.svc
