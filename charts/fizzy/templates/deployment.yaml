@@ -27,6 +27,10 @@ spec:
               value: {{ .Values.env.disableSsl | quote }}
             - name: MULTI_TENANT
               value: {{ .Values.env.multiTenant | quote }}
+            - name: WEB_CONCURRENCY
+              value: {{ .Values.env.webConcurrency | quote }}
+            - name: RAILS_MAX_THREADS
+              value: {{ .Values.env.railsMaxThreads | quote }}
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
