@@ -11,7 +11,7 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-05-24-1"
+configRevision: "2026-05-26-1"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
