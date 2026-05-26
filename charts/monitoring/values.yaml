@@ -47,6 +47,21 @@ kube-prometheus-stack:
         runAsGroup: 2000
         fsGroup: 2000
         fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+        - name: fix-storage-permissions
+          image: busybox:1.37.0
+          command:
+            - sh
+            - -c
+            - chown -R 1000:2000 /prometheus
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: prometheus-prometheus-prometheus-db
+              mountPath: /prometheus
+              subPath: prometheus-db
       resources:
         requests:
           cpu: 100m
