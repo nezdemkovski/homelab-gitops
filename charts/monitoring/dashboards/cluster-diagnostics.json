@@ -682,7 +682,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "",
+      "description": "Last non-Completed termination reason whose timestamp is within the selected 24h diagnostics window.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -723,14 +723,14 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "kube_pod_container_status_last_terminated_reason{reason!=\"Completed\"} == 1",
+          "expr": "kube_pod_container_status_last_terminated_reason{reason!=\"Completed\"} * on(namespace,pod,container) group_left() (kube_pod_container_status_last_terminated_timestamp > time() - 86400)",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
           "refId": "A"
         }
       ],
-      "title": "Recent container terminations",
+      "title": "Container terminations in 24h",
       "type": "table"
     },
     {
@@ -1668,7 +1668,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "cnpg_pg_database_size_bytes",
+          "expr": "cnpg_pg_database_size_bytes{datname!~\"postgres|template.*\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
