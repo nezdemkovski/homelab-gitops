@@ -443,7 +443,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "(argocd_app_health_status{health_status!=\"Healthy\"} == 1) or (argocd_app_sync_status{sync_status!=\"Synced\"} == 1)",
+          "expr": "argocd_app_info{health_status!=\"Healthy\"} or argocd_app_info{sync_status!=\"Synced\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
