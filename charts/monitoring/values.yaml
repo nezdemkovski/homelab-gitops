@@ -55,6 +55,7 @@ kube-prometheus-stack:
             - -c
             - chown -R 1000:2000 /prometheus
           securityContext:
+            runAsNonRoot: false
             runAsUser: 0
             runAsGroup: 0
             allowPrivilegeEscalation: false
