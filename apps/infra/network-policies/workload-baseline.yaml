@@ -675,8 +675,8 @@ spec:
                   - argocd
                   - auth
                   - forgejo
-                  - grafana
                   - homarr
+                  - monitoring
                   - n8n
                   - nezdemos
                   - openmarkers
