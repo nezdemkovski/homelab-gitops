@@ -58,7 +58,13 @@ spec:
                   CREATE USER IF NOT EXISTS grafana_reader IDENTIFIED BY '${GRAFANA_CLICKHOUSE_PASSWORD}';
                   ALTER USER grafana_reader IDENTIFIED BY '${GRAFANA_CLICKHOUSE_PASSWORD}';
                   CREATE SETTINGS PROFILE IF NOT EXISTS grafana_reader
-                    SETTINGS readonly = 1, max_execution_time CHANGEABLE_IN_READONLY;
+                    SETTINGS readonly = 1,
+                      max_execution_time CHANGEABLE_IN_READONLY,
+                      limit CHANGEABLE_IN_READONLY;
+                  ALTER SETTINGS PROFILE grafana_reader
+                    SETTINGS readonly = 1,
+                      max_execution_time CHANGEABLE_IN_READONLY,
+                      limit CHANGEABLE_IN_READONLY;
                   ALTER USER grafana_reader SETTINGS PROFILE grafana_reader;
                   GRANT SELECT ON plausible_events_db.* TO grafana_reader;
                   GRANT dictGet ON plausible_events_db.location_data_dict TO grafana_reader;
