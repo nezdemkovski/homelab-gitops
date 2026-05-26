@@ -27,11 +27,20 @@ Secrets are stored in 1Password:
 Homelab/fizzy
 ```
 
+Email is sent through Resend SMTP:
+
+```text
+MAILER_FROM_ADDRESS=fizzy@nezdemkovski.cloud
+SMTP_ADDRESS=smtp.resend.com
+SMTP_PORT=587
+SMTP_USERNAME=resend
+```
+
 The public hostname is:
 
 ```text
 fizzy.nezdemkovski.cloud
 ```
 
-Email is not configured yet. Fizzy can still be tested by reading the
-six-character sign-in verification code from the container logs.
+If SMTP delivery breaks, Fizzy still logs the six-character sign-in verification
+code in the container logs.
