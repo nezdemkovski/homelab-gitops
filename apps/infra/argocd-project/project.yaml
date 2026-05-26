@@ -4,6 +4,7 @@ metadata:
   name: homelab
   namespace: argocd
   annotations:
+    argocd.argoproj.io/sync-wave: "-10"
     homelab.nezdemkovski.cloud/bootstrap-copy: bootstrap/project.yaml
 spec:
   description: Homelab cluster applications
