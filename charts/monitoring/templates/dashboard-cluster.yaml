@@ -8,3 +8,5 @@ metadata:
 data:
   cluster-overview.json: |
 {{ .Files.Get "dashboards/cluster-overview.json" | indent 4 }}
+  cluster-diagnostics.json: |
+{{ .Files.Get "dashboards/cluster-diagnostics.json" | indent 4 }}

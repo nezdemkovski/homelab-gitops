@@ -184,6 +184,11 @@ grafana:
       subPath: cluster-overview.json
       configMap: grafana-dashboard-cluster
       readOnly: true
+    - name: cluster-diagnostics-dashboard
+      mountPath: /var/lib/grafana/dashboards/cluster/cluster-diagnostics.json
+      subPath: cluster-diagnostics.json
+      configMap: grafana-dashboard-cluster
+      readOnly: true
 
 grafana-mcp:
   fullnameOverride: grafana-mcp
