@@ -73,6 +73,16 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
+        "apps/workloads/fizzy/**",
+        "charts/fizzy/**"
+      ],
+      "groupName": "fizzy stack",
+      "groupSlug": "fizzy-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
         "apps/workloads/monitoring/**",
         "charts/monitoring/**"
       ],

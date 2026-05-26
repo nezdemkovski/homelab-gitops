@@ -1,0 +1,40 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/basecamp/fizzy
+  digest: sha256:8ee159ba1218759de8a8ea0eea823c5869ad8ec8d5abd2f5c7db8891a75e0cbb
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+env:
+  baseUrl: https://fizzy.nezdemkovski.cloud
+  disableSsl: "true"
+  multiTenant: "false"
+
+secret:
+  name: fizzy-env
+
+persistence:
+  enabled: true
+  existingClaim: fizzy-data
+  storageClassName: local-path
+  size: 5Gi
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 256Mi
+  limits:
+    memory: 768Mi
+
+readinessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 10
+
+livenessProbe:
+  initialDelaySeconds: 60
+  periodSeconds: 30
