@@ -2,6 +2,73 @@ onepassword:
   mcpItem: grafana-mcp
   nezdemosReaderItem: nezdemos-grafana-reader
 
+kube-prometheus-stack:
+  nameOverride: prometheus
+  fullnameOverride: prometheus
+  grafana:
+    enabled: false
+  alertmanager:
+    enabled: false
+  kubeEtcd:
+    enabled: false
+  kubeControllerManager:
+    enabled: false
+  kubeScheduler:
+    enabled: false
+  kubeProxy:
+    enabled: false
+  defaultRules:
+    create: true
+    rules:
+      alertmanager: false
+      etcd: false
+      kubeControllerManager: false
+      kubeProxy: false
+      kubeSchedulerAlerting: false
+      kubeSchedulerRecording: false
+  prometheusOperator:
+    admissionWebhooks:
+      enabled: false
+    resources:
+      requests:
+        cpu: 25m
+        memory: 96Mi
+      limits:
+        memory: 256Mi
+  prometheus:
+    prometheusSpec:
+      retention: 14d
+      retentionSize: 8GiB
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          memory: 1536Mi
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: local-path
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
+  kube-state-metrics:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 128Mi
+  prometheus-node-exporter:
+    resources:
+      requests:
+        cpu: 25m
+        memory: 32Mi
+      limits:
+        memory: 128Mi
+
 grafana:
   fullnameOverride: grafana
   deploymentStrategy:
@@ -36,6 +103,13 @@ grafana:
     datasources.yaml:
       apiVersion: 1
       datasources:
+        - name: Prometheus
+          uid: prometheus
+          type: prometheus
+          access: proxy
+          url: http://prometheus-prometheus:9090
+          isDefault: true
+          editable: false
         - name: NezdemOS Postgres
           uid: nezdemos-postgres
           type: grafana-postgresql-datasource
@@ -62,6 +136,14 @@ grafana:
           editable: true
           options:
             path: /var/lib/grafana/dashboards/whoop
+        - name: cluster
+          orgId: 1
+          folder: Cluster
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/cluster
   extraConfigmapMounts:
     - name: whoop-dashboard
       mountPath: /var/lib/grafana/dashboards/whoop/whoop-overview.json
@@ -72,6 +154,11 @@ grafana:
       mountPath: /var/lib/grafana/dashboards/whoop/whoop-daily-context.json
       subPath: whoop-daily-context.json
       configMap: grafana-dashboard-whoop
+      readOnly: true
+    - name: cluster-overview-dashboard
+      mountPath: /var/lib/grafana/dashboards/cluster/cluster-overview.json
+      subPath: cluster-overview.json
+      configMap: grafana-dashboard-cluster
       readOnly: true
 
 grafana-mcp:

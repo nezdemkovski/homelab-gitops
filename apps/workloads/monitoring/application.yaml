@@ -10,9 +10,9 @@ spec:
   source:
     repoURL: https://github.com/nezdemkovski/homelab-gitops.git
     targetRevision: master
-    path: charts/grafana-stack
+    path: charts/monitoring
     helm:
-      releaseName: grafana-stack
+      releaseName: monitoring
   destination:
     server: https://kubernetes.default.svc
     namespace: grafana
@@ -22,3 +22,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true

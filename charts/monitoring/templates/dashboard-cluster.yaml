@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-cluster
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: monitoring
+data:
+  cluster-overview.json: |
+{{ .Files.Get "dashboards/cluster-overview.json" | indent 4 }}

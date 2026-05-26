@@ -16,6 +16,7 @@ spec:
     - https://helm.cilium.io
     - https://imio.github.io/helm-charts
     - https://kubernetes-sigs.github.io/metrics-server/
+    - https://prometheus-community.github.io/helm-charts
     - codeberg.org/forgejo-contrib
     - ghcr.io/nezdemkovski/charts
     - ghcr.io/homarr-labs/charts

@@ -73,11 +73,11 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
-        "apps/workloads/grafana/**",
-        "charts/grafana-stack/**"
+        "apps/workloads/monitoring/**",
+        "charts/monitoring/**"
       ],
-      "groupName": "grafana stack",
-      "groupSlug": "grafana-stack",
+      "groupName": "monitoring stack",
+      "groupSlug": "monitoring-stack",
       "separateMajorMinor": false
     },
     {

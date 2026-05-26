@@ -4,7 +4,7 @@ metadata:
   name: grafana-dashboard-whoop
   labels:
     app.kubernetes.io/name: grafana
-    app.kubernetes.io/instance: grafana-stack
+    app.kubernetes.io/instance: monitoring
 data:
   whoop-overview.json: |
 {{ .Files.Get "dashboards/whoop-overview.json" | indent 4 }}

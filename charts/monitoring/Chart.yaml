@@ -1,9 +1,12 @@
 apiVersion: v2
-name: grafana-stack
-description: Grafana with its internal MCP server
+name: monitoring
+description: Homelab monitoring stack with Grafana and Prometheus
 type: application
 version: 0.1.0
 dependencies:
+  - name: kube-prometheus-stack
+    version: 85.3.0
+    repository: https://prometheus-community.github.io/helm-charts
   - name: grafana
     version: 12.4.1
     repository: https://grafana-community.github.io/helm-charts
