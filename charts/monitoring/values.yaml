@@ -1,6 +1,7 @@
 onepassword:
   mcpItem: grafana-mcp
   nezdemosReaderItem: nezdemos-grafana-reader
+  plausibleItem: plausible
 
 kube-prometheus-stack:
   nameOverride: prometheus
@@ -117,6 +118,8 @@ grafana:
     enabled: true
     storageClassName: local-path
     size: 5Gi
+  plugins:
+    - grafana-clickhouse-datasource@4.17.0
   resources:
     requests:
       cpu: 50m
@@ -148,6 +151,21 @@ grafana:
             timescaledb: false
           secureJsonData:
             password: $NEZDEMOS_POSTGRES_PASSWORD
+        - name: Plausible ClickHouse
+          uid: plausible-clickhouse
+          type: grafana-clickhouse-datasource
+          access: proxy
+          editable: false
+          jsonData:
+            host: plausible-clickhouse.plausible.svc.cluster.local
+            port: 8123
+            protocol: http
+            username: grafana_reader
+            defaultDatabase: plausible_events_db
+            validateSql: true
+            enableRowLimit: true
+          secureJsonData:
+            password: $PLAUSIBLE_CLICKHOUSE_PASSWORD
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
@@ -168,6 +186,14 @@ grafana:
           editable: true
           options:
             path: /var/lib/grafana/dashboards/cluster
+        - name: analytics
+          orgId: 1
+          folder: Analytics
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/analytics
   extraConfigmapMounts:
     - name: whoop-dashboard
       mountPath: /var/lib/grafana/dashboards/whoop/whoop-overview.json
@@ -188,6 +214,11 @@ grafana:
       mountPath: /var/lib/grafana/dashboards/cluster/cluster-diagnostics.json
       subPath: cluster-diagnostics.json
       configMap: grafana-dashboard-cluster
+      readOnly: true
+    - name: plausible-analytics-dashboard
+      mountPath: /var/lib/grafana/dashboards/analytics/plausible-analytics.json
+      subPath: plausible-analytics.json
+      configMap: grafana-dashboard-analytics
       readOnly: true
 
 grafana-mcp:

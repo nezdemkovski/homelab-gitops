@@ -34,6 +34,10 @@ External Secrets Operator syncs them into:
 plausible/plausible-env
 ```
 
+Grafana uses a separate read-only ClickHouse user, also sourced from
+`Homelab/plausible`. Argo CD keeps that user idempotently configured with the
+`plausible-clickhouse-grafana-reader` PostSync job.
+
 Public hostnames and Cloudflare Tunnel ingress rules are stored in 1Password,
 not in Git.
 

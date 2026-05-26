@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: plausible-clickhouse-grafana-reader
+  namespace: plausible
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  backoffLimit: 6
+  template:
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: create-reader
+          image: docker.io/bitnamilegacy/clickhouse:24.12.3-debian-12-r1
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              memory: 128Mi
+          env:
+            - name: CLICKHOUSE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: plausible-env
+                  key: CLICKHOUSE_PASSWORD
+            - name: GRAFANA_CLICKHOUSE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: plausible-env
+                  key: GRAFANA_CLICKHOUSE_PASSWORD
+          command:
+            - /bin/bash
+            - -ec
+          args:
+            - |
+              clickhouse-client \
+                --host plausible-clickhouse.plausible.svc.cluster.local \
+                --port 9000 \
+                --user clickhouse \
+                --password "$CLICKHOUSE_PASSWORD" \
+                --multiquery \
+                --query "
+                  CREATE USER IF NOT EXISTS grafana_reader IDENTIFIED BY '${GRAFANA_CLICKHOUSE_PASSWORD}';
+                  ALTER USER grafana_reader IDENTIFIED BY '${GRAFANA_CLICKHOUSE_PASSWORD}';
+                  CREATE SETTINGS PROFILE IF NOT EXISTS grafana_reader
+                    SETTINGS readonly = 1, max_execution_time CHANGEABLE_IN_READONLY;
+                  ALTER USER grafana_reader SETTINGS PROFILE grafana_reader;
+                  GRANT SELECT ON plausible_events_db.* TO grafana_reader;
+                  GRANT dictGet ON plausible_events_db.location_data_dict TO grafana_reader;
+                "
