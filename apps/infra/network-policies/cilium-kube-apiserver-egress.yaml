@@ -57,7 +57,7 @@ apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: homelab-kube-apiserver-egress
-  namespace: grafana
+  namespace: monitoring
 spec:
   endpointSelector: {}
   egress:

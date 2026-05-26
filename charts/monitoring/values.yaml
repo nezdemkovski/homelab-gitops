@@ -192,7 +192,7 @@ grafana-mcp:
     repository: grafana/mcp-grafana
     tag: "0.14.0"
   grafana:
-    url: http://grafana.grafana.svc.cluster.local:80
+    url: http://grafana.monitoring.svc.cluster.local:80
     apiKeySecret:
       name: grafana-mcp-token
       key: token

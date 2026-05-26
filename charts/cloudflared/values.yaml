@@ -32,7 +32,7 @@ tunnel:
     - hostname: status.nezdemkovski.cloud
       service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
     - hostname: grafana.nezdemkovski.cloud
-      service: http://grafana.grafana.svc.cluster.local:80
+      service: http://grafana.monitoring.svc.cluster.local:80
     - hostname: nezdemos-api.nezdemkovski.cloud
       service: http://nezdemos-api.nezdemos.svc.cluster.local:80
     - hostname: openmarkers.app

@@ -14,9 +14,9 @@ and is not exposed through Cloudflare.
 Internal endpoints:
 
 ```text
-grafana.grafana.svc.cluster.local:80
-grafana-mcp.grafana.svc.cluster.local:8000
-prometheus-prometheus.grafana.svc.cluster.local:9090
+grafana.monitoring.svc.cluster.local:80
+grafana-mcp.monitoring.svc.cluster.local:8000
+prometheus-prometheus.monitoring.svc.cluster.local:9090
 ```
 
 1Password items:
