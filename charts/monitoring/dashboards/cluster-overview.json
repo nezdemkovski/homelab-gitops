@@ -720,7 +720,7 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -748,14 +748,15 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "100 * kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes",
+          "expr": "kube_persistentvolumeclaim_resource_requests_storage_bytes",
           "legendFormat": "{{namespace}} / {{persistentvolumeclaim}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "PVC Usage",
-      "type": "timeseries"
+      "title": "PVC Requested Storage",
+      "type": "timeseries",
+      "description": "Requested PVC size reported by kube-state-metrics. local-path does not expose per-PVC used bytes."
     },
     {
       "datasource": {
