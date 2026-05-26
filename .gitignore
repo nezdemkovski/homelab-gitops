@@ -7,3 +7,8 @@ kubeconfig
 talosconfig
 controlplane.yaml
 worker.yaml
+
+# Archives
+*.tgz
+*.tar.gz
+*.zip
