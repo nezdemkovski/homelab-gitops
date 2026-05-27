@@ -35,8 +35,6 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: forgejo
       server: https://kubernetes.default.svc
-    - namespace: fizzy
-      server: https://kubernetes.default.svc
     - namespace: monitoring
       server: https://kubernetes.default.svc
     - namespace: homarr

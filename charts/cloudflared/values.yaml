@@ -11,7 +11,7 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-05-26-2"
+configRevision: "2026-05-27-1"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
@@ -27,8 +27,6 @@ tunnel:
       service: http://plausible.plausible.svc.cluster.local:80
     - hostname: budget.nezdemkovski.cloud
       service: http://actual-budget.actual-budget.svc.cluster.local:80
-    - hostname: fizzy.nezdemkovski.cloud
-      service: http://fizzy.fizzy.svc.cluster.local:80
     - hostname: auth.nezdemkovski.cloud
       service: http://auth.auth.svc.cluster.local:80
     - hostname: status.nezdemkovski.cloud
