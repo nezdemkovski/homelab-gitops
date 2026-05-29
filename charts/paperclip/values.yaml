@@ -19,6 +19,19 @@ env:
 secret:
   name: paperclip-env
 
+postgres:
+  clusterName: paperclip-postgres
+  database: paperclip
+  owner: paperclip
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
+  storage:
+    storageClass: local-path
+    size: 5Gi
+
+onepassword:
+  appItem: paperclip
+  postgresItem: paperclip-postgres
+
 service:
   type: ClusterIP
   port: 80
