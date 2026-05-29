@@ -18,6 +18,21 @@ spec:
       labels:
         {{- include "paperclip.labels" . | nindent 8 }}
     spec:
+      initContainers:
+        - name: fix-data-permissions
+          image: {{ .Values.permissions.image | quote }}
+          imagePullPolicy: {{ .Values.permissions.pullPolicy }}
+          command:
+            - sh
+            - -ec
+            - |
+              mkdir -p {{ .Values.env.home | quote }}
+              chown -R {{ .Values.permissions.uid }}:{{ .Values.permissions.gid }} {{ .Values.env.home | quote }}
+              chmod 700 {{ .Values.env.home | quote }}/.codex 2>/dev/null || true
+              chmod 600 {{ .Values.env.home | quote }}/.codex/auth.json {{ .Values.env.home | quote }}/.codex/config.toml 2>/dev/null || true
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.env.home }}
       containers:
         - name: paperclip
           image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
