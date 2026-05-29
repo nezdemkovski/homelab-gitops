@@ -77,6 +77,31 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: homelab-cnpg-operator-ingress
+  namespace: paperclip
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cnpg-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: cloudnative-pg
+      ports:
+        - protocol: TCP
+          port: 8000
+        - protocol: TCP
+          port: 9187
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: homelab-cnpg-operator-ingress
   namespace: openmarkers
 spec:
   podSelector:
