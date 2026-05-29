@@ -1,0 +1,46 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/paperclipai/paperclip
+  digest: sha256:beb09c3e5e0fd372ab89f5761464b329c201d89bdd4d54b49ef58f7a0532e561
+  pullPolicy: IfNotPresent
+
+env:
+  host: 0.0.0.0
+  port: "3100"
+  serveUi: "true"
+  home: /paperclip
+  instanceId: default
+  config: /paperclip/instances/default/config.json
+  deploymentMode: authenticated
+  deploymentExposure: private
+  publicUrl: https://paperclip.nezdemkovski.cloud
+
+secret:
+  name: paperclip-env
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3100
+
+persistence:
+  enabled: true
+  existingClaim: paperclip-data
+  storageClassName: local-path
+  size: 10Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    memory: 2Gi
+
+readinessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 10
+
+livenessProbe:
+  initialDelaySeconds: 60
+  periodSeconds: 30

@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: paperclip
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: https://github.com/nezdemkovski/homelab-gitops.git
+    targetRevision: master
+    path: charts/paperclip
+    helm:
+      releaseName: paperclip
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: paperclip
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

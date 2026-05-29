@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paperclip.fullname" . }}
+  labels:
+    {{- include "paperclip.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "paperclip.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "paperclip.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: paperclip
+          image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: HOST
+              value: {{ .Values.env.host | quote }}
+            - name: PORT
+              value: {{ .Values.env.port | quote }}
+            - name: SERVE_UI
+              value: {{ .Values.env.serveUi | quote }}
+            - name: HOME
+              value: {{ .Values.env.home | quote }}
+            - name: PAPERCLIP_HOME
+              value: {{ .Values.env.home | quote }}
+            - name: PAPERCLIP_INSTANCE_ID
+              value: {{ .Values.env.instanceId | quote }}
+            - name: PAPERCLIP_CONFIG
+              value: {{ .Values.env.config | quote }}
+            - name: PAPERCLIP_DEPLOYMENT_MODE
+              value: {{ .Values.env.deploymentMode | quote }}
+            - name: PAPERCLIP_DEPLOYMENT_EXPOSURE
+              value: {{ .Values.env.deploymentExposure | quote }}
+            - name: PAPERCLIP_PUBLIC_URL
+              value: {{ .Values.env.publicUrl | quote }}
+            - name: BETTER_AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: BETTER_AUTH_SECRET
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.env.home }}
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim }}

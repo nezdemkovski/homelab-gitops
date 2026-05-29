@@ -113,6 +113,16 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
+        "apps/workloads/paperclip/**",
+        "charts/paperclip/**"
+      ],
+      "groupName": "paperclip stack",
+      "groupSlug": "paperclip-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
         "apps/workloads/uptime-kuma/**",
         "charts/uptime-kuma/**"
       ],
