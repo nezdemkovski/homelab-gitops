@@ -9,7 +9,7 @@ charts/actual-budget
 The image version is pinned in `charts/actual-budget/values.yaml`:
 
 ```text
-actualbudget/actual-server:26.5.2-alpine
+actualbudget/actual-server:26.6.0-alpine
 ```
 
 Data is stored in:
