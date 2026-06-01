@@ -15,7 +15,6 @@ openmarkers:
   fullnameOverride: openmarkers
   image:
     repository: ghcr.io/nezdemkovski/openmarkers
-    tag: "1.0.14"
   config:
     authBaseUrl: https://auth.nezdemkovski.cloud/api/openmarkers/auth
     authJwksUrl: https://auth.nezdemkovski.cloud/api/openmarkers/auth/.well-known/jwks.json
