@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: fnpc
-    targetRevision: 0.1.9
+    targetRevision: 0.1.10
     helm:
       releaseName: fnpc
   destination:
