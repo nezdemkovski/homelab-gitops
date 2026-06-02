@@ -781,6 +781,7 @@ spec:
                   - actual-budget
                   - argocd
                   - auth
+                  - fnpc
                   - forgejo
                   - homarr
                   - monitoring
