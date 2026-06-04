@@ -5,5 +5,5 @@ type: application
 version: 0.1.0
 dependencies:
   - name: n8n
-    version: 1.8.0
+    version: 1.9.0
     repository: oci://ghcr.io/n8n-io/n8n-helm-chart
