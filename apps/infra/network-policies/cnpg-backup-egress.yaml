@@ -111,3 +111,15 @@ spec:
       ports:
         - protocol: TCP
           port: 9000
+    - to:
+        - ipBlock:
+            cidr: 10.96.0.1/32
+      ports:
+        - protocol: TCP
+          port: 443
+    - to:
+        - ipBlock:
+            cidr: 10.77.77.44/32
+      ports:
+        - protocol: TCP
+          port: 6443
