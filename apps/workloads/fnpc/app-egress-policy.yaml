@@ -19,6 +19,11 @@ spec:
               port: "53"
             - protocol: TCP
               port: "53"
+          rules:
+            dns:
+              - matchName: api.anthropic.com
+              - matchName: api.telegram.org
+              - matchName: auth.nezdemkovski.cloud
     - toServices:
         - k8sService:
             namespace: fnpc
