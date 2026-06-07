@@ -6,6 +6,15 @@ postgres:
   storage:
     storageClass: local-path
     size: 2Gi
+  backup:
+    enabled: true
+    destinationPath: s3://cnpg-backups/openmarkers-postgres
+    endpointURL: http://10.77.77.190:9000
+    secretName: cnpg-backup-s3
+    onepasswordItem: synology-rustfs
+    retentionPolicy: "30d"
+    schedule: "0 30 3 * * *"
+
 
 onepassword:
   postgresItem: openmarkers-postgres

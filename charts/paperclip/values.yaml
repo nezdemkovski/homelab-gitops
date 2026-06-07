@@ -27,6 +27,15 @@ postgres:
   storage:
     storageClass: local-path
     size: 5Gi
+  backup:
+    enabled: true
+    destinationPath: s3://cnpg-backups/paperclip-postgres
+    endpointURL: http://10.77.77.190:9000
+    secretName: cnpg-backup-s3
+    onepasswordItem: synology-rustfs
+    retentionPolicy: "30d"
+    schedule: "0 40 3 * * *"
+
 
 onepassword:
   appItem: paperclip

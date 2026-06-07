@@ -10,6 +10,15 @@ postgres:
   storage:
     storageClass: local-path
     size: 5Gi
+  backup:
+    enabled: true
+    destinationPath: s3://cnpg-backups/nezdemos-postgres
+    endpointURL: http://10.77.77.190:9000
+    secretName: cnpg-backup-s3
+    onepasswordItem: synology-rustfs
+    retentionPolicy: "30d"
+    schedule: "0 20 3 * * *"
+
 
 onepassword:
   postgresItem: nezdemos-postgres

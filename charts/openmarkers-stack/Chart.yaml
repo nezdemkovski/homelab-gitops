@@ -2,7 +2,7 @@ apiVersion: v2
 name: openmarkers-stack
 description: OpenMarkers homelab stack
 type: application
-version: 0.1.0
+version: 0.1.1
 dependencies:
   - name: openmarkers
     version: 0.1.18

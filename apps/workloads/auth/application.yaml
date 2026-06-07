@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: auth
-    targetRevision: 0.2.23
+    targetRevision: 0.2.25
     helm:
       releaseName: auth
       values: |
@@ -27,13 +27,10 @@ spec:
           postgresDb: auth
 
         postgres:
-          clusterName: auth-postgres
-          database: auth
-          owner: auth
-          imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
-          storage:
-            storageClass: local-path
-            size: 2Gi
+          credentialsSecret:
+            name: auth-postgres-owner
+            usernameKey: username
+            passwordKey: password
 
         objectStorage:
           enabled: true
@@ -45,7 +42,6 @@ spec:
 
         onepassword:
           appItem: auth
-          postgresItem: auth-postgres
           redisItem: auth-redis
           redisPasswordProperty: password
   destination:
