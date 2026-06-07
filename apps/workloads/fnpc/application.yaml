@@ -10,9 +10,18 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: fnpc
-    targetRevision: 0.1.19
+    targetRevision: 0.1.20
     helm:
       releaseName: fnpc
+      valuesObject:
+        postgres:
+          host: fnpc-postgres-rw.fnpc.svc.cluster.local
+          port: "5432"
+          database: fnpc
+          credentialsSecret:
+            name: fnpc-postgres-owner
+            usernameKey: username
+            passwordKey: password
   destination:
     server: https://kubernetes.default.svc
     namespace: fnpc

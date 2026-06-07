@@ -16,6 +16,8 @@ Homelab/fnpc-postgres
 Homelab/fnpc-clickhouse
 ```
 
-The chart deploys CloudNativePG Postgres for Mastra and financial state.
+Postgres is owned by homelab GitOps manifests in this directory. The FNPC chart
+only consumes the externally managed Postgres service and owner Secret.
+
 Mastra observability is written to a dedicated `fnpc-clickhouse` StatefulSet and
 PVC in the `fnpc` namespace.

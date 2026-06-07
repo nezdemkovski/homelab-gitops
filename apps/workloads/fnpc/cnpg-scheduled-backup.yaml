@@ -1,0 +1,13 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: fnpc-postgres-daily-backup
+  namespace: fnpc
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  schedule: "0 50 3 * * *"
+  backupOwnerReference: self
+  method: barmanObjectStore
+  cluster:
+    name: fnpc-postgres
