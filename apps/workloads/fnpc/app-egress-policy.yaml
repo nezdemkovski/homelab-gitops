@@ -1,0 +1,47 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: fnpc-app-egress
+  namespace: fnpc
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: fnpc
+      app.kubernetes.io/component: app
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s:k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - protocol: UDP
+              port: "53"
+            - protocol: TCP
+              port: "53"
+    - toServices:
+        - k8sService:
+            namespace: fnpc
+            serviceName: fnpc-postgres-rw
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "5432"
+    - toServices:
+        - k8sService:
+            namespace: fnpc
+            serviceName: fnpc-clickhouse
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "8123"
+            - protocol: TCP
+              port: "9000"
+    - toFQDNs:
+        - matchName: api.anthropic.com
+        - matchName: api.telegram.org
+        - matchName: auth.nezdemkovski.cloud
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "443"
