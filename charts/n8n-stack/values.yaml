@@ -1,12 +1,12 @@
 n8n:
   image:
     repository: docker.n8n.io/n8nio/n8n
-    tag: "2.27.0"
+    tag: "2.27.3"
   taskRunners:
     enabled: true
     image:
       repository: n8nio/runners
-      tag: "2.27.0"
+      tag: "2.27.3"
     authToken:
       existingSecret: n8n-env
       existingSecretKey: N8N_RUNNERS_AUTH_TOKEN
