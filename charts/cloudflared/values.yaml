@@ -11,7 +11,7 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-06-02-fnpc-1"
+configRevision: "2026-06-29-remove-fnpc-1"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
@@ -33,8 +33,6 @@ tunnel:
       service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
     - hostname: grafana.nezdemkovski.cloud
       service: http://grafana.monitoring.svc.cluster.local:80
-    - hostname: fnpc.nezdemkovski.cloud
-      service: http://fnpc.fnpc.svc.cluster.local:80
     - hostname: nezdemos-api.nezdemkovski.cloud
       service: http://nezdemos-api.nezdemos.svc.cluster.local:80
     - hostname: openmarkers.app

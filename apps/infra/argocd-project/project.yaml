@@ -36,8 +36,6 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: external-secrets
       server: https://kubernetes.default.svc
-    - namespace: fnpc
-      server: https://kubernetes.default.svc
     - namespace: forgejo
       server: https://kubernetes.default.svc
     - namespace: monitoring

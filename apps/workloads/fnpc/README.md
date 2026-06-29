@@ -1,5 +1,9 @@
 # FNPC
 
+FNPC is currently disabled. Its Argo CD application is kept as
+`application.yaml.disabled`, and its raw Kubernetes manifests are kept in
+`_disabled/` so the root Argo CD application ignores them.
+
 Financial Nonsense Prevention Committee runs from the published OCI Helm chart:
 
 ```text
