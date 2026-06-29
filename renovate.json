@@ -38,6 +38,18 @@
         "imageName:\\s*(?<depName>[^:\\s]+(?:/[^:\\s]+)+):(?<currentValue>[^\\s]+)"
       ],
       "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Track Paperclip app releases independently from digest-pinned images",
+      "fileMatch": [
+        "^charts/paperclip/values\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "release:\\s*\"(?<currentValue>v?[^\"]+)\""
+      ],
+      "depNameTemplate": "paperclipai/paperclip",
+      "datasourceTemplate": "github-releases"
     }
   ],
   "packageRules": [
