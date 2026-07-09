@@ -10,12 +10,12 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: auth
-    targetRevision: 0.2.27
+    targetRevision: 0.2.26
     helm:
       releaseName: auth
       values: |
         env:
-          autoMigrate: "false"
+          autoMigrate: "true"
           trustProxyHeaders: "true"
           publicBaseUrl: https://auth.nezdemkovski.cloud
           adminEmail: yuri@nezdemkovski.com
@@ -25,21 +25,6 @@ spec:
           postgresHost: auth-postgres-rw.auth.svc.cluster.local
           postgresPort: "5432"
           postgresDb: auth
-
-        api:
-          image:
-            tag: v0.1.78
-            digest: sha256:ff8891cd92e6a150e563fdf06b9bfad577b28de2b0abab9e25c4b8be4f5dd11c
-
-        admin:
-          image:
-            tag: v0.1.78
-            digest: sha256:e7ccb0ea279eb0c248bd26c3bbdced47b01e825b87033f7e8cf14e9257765d29
-
-        login:
-          image:
-            tag: v0.1.78
-            digest: sha256:504717b81fa56b7578b7797e1f30a2b2b24d59e7c2a78555b35250b141b39c67
 
         postgres:
           credentialsSecret:
