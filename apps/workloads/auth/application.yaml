@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: auth
-    targetRevision: 0.2.28
+    targetRevision: 0.2.29
     helm:
       releaseName: auth
       values: |
@@ -28,23 +28,23 @@ spec:
 
         api:
           image:
-            tag: v0.1.79
-            digest: sha256:240d0796eed57b9682e95128a27f44b84fada484a9878b429221b369beede6b1
+            tag: v0.1.80
+            digest: sha256:f6f271f1080134d95b6789ddcba0c2094e79e2606e5c94f3456d32448bf6264f
 
         admin:
           image:
-            tag: v0.1.79
-            digest: sha256:cfc6419e45ad82b4b9b141c89b3edbbadc046dccc4c68419b791c63e0ad05520
+            tag: v0.1.80
+            digest: sha256:550909c8598c628badf54b71d8b862eab3017869397d60552e3df03ae3a1612e
 
         login:
           image:
-            tag: v0.1.79
-            digest: sha256:86a90f84b89ce56daa61ed90e750ffca50ae5cfe1706a2e8c83be52bda7df934
+            tag: v0.1.80
+            digest: sha256:4356b12cbbb676e2f99f12790129595a3b15a785dfdb4ab1635a14d5a9756a48
 
         router:
           image:
-            tag: v0.1.79
-            digest: sha256:4a5dedeca8c142fd904b38789073a9acfcfd3b7ac67129510f5d489a4236d423
+            tag: v0.1.80
+            digest: sha256:77b39c9a24eec322e04a51811bffc205a4bb15d097f717e8f634d0abdf00ad66
 
         postgres:
           credentialsSecret:
