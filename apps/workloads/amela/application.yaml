@@ -10,14 +10,15 @@ spec:
   sources:
     - repoURL: ghcr.io/amela-io/charts
       chart: amela-backend
-      targetRevision: 0.1.5
+      targetRevision: 0.1.6
       helm:
         releaseName: amela-backend
         values: |
           fullnameOverride: amela-backend
           image:
             repository: ghcr.io/amela-io/backend
-            tag: "0.1.5"
+            tag: "0.1.6"
+            digest: sha256:bb7109ab285d704ef8a75f8e7471cd2311fe708320a290ebae5e6c26ec4db837
           imagePullSecrets:
             - name: amela-ghcr
           envSecretName: amela-backend-env
