@@ -10,27 +10,27 @@ spec:
   sources:
     - repoURL: ghcr.io/amela-io/charts
       chart: amela-backend
-      targetRevision: 0.1.2
+      targetRevision: 0.1.3
       helm:
         releaseName: amela-backend
         values: |
           fullnameOverride: amela-backend
           image:
             repository: ghcr.io/amela-io/backend
-            tag: "0.1.2"
+            tag: "0.1.3"
           imagePullSecrets:
             - name: amela-ghcr
           envSecretName: amela-backend-env
     - repoURL: ghcr.io/amela-io/charts
       chart: amela-application
-      targetRevision: 0.1.1
+      targetRevision: 0.1.2
       helm:
         releaseName: amela-application
         values: |
           fullnameOverride: amela-application
           image:
             repository: ghcr.io/amela-io/application
-            tag: "0.1.1"
+            tag: "0.1.2"
           imagePullSecrets:
             - name: amela-ghcr
   destination:
