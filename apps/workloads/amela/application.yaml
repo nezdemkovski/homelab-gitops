@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: amela.io
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: amela.io
+  sources:
+    - repoURL: ghcr.io/amela-io/charts
+      chart: amela-backend
+      targetRevision: 0.1.0
+      helm:
+        releaseName: amela-backend
+        values: |
+          fullnameOverride: amela-backend
+          image:
+            repository: ghcr.io/amela-io/backend
+            tag: "0.1.0"
+          imagePullSecrets:
+            - name: amela-ghcr
+          envSecretName: amela-backend-env
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: amela
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -56,6 +56,15 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
+        "apps/workloads/amela/**"
+      ],
+      "groupName": "amela.io stack",
+      "groupSlug": "amela-io-stack",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group updates by deployed homelab app boundary",
+      "matchFileNames": [
         "apps/workloads/actual-budget/**",
         "charts/actual-budget/**"
       ],

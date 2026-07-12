@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: amela.io
+  namespace: argocd
+spec:
+  description: Amela product umbrella (API, frontend, and landing)
+  sourceRepos:
+    - ghcr.io/amela-io/charts
+    - https://github.com/amela-io/*
+  destinations:
+    - namespace: amela
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'

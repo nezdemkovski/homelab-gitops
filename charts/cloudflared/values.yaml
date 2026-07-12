@@ -11,12 +11,14 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-06-29-remove-fnpc-1"
+configRevision: "2026-07-12-add-amela-api-1"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
   credentialsFile: /etc/cloudflared/credentials/credentials.json
   ingress:
+    - hostname: api.amela.io
+      service: http://amela-backend.amela.svc.cluster.local:80
     - hostname: automations.nezdemkovski.cloud
       service: http://n8n-main.n8n.svc.cluster.local:5678
     - hostname: nezdemkovski.cloud

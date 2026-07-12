@@ -20,8 +20,11 @@ spec:
     - https://prometheus-community.github.io/helm-charts
     - codeberg.org/forgejo-contrib
     - ghcr.io/nezdemkovski/charts
+    - ghcr.io/amela-io/charts
     - ghcr.io/homarr-labs/charts
   destinations:
+    - namespace: amela
+      server: https://kubernetes.default.svc
     - namespace: actual-budget
       server: https://kubernetes.default.svc
     - namespace: auth
