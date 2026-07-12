@@ -13,6 +13,17 @@ apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: homelab-kube-apiserver-egress
+  namespace: amela
+spec:
+  endpointSelector: {}
+  egress:
+    - toEntities:
+        - kube-apiserver
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: homelab-kube-apiserver-egress
   namespace: argocd
 spec:
   endpointSelector: {}
