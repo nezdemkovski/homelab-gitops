@@ -10,7 +10,7 @@ spec:
   sources:
     - repoURL: ghcr.io/amela-io/charts
       chart: amela-backend
-      targetRevision: 0.1.7
+      targetRevision: 0.1.6
       helm:
         releaseName: amela-backend
         values: |
@@ -24,7 +24,7 @@ spec:
           envSecretName: amela-backend-env
     - repoURL: ghcr.io/amela-io/charts
       chart: amela-application
-      targetRevision: 0.1.6
+      targetRevision: 0.1.7
       helm:
         releaseName: amela-application
         values: |
