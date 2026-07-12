@@ -23,14 +23,15 @@ spec:
           envSecretName: amela-backend-env
     - repoURL: ghcr.io/amela-io/charts
       chart: amela-application
-      targetRevision: 0.1.4
+      targetRevision: 0.1.5
       helm:
         releaseName: amela-application
         values: |
           fullnameOverride: amela-application
           image:
             repository: ghcr.io/amela-io/application
-            tag: "0.1.4"
+            tag: "0.1.5"
+            digest: sha256:2de313e44e493a3d6aefd3ab49484ea948be3dea985a6c5f5f2258e13c22bcee
           imagePullSecrets:
             - name: amela-ghcr
   destination:
