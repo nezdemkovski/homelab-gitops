@@ -11,12 +11,15 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-07-12-add-amela-web-1"
+configRevision: "2026-07-13-add-amela-media-1"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
   credentialsFile: /etc/cloudflared/credentials/credentials.json
   ingress:
+    - hostname: app.amela.io
+      path: ^/amela-(public|private)/.*
+      service: http://10.77.77.190:9000
     - hostname: api.amela.io
       service: http://amela-backend.amela.svc.cluster.local:80
     - hostname: app.amela.io
