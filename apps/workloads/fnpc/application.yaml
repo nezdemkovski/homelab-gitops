@@ -10,10 +10,12 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: fnpc
-    targetRevision: 0.2.1
+    targetRevision: 0.3.0
     helm:
       releaseName: fnpc
       valuesObject:
+        image:
+          tag: "0.3.0"
         onepassword:
           ynabItem: Ynab
           ynabTokenProperty: token
