@@ -76,6 +76,13 @@ service credentials.
 
 Cilium enforces Kubernetes `NetworkPolicy` resources in this cluster.
 
+When introducing a new namespace, update the `homelab` AppProject destination
+allowlist in a separate first GitOps commit. Push it and wait for
+`homelab-root` to become `Synced` before committing resources that target the
+new namespace. Argo CD validates every sync task against the live AppProject
+before applying sync waves, so combining both phases can block the whole sync.
+Do not bypass this ordering by applying a different live AppProject manifest.
+
 Workload namespaces are deny-by-default through:
 
 ```text
