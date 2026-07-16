@@ -837,6 +837,7 @@ spec:
                   - amela
                   - argocd
                   - auth
+                  - fnpc
                   - forgejo
                   - homarr
                   - monitoring

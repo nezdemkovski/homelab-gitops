@@ -10,10 +10,13 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: fnpc
-    targetRevision: 0.1.29
+    targetRevision: 0.2.0
     helm:
       releaseName: fnpc
       valuesObject:
+        onepassword:
+          ynabItem: Ynab
+          ynabTokenProperty: token
         postgres:
           host: fnpc-postgres-rw.fnpc.svc.cluster.local
           port: "5432"

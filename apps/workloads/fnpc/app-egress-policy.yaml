@@ -23,6 +23,7 @@ spec:
             dns:
               - matchName: api.anthropic.com
               - matchName: api.telegram.org
+              - matchName: api.ynab.com
               - matchName: auth.nezdemkovski.cloud
               - matchName: fnpc-clickhouse.fnpc.svc.cluster.local
               - matchName: fnpc-postgres-rw.fnpc.svc.cluster.local
@@ -47,6 +48,7 @@ spec:
     - toFQDNs:
         - matchName: api.anthropic.com
         - matchName: api.telegram.org
+        - matchName: api.ynab.com
         - matchName: auth.nezdemkovski.cloud
       toPorts:
         - ports:

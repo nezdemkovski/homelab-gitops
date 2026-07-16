@@ -68,6 +68,17 @@ apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: homelab-kube-apiserver-egress
+  namespace: fnpc
+spec:
+  endpointSelector: {}
+  egress:
+    - toEntities:
+        - kube-apiserver
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: homelab-kube-apiserver-egress
   namespace: monitoring
 spec:
   endpointSelector: {}
