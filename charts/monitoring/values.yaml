@@ -226,7 +226,7 @@ grafana-mcp:
   image:
     registry: docker.io
     repository: grafana/mcp-grafana
-    tag: "0.17.0"
+    tag: "0.17.2"
   grafana:
     url: http://grafana.monitoring.svc.cluster.local:80
     apiKeySecret:
