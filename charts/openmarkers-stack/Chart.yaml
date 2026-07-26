@@ -2,8 +2,8 @@ apiVersion: v2
 name: openmarkers-stack
 description: OpenMarkers homelab stack
 type: application
-version: 0.1.1
+version: 0.1.2
 dependencies:
   - name: openmarkers
-    version: 0.1.18
+    version: 0.1.19
     repository: oci://ghcr.io/nezdemkovski/charts

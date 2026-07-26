@@ -25,10 +25,9 @@ openmarkers:
   image:
     repository: ghcr.io/nezdemkovski/openmarkers
   config:
-    authBaseUrl: https://auth.nezdemkovski.cloud/api/openmarkers/auth
-    authJwksUrl: https://auth.nezdemkovski.cloud/api/openmarkers/auth/.well-known/jwks.json
-    authJwtIssuer: https://auth.nezdemkovski.cloud/api/openmarkers
-    authJwtAudience: openmarkers,https://auth.nezdemkovski.cloud/api/openmarkers,https://openmarkers.app/mcp
+    authIssuer: https://auth.nezdemkovski.cloud/api/openmarkers
+    authClientId: 2bxTB9FZXW8rVkXCd4N9QJU9-TbnrFh8
+    authMcpResource: https://openmarkers.app/mcp
   secret:
     create: false
     name: openmarkers-env
