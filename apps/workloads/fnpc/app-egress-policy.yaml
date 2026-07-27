@@ -26,6 +26,7 @@ spec:
               - matchName: api.telegram.org
               - matchName: api.x.ai
               - matchName: api.ynab.com
+              - matchName: live.trading212.com
               - matchName: fnpc-clickhouse.fnpc.svc.cluster.local
               - matchName: fnpc-postgres-rw.fnpc.svc.cluster.local
     - toServices:
@@ -52,6 +53,7 @@ spec:
         - matchName: api.telegram.org
         - matchName: api.x.ai
         - matchName: api.ynab.com
+        - matchName: live.trading212.com
       toPorts:
         - ports:
             - protocol: TCP

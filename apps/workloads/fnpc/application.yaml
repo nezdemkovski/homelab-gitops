@@ -10,12 +10,12 @@ spec:
   source:
     repoURL: ghcr.io/nezdemkovski/charts
     chart: fnpc
-    targetRevision: 0.3.5
+    targetRevision: 0.3.6
     helm:
       releaseName: fnpc
       valuesObject:
         image:
-          tag: "0.3.5"
+          tag: "0.3.6"
         env:
           aiModel: xai/grok-4.5
         onepassword:
