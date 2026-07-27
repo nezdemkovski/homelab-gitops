@@ -22,6 +22,7 @@ spec:
           rules:
             dns:
               - matchName: api.anthropic.com
+              - matchName: api.search.brave.com
               - matchName: api.telegram.org
               - matchName: api.x.ai
               - matchName: api.ynab.com
@@ -47,6 +48,7 @@ spec:
               port: "9000"
     - toFQDNs:
         - matchName: api.anthropic.com
+        - matchName: api.search.brave.com
         - matchName: api.telegram.org
         - matchName: api.x.ai
         - matchName: api.ynab.com
