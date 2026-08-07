@@ -18,6 +18,7 @@ spec:
     - https://imio.github.io/helm-charts
     - https://kubernetes-sigs.github.io/metrics-server/
     - https://prometheus-community.github.io/helm-charts
+    - https://supabase-community.github.io/supabase-kubernetes
     - codeberg.org/forgejo-contrib
     - ghcr.io/nezdemkovski/charts
     - ghcr.io/amela-io/charts
@@ -60,6 +61,8 @@ spec:
     - namespace: paperclip
       server: https://kubernetes.default.svc
     - namespace: plausible
+      server: https://kubernetes.default.svc
+    - namespace: supabase
       server: https://kubernetes.default.svc
     - namespace: uptime-kuma
       server: https://kubernetes.default.svc
