@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: actualbudget/actual-server
-  tag: "26.8.0-alpine"
+  tag: "26.8.1-alpine"
   pullPolicy: IfNotPresent
 
 env:
