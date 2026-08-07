@@ -1,12 +1,12 @@
 dependencies:
 - name: kube-prometheus-stack
   repository: https://prometheus-community.github.io/helm-charts
-  version: 88.1.5
+  version: 88.2.0
 - name: grafana
   repository: https://grafana-community.github.io/helm-charts
-  version: 12.10.3
+  version: 12.10.4
 - name: grafana-mcp
   repository: https://grafana-community.github.io/helm-charts
   version: 0.19.0
-digest: sha256:ec402f8b39f91a3898fe54e39903ef47db5fff8f7a6f78ea90b44d95cea71fb6
-generated: "2026-08-05T05:04:43.942824164Z"
+digest: sha256:5b3e924109d8a0345454ca40fe83aa1bcc242b9a5e27e23657289fc4e1070a18
+generated: "2026-08-07T12:49:49.741423813Z"
