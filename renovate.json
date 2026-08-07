@@ -233,6 +233,15 @@
       "separateMajorMinor": false
     },
     {
+      "description": "Group upstream chart and image overrides by app",
+      "matchFileNames": [
+        "apps/workloads/supabase/**"
+      ],
+      "groupName": "supabase",
+      "groupSlug": "supabase",
+      "separateMajorMinor": false
+    },
+    {
       "description": "Keep GitOps updates as reviewable pull requests",
       "matchManagers": [
         "argocd",

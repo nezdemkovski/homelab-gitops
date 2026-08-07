@@ -1,0 +1,223 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: supabase
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  source:
+    repoURL: https://supabase-community.github.io/supabase-kubernetes
+    chart: supabase
+    targetRevision: 0.7.2
+    helm:
+      releaseName: supabase
+      skipTests: true
+      valuesObject:
+        secret:
+          jwt:
+            secretRef: supabase-secrets
+            secretRefKey:
+              anonKey: anonKey
+              serviceKey: serviceKey
+              secret: jwtSecret
+          db:
+            secretRef: supabase-secrets
+            secretRefKey:
+              password: dbPassword
+              passwordEncoded: dbPasswordEncoded
+              database: database
+          analytics:
+            secretRef: supabase-secrets
+            secretRefKey:
+              publicAccessToken: analyticsPublicToken
+              privateAccessToken: analyticsPrivateToken
+          smtp:
+            secretRef: supabase-secrets
+            secretRefKey:
+              username: smtpUsername
+              password: smtpPassword
+          dashboard:
+            secretRef: supabase-secrets
+            secretRefKey:
+              username: dashboardUsername
+              password: dashboardPassword
+              openAiApiKey: dashboardOpenAiApiKey
+          realtime:
+            secretRef: supabase-secrets
+            secretRefKey:
+              secretKeyBase: realtimeSecretKeyBase
+              dbEncKey: realtimeDbEncKey
+          meta:
+            secretRef: supabase-secrets
+            secretRefKey:
+              cryptoKey: metaCryptoKey
+          s3:
+            secretRef: supabase-secrets
+            secretRefKey:
+              keyId: s3KeyId
+              accessKey: s3AccessKey
+          minio:
+            secretRef: supabase-secrets
+            secretRefKey:
+              user: s3KeyId
+              password: s3AccessKey
+        deployment:
+          analytics:
+            enabled: false
+          auth:
+            automountServiceAccountToken: false
+            resources:
+              requests: {cpu: 50m, memory: 64Mi}
+              limits: {cpu: 500m, memory: 256Mi}
+          db:
+            automountServiceAccountToken: false
+            resources:
+              requests: {cpu: 250m, memory: 512Mi}
+              limits: {cpu: "2", memory: 2Gi}
+          functions:
+            automountServiceAccountToken: false
+            strategy: {type: Recreate}
+            resources:
+              requests: {cpu: 50m, memory: 128Mi}
+              limits: {cpu: 500m, memory: 512Mi}
+          imgproxy:
+            enabled: false
+          kong:
+            automountServiceAccountToken: false
+            resources:
+              requests: {cpu: 50m, memory: 64Mi}
+              limits: {cpu: 500m, memory: 256Mi}
+          meta:
+            automountServiceAccountToken: false
+            resources:
+              requests: {cpu: 50m, memory: 64Mi}
+              limits: {cpu: 500m, memory: 256Mi}
+          minio:
+            enabled: false
+          realtime:
+            automountServiceAccountToken: false
+            resources:
+              requests: {cpu: 50m, memory: 128Mi}
+              limits: {cpu: 500m, memory: 512Mi}
+          rest:
+            automountServiceAccountToken: false
+            resources:
+              requests: {cpu: 50m, memory: 64Mi}
+              limits: {cpu: 500m, memory: 256Mi}
+          storage:
+            automountServiceAccountToken: false
+            resources:
+              requests: {cpu: 50m, memory: 128Mi}
+              limits: {cpu: 500m, memory: 512Mi}
+          studio:
+            automountServiceAccountToken: false
+            strategy: {type: Recreate}
+            resources:
+              requests: {cpu: 50m, memory: 128Mi}
+              limits: {cpu: 500m, memory: 512Mi}
+          vector:
+            enabled: false
+        image:
+          auth:
+            tag: v2.189.0
+          db:
+            tag: 17.6.1.136
+          functions:
+            tag: v1.74.0
+          kong:
+            tag: 3.9.1
+          meta:
+            tag: v0.96.6
+          realtime:
+            tag: v2.102.3
+          rest:
+            tag: v14.12
+          storage:
+            tag: v1.60.4
+          studio:
+            tag: 2026.07.07-sha-a6a04f2
+          initDb:
+            tag: 17-alpine
+        environment:
+          auth:
+            - {name: API_EXTERNAL_URL, value: "https://supabase.nezdemkovski.cloud/auth/v1"}
+            - {name: GOTRUE_API_HOST, value: "0.0.0.0"}
+            - {name: GOTRUE_API_PORT, value: "9999"}
+            - {name: GOTRUE_SITE_URL, value: "https://supabase.nezdemkovski.cloud"}
+            - {name: GOTRUE_URI_ALLOW_LIST, value: "https://supabase.nezdemkovski.cloud/**"}
+            - {name: GOTRUE_DISABLE_SIGNUP, value: "false"}
+            - {name: GOTRUE_JWT_DEFAULT_GROUP_NAME, value: authenticated}
+            - {name: GOTRUE_JWT_ADMIN_ROLES, value: service_role}
+            - {name: GOTRUE_JWT_AUD, value: authenticated}
+            - {name: GOTRUE_JWT_EXP, value: "3600"}
+            - {name: GOTRUE_EXTERNAL_EMAIL_ENABLED, value: "true"}
+            - {name: GOTRUE_MAILER_AUTOCONFIRM, value: "true"}
+            - {name: GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED, value: "false"}
+            - {name: GOTRUE_SMTP_ADMIN_EMAIL, value: "noreply@nezdemkovski.cloud"}
+            - {name: GOTRUE_SMTP_HOST, value: localhost}
+            - {name: GOTRUE_SMTP_PORT, value: "1025"}
+            - {name: GOTRUE_EXTERNAL_PHONE_ENABLED, value: "false"}
+            - {name: GOTRUE_SMS_AUTOCONFIRM, value: "false"}
+            - {name: GOTRUE_SMTP_SENDER_NAME, value: Supabase}
+            - {name: GOTRUE_MAILER_URLPATHS_INVITE, value: "/auth/v1/verify"}
+            - {name: GOTRUE_MAILER_URLPATHS_CONFIRMATION, value: "/auth/v1/verify"}
+            - {name: GOTRUE_MAILER_URLPATHS_RECOVERY, value: "/auth/v1/verify"}
+            - {name: GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE, value: "/auth/v1/verify"}
+          storage:
+            - {name: REQUEST_ALLOW_X_FORWARDED_PATH, value: "true"}
+            - {name: FILE_SIZE_LIMIT, value: "52428800"}
+            - {name: FILE_STORAGE_BACKEND_PATH, value: /var/lib/storage}
+            - {name: TENANT_ID, value: stub}
+            - {name: REGION, value: stub}
+            - {name: GLOBAL_S3_BUCKET, value: stub}
+            - {name: ENABLE_IMAGE_TRANSFORMATION, value: "false"}
+          studio:
+            - {name: HOSTNAME, value: "::"}
+            - {name: STUDIO_PORT, value: "3000"}
+            - {name: DEFAULT_ORGANIZATION_NAME, value: Homelab}
+            - {name: DEFAULT_PROJECT_NAME, value: Supabase}
+            - {name: SUPABASE_PUBLIC_URL, value: "https://supabase.nezdemkovski.cloud"}
+            - {name: NEXT_ANALYTICS_BACKEND_PROVIDER, value: postgres}
+        persistence:
+          db:
+            storageClassName: local-path
+            size: 10Gi
+            annotations: &pvcAnnotations
+              argocd.argoproj.io/sync-options: Prune=false
+          functions:
+            storageClassName: local-path
+            size: 1Gi
+            annotations: *pvcAnnotations
+          imgproxy:
+            enabled: false
+          snippets:
+            storageClassName: local-path
+            size: 1Gi
+            annotations: *pvcAnnotations
+          storage:
+            storageClassName: local-path
+            size: 10Gi
+            annotations: *pvcAnnotations
+          deno:
+            storageClassName: local-path
+            size: 2Gi
+            annotations: *pvcAnnotations
+          pgsodium:
+            storageClassName: local-path
+            size: 100Mi
+            annotations: *pvcAnnotations
+        ingress:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: supabase
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
