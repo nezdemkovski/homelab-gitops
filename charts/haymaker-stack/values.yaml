@@ -24,8 +24,8 @@ haymaker:
   fullnameOverride: haymaker
   image:
     repository: ghcr.io/nezdemkovski/haymaker
-    tag: "0.1.2"
-    digest: sha256:f8332ee49e0d653516c4d532842d8e9ea3f608497e45701ee15ebcdcf7a498f3
+    tag: "0.1.3"
+    digest: sha256:0ee85b50f795568ac4afc6b94ac4c59f9d0da051cf33cb971f717374849bdc5c
   imagePullSecrets:
     - name: haymaker-ghcr
   api:
