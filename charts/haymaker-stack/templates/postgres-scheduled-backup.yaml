@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.postgres.clusterName }}-daily-backup
   namespace: {{ .Release.Namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   schedule: {{ .Values.postgres.backup.schedule | quote }}
   backupOwnerReference: self
