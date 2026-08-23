@@ -6,6 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "4"
 spec:
+  suspend: true
   schedule: "0 50 3 * * *"
   backupOwnerReference: self
   method: barmanObjectStore

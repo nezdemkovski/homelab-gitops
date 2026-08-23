@@ -5,6 +5,7 @@ metadata:
   name: {{ .Values.postgres.clusterName }}-daily-backup
   namespace: {{ .Release.Namespace }}
 spec:
+  suspend: true
   schedule: {{ .Values.postgres.backup.schedule | quote }}
   backupOwnerReference: self
   cluster:

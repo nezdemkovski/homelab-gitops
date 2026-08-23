@@ -4,6 +4,7 @@ metadata:
   name: fnpc-postgres
   namespace: fnpc
   annotations:
+    cnpg.io/hibernation: "on"
     argocd.argoproj.io/sync-options: Prune=false
     argocd.argoproj.io/sync-wave: "3"
 spec:

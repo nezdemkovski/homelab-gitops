@@ -4,6 +4,8 @@ metadata:
   name: {{ .Values.postgres.clusterName }}
   namespace: {{ .Release.Namespace }}
   annotations:
+    cnpg.io/hibernation: "on"
+    argocd.argoproj.io/sync-options: Prune=false
     argocd.argoproj.io/sync-wave: "2"
 spec:
   instances: 1
