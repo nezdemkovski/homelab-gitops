@@ -1,0 +1,32 @@
+postgres:
+  clusterName: haymaker-postgres
+  database: haymaker
+  owner: haymaker
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
+  storage:
+    storageClass: local-path
+    size: 2Gi
+  backup:
+    enabled: true
+    destinationPath: s3://cnpg-backups/haymaker-postgres
+    endpointURL: http://10.77.77.190:9000
+    secretName: cnpg-backup-s3
+    onepasswordItem: synology-rustfs
+    retentionPolicy: "30d"
+    schedule: "0 10 4 * * *"
+
+onepassword:
+  postgresItem: haymaker-postgres
+  appItem: haymaker
+  ghcrItem: haymaker-ghcr
+
+haymaker:
+  fullnameOverride: haymaker
+  image:
+    repository: ghcr.io/nezdemkovski/haymaker
+    tag: "0.1.0"
+    digest: sha256:aeb8056c518465349c2fde493dc8021b958b7b02301cab2166f79cf19b3a99ac
+  imagePullSecrets:
+    - name: haymaker-ghcr
+  api:
+    existingSecret: haymaker-env

@@ -839,6 +839,7 @@ spec:
                   - auth
                   - fnpc
                   - forgejo
+                  - haymaker
                   - homarr
                   - monitoring
                   - n8n

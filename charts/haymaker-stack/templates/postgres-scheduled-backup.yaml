@@ -1,0 +1,15 @@
+{{- if .Values.postgres.backup.enabled }}
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: {{ .Values.postgres.clusterName }}-daily-backup
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  schedule: {{ .Values.postgres.backup.schedule | quote }}
+  backupOwnerReference: self
+  method: barmanObjectStore
+  cluster:
+    name: {{ .Values.postgres.clusterName }}
+{{- end }}
