@@ -2,8 +2,8 @@ apiVersion: v2
 name: haymaker-stack
 description: Haymaker homelab stack
 type: application
-version: 0.1.6
+version: 0.2.0
 dependencies:
   - name: haymaker
-    version: 0.1.6
+    version: 0.2.0
     repository: oci://ghcr.io/nezdemkovski/charts
