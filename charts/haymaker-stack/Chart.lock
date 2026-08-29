@@ -1,0 +1,6 @@
+dependencies:
+- name: haymaker
+  repository: oci://ghcr.io/nezdemkovski/charts
+  version: 0.3.0
+digest: sha256:1354aa6f46dd96d73b3a4cff0560fa0f8d11c2c063b42521c045c4cf8968b911
+generated: "2026-08-29T22:24:21.148269+02:00"
