@@ -22,11 +22,16 @@ onepassword:
 
 haymaker:
   fullnameOverride: haymaker
-  image:
-    repository: ghcr.io/nezdemkovski/haymaker
-    tag: "0.2.0"
-    digest: sha256:e0922cfb81e11b399a92b93e7e3e7f0ef71e3e48b9d5f538da313b82e6f33614
   imagePullSecrets:
     - name: haymaker-ghcr
   api:
     existingSecret: haymaker-env
+    image:
+      repository: ghcr.io/nezdemkovski/haymaker
+      tag: "0.3.0"
+      digest: sha256:aa15114dc08dd3ff5452d3d6c02ae772500cab9314173eaa5b05a4ea69c4103d
+  frontend:
+    image:
+      repository: ghcr.io/nezdemkovski/haymaker-frontend
+      tag: "0.3.0"
+      digest: sha256:abadba3bcb897da44b9a787ab2376ac3a77122db4a47e4995fb90f525a2054be

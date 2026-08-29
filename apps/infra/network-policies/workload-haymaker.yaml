@@ -87,6 +87,4 @@ spec:
               app.kubernetes.io/name: cloudflared
       ports:
         - protocol: TCP
-          port: 3000
-        - protocol: TCP
-          port: 3001
+          port: 8080
