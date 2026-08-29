@@ -2,12 +2,13 @@ postgres:
   clusterName: haymaker-postgres
   database: haymaker
   owner: haymaker
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.6-system-trixie
   storage:
     storageClass: local-path
     size: 2Gi
   backup:
     enabled: true
+    serverName: haymaker-postgres-pg18
     destinationPath: s3://cnpg-backups/haymaker-postgres
     endpointURL: http://10.77.77.190:9000
     secretName: cnpg-backup-s3
