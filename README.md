@@ -13,7 +13,7 @@ export KUBECONFIG=/Users/yuri/Sites/homelab-gitops/kubeconfig
 
 kubectl create namespace argocd
 kubectl apply -n argocd --server-side --force-conflicts \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.5.2/manifests/install.yaml
 
 kubectl apply -f bootstrap/project.yaml
 kubectl apply -f bootstrap/root-app.yaml
