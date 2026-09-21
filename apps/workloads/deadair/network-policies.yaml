@@ -114,3 +114,16 @@ spec:
           port: 8000
         - protocol: TCP
           port: 9187
+---
+# Cilium identifies the API server by entity; service IP rules alone do not match.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: cnpg-kube-apiserver-egress
+  namespace: deadair
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/cluster: deadair-postgres-cnpg
+  egress:
+    - toEntities: [kube-apiserver]
