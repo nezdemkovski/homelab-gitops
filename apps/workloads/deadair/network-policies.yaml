@@ -127,3 +127,47 @@ spec:
       cnpg.io/cluster: deadair-postgres-cnpg
   egress:
     - toEntities: [kube-apiserver]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: homelab-cloudflared-ingress
+  namespace: deadair
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: deadair
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cloudflared
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: cloudflared
+      ports:
+        - protocol: TCP
+          port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deadair-tunnel-egress
+  namespace: cloudflared
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: cloudflared
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: deadair
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: deadair
+      ports:
+        - protocol: TCP
+          port: 80

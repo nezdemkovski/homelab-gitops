@@ -1,8 +1,8 @@
 # Dead Air
 
 One station replica with bundled CPU TTS, external CNPG PostgreSQL and ephemeral Redis sessions.
-Image 0.24.0 is pinned by digest. Access starts privately with `kubectl -n deadair port-forward svc/deadair 8080:80`; open http://localhost:8080.
-No public DNS or tunnel route is created. The upstream stream has no authentication.
+Image 0.24.0 is pinned by digest. Access: https://radio.nezdemkovski.cloud through Cloudflare Tunnel. Local recovery: `kubectl -n deadair port-forward svc/deadair 8080:80`.
+The console requires the administrator login stored in 1Password. The upstream audio stream has no authentication.
 
 ## Rollout
 
