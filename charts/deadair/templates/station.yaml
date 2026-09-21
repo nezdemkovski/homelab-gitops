@@ -53,6 +53,8 @@ spec:
               value: {{ .Values.timezone | quote }}
             - name: DATABASE_HOST
               value: deadair-postgres-cnpg-rw
+            - name: DATABASE_PORT
+              value: "5432"
             - name: DATABASE_NAME
               value: deadair
             - name: DATABASE_USER
