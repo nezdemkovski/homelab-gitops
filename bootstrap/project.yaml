@@ -24,6 +24,8 @@ spec:
     - ghcr.io/amela-io/charts
     - ghcr.io/homarr-labs/charts
   destinations:
+    - namespace: deadair
+      server: https://kubernetes.default.svc
     - namespace: amela
       server: https://kubernetes.default.svc
     - namespace: actual-budget
