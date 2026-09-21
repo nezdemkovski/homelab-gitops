@@ -11,12 +11,14 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-08-29-haymaker-1"
+configRevision: "2026-09-21-radio-1"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
   credentialsFile: /etc/cloudflared/credentials/credentials.json
   ingress:
+    - hostname: radio.nezdemkovski.cloud
+      service: http://deadair.deadair.svc.cluster.local:80
     - hostname: app.amela.io
       path: ^/amela-(public|private)/.*
       service: http://10.77.77.190:9000
