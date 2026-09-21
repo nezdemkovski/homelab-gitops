@@ -1,0 +1,46 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: deadair-postgres-cnpg
+  namespace: deadair
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  instances: 1
+  resources:
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: "1", memory: 1Gi}
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10-system-trixie
+  managed:
+    roles:
+      - name: app_user
+        ensure: present
+        login: false
+  bootstrap:
+    initdb:
+      postInitSQL:
+        - CREATE ROLE app_user NOLOGIN
+      database: deadair
+      owner: deadair
+      secret:
+        name: deadair-cnpg-app
+  storage:
+    storageClass: local-path
+    size: 5Gi
+  backup:
+    barmanObjectStore:
+      destinationPath: "s3://cnpg-backups/deadair-postgres-cnpg"
+      endpointURL: "http://10.77.77.190:9000"
+      s3Credentials:
+        accessKeyId:
+          name: cnpg-backup-s3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: cnpg-backup-s3
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+      data:
+        compression: gzip
+    retentionPolicy: "30d"

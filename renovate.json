@@ -273,6 +273,15 @@
         "major"
       ],
       "dependencyDashboardApproval": true
+    },
+    {
+      "matchFileNames": [
+        "apps/workloads/deadair/**",
+        "charts/deadair/**"
+      ],
+      "groupName": "deadair stack",
+      "groupSlug": "deadair-stack",
+      "separateMajorMinor": false
     }
   ]
 }
