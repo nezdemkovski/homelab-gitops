@@ -1,0 +1,64 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: telegram-chart-upgrades
+  namespace: flux-system
+spec:
+  eventSeverity: info
+  eventSources:
+  - kind: HelmRelease
+    name: amela-application
+    namespace: amela
+  - kind: HelmRelease
+    name: amela-backend
+    namespace: amela
+  - kind: HelmRelease
+    name: auth
+    namespace: auth
+  - kind: HelmRelease
+    name: cloudnative-pg
+    namespace: cnpg-system
+  - kind: HelmRelease
+    name: external-secrets
+    namespace: external-secrets
+  - kind: HelmRelease
+    name: onepassword-connect
+    namespace: external-secrets
+  - kind: HelmRelease
+    name: cilium
+    namespace: flux-system
+  - kind: HelmRelease
+    name: forgejo
+    namespace: forgejo
+  - kind: HelmRelease
+    name: haymaker
+    namespace: haymaker
+  - kind: HelmRelease
+    name: homarr
+    namespace: homarr
+  - kind: HelmRelease
+    name: metrics-server
+    namespace: kube-system
+  - kind: HelmRelease
+    name: local-path-provisioner
+    namespace: local-path-storage
+  - kind: HelmRelease
+    name: n8n
+    namespace: n8n
+  - kind: HelmRelease
+    name: openmarkers
+    namespace: openmarkers
+  - kind: HelmRelease
+    name: plausible
+    namespace: plausible
+  - kind: HelmRelease
+    name: supabase
+    namespace: supabase
+  providerRef:
+    name: telegram
+  inclusionList:
+  - Helm upgrade succeeded
+  eventMetadata:
+    cluster: homelab
+    summary: Flux upgraded an external Helm chart

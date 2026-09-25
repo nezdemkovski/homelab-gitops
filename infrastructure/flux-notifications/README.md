@@ -10,5 +10,13 @@ Kustomizations and image automation in `flux-system`, plus HelmReleases in the
 listed namespaces. When adding a HelmRelease in a new namespace, add that
 namespace to `alert.yaml`.
 
-These are GitOps reconciliation errors, not general pod or host-health alerts.
-Use Prometheus/Alertmanager for runtime availability and node alerts.
+`telegram-image-updates` reports only commits pushed by Flux image automation.
+The commit means Git has new image pins; workloads may still be reconciling.
+`telegram-chart-upgrades` reports successful upgrades of externally sourced
+Helm charts. Local GitRepository charts are excluded because their revision
+changes after unrelated Git commits. Add new external HelmReleases to its
+event sources.
+
+These alerts cover GitOps reconciliation and version changes, not general pod
+or host health. Use Prometheus/Alertmanager for runtime availability and node
+alerts.

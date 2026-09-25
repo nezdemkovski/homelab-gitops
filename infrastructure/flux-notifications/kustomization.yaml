@@ -4,3 +4,5 @@ resources:
   - external-secret.yaml
   - provider.yaml
   - alert.yaml
+  - image-updates-alert.yaml
+  - chart-upgrades-alert.yaml
