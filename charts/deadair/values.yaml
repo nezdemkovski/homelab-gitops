@@ -1,6 +1,6 @@
 image:
   repository: deadair/deadair
-  tag: "0.34.1@sha256:2539e9b21a18cda2351225f0e5d8a36ac2844defa2e5f4a8f52af281c6aabf61"
+  tag: "0.35.0@sha256:1a33d6678c0bf02381fbbc0fca116a77ee4d20eb3146a754d4fc769cd2e0af8c"
 redis:
   image:
     repository: redis
