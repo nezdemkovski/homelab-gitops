@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: cnpg-instances
+  namespace: monitoring
+  labels:
+    release: monitoring
+    app.kubernetes.io/name: cnpg-instances
+    app.kubernetes.io/instance: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - auth
+      - n8n
+      - nezdemos
+      - openmarkers
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/managed-by: cloudnative-pg
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 30s
+      scrapeTimeout: 10s

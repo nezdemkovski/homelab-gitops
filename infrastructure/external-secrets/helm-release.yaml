@@ -1,0 +1,35 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: external-secrets
+  namespace: external-secrets
+spec:
+  chart:
+    spec:
+      chart: external-secrets
+      interval: 1h0m0s
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: external-secrets
+      version: 2.11.0
+  install:
+    crds: Create
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  interval: 1h0m0s
+  releaseName: external-secrets
+  storageNamespace: external-secrets
+  targetNamespace: external-secrets
+  timeout: 10m
+  upgrade:
+    crds: CreateReplace
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  values:
+    installCRDs: true

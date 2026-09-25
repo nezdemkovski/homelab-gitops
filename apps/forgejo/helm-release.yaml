@@ -1,0 +1,83 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo
+  namespace: forgejo
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: forgejo
+    namespace: forgejo
+  interval: 1h0m0s
+  timeout: 10m0s
+  install:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m0s
+  upgrade:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m0s
+  driftDetection:
+    mode: enabled
+  releaseName: forgejo
+  storageNamespace: forgejo
+  targetNamespace: forgejo
+  values:
+    gitea:
+      additionalConfigFromEnvs:
+      - name: FORGEJO__server__DOMAIN
+        valueFrom:
+          secretKeyRef:
+            key: FORGEJO__server__DOMAIN
+            name: forgejo-env
+      - name: FORGEJO__server__ROOT_URL
+        valueFrom:
+          secretKeyRef:
+            key: FORGEJO__server__ROOT_URL
+            name: forgejo-env
+      - name: FORGEJO__server__SSH_DOMAIN
+        valueFrom:
+          secretKeyRef:
+            key: FORGEJO__server__SSH_DOMAIN
+            name: forgejo-env
+      admin:
+        email: root@localhost
+        existingSecret: forgejo-env
+        passwordMode: initialOnlyRequireReset
+      config:
+        APP_NAME: Forgejo
+        server:
+          SSH_LISTEN_PORT: 2222
+          SSH_PORT: 30022
+        service:
+          DISABLE_REGISTRATION: true
+        session:
+          COOKIE_SECURE: true
+    image:
+      rootless: true
+      tag: 15.0.2-rootless
+    ingress:
+      enabled: false
+    persistence:
+      annotations:
+        helm.sh/resource-policy: keep
+      claimName: gitea-shared-storage
+      create: true
+      enabled: true
+      mount: true
+      size: 20Gi
+      storageClass: local-path
+    service:
+      http:
+        port: 3000
+        type: ClusterIP
+      ssh:
+        nodePort: 30022
+        port: 22
+        type: NodePort
+    test:
+      enabled: false

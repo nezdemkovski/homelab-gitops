@@ -1,0 +1,250 @@
+onepassword:
+  mcpItem: grafana-mcp
+  nezdemosReaderItem: nezdemos-grafana-reader
+  plausibleItem: plausible
+
+kube-prometheus-stack:
+  nameOverride: prometheus
+  fullnameOverride: prometheus
+  grafana:
+    enabled: false
+  alertmanager:
+    enabled: false
+  kubeEtcd:
+    enabled: false
+  kubeControllerManager:
+    enabled: false
+  kubeScheduler:
+    enabled: false
+  kubeProxy:
+    enabled: false
+  defaultRules:
+    create: true
+    rules:
+      alertmanager: false
+      etcd: false
+      kubeControllerManager: false
+      kubeProxy: false
+      kubeSchedulerAlerting: false
+      kubeSchedulerRecording: false
+  prometheusOperator:
+    tls:
+      enabled: false
+    admissionWebhooks:
+      enabled: false
+    resources:
+      requests:
+        cpu: 25m
+        memory: 96Mi
+      limits:
+        memory: 256Mi
+  prometheus:
+    prometheusSpec:
+      retention: 14d
+      retentionSize: 8GiB
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 2000
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+        - name: fix-storage-permissions
+          image: busybox:1.38.0
+          command:
+            - sh
+            - -c
+            - chown -R 1000:2000 /prometheus
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: prometheus-prometheus-prometheus-db
+              mountPath: /prometheus
+              subPath: prometheus-db
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          memory: 1536Mi
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: local-path
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
+  kube-state-metrics:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 128Mi
+  prometheus-node-exporter:
+    resources:
+      requests:
+        cpu: 25m
+        memory: 32Mi
+      limits:
+        memory: 128Mi
+
+grafana:
+  fullnameOverride: grafana
+  deploymentStrategy:
+    type: Recreate
+  initChownData:
+    enabled: false
+  envFromSecret: grafana-datasources
+  grafana.ini:
+    server:
+      domain: grafana.nezdemkovski.cloud
+      root_url: https://grafana.nezdemkovski.cloud
+    plugins:
+      preinstall_disabled: false
+      preinstall_auto_update: false
+      disable_plugins: grafana-exploretraces-app,grafana-lokiexplore-app,grafana-metricsdrilldown-app,grafana-pyroscope-app
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: false
+  persistence:
+    enabled: true
+    storageClassName: local-path
+    size: 5Gi
+  plugins:
+    - grafana-clickhouse-datasource@4.17.0
+  resources:
+    requests:
+      cpu: 50m
+      memory: 384Mi
+    limits:
+      memory: 1536Mi
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          uid: prometheus
+          type: prometheus
+          access: proxy
+          url: http://prometheus-prometheus:9090
+          isDefault: true
+          editable: false
+        - name: NezdemOS Postgres
+          uid: nezdemos-postgres
+          type: grafana-postgresql-datasource
+          access: proxy
+          url: nezdemos-postgres-rw.nezdemos.svc.cluster.local:5432
+          database: nezdemos
+          user: grafana_reader
+          editable: false
+          jsonData:
+            sslmode: disable
+            postgresVersion: 1700
+            timescaledb: false
+          secureJsonData:
+            password: $NEZDEMOS_POSTGRES_PASSWORD
+        - name: Plausible ClickHouse
+          uid: plausible-clickhouse
+          type: grafana-clickhouse-datasource
+          access: proxy
+          editable: false
+          jsonData:
+            host: plausible-clickhouse.plausible.svc.cluster.local
+            port: 8123
+            protocol: http
+            username: grafana_reader
+            defaultDatabase: plausible_events_db
+            validateSql: true
+            enableRowLimit: true
+          secureJsonData:
+            password: $PLAUSIBLE_CLICKHOUSE_PASSWORD
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: whoop
+          orgId: 1
+          folder: WHOOP
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/whoop
+        - name: cluster
+          orgId: 1
+          folder: Cluster
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/cluster
+        - name: analytics
+          orgId: 1
+          folder: Analytics
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/analytics
+  extraConfigmapMounts:
+    - name: whoop-dashboard
+      mountPath: /var/lib/grafana/dashboards/whoop/whoop-overview.json
+      subPath: whoop-overview.json
+      configMap: grafana-dashboard-whoop
+      readOnly: true
+    - name: whoop-daily-context-dashboard
+      mountPath: /var/lib/grafana/dashboards/whoop/whoop-daily-context.json
+      subPath: whoop-daily-context.json
+      configMap: grafana-dashboard-whoop
+      readOnly: true
+    - name: cluster-overview-dashboard
+      mountPath: /var/lib/grafana/dashboards/cluster/cluster-overview.json
+      subPath: cluster-overview.json
+      configMap: grafana-dashboard-cluster
+      readOnly: true
+    - name: cluster-diagnostics-dashboard
+      mountPath: /var/lib/grafana/dashboards/cluster/cluster-diagnostics.json
+      subPath: cluster-diagnostics.json
+      configMap: grafana-dashboard-cluster
+      readOnly: true
+    - name: plausible-analytics-dashboard
+      mountPath: /var/lib/grafana/dashboards/analytics/plausible-analytics.json
+      subPath: plausible-analytics.json
+      configMap: grafana-dashboard-analytics
+      readOnly: true
+
+grafana-mcp:
+  fullnameOverride: grafana-mcp
+  image:
+    registry: docker.io
+    repository: grafana/mcp-grafana
+    tag: "1.5.1"
+  grafana:
+    url: http://grafana.monitoring.svc.cluster.local:80
+    apiKeySecret:
+      name: grafana-mcp-token
+      key: token
+  disableWrite: false
+  service:
+    type: NodePort
+    port: 8000
+    nodePort: 30800
+  ingress:
+    enabled: false
+  route:
+    main:
+      enabled: false
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 256Mi

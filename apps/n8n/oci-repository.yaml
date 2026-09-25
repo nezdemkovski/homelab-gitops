@@ -1,0 +1,15 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: n8n
+  namespace: n8n
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    tag: 1.13.0
+  url: oci://ghcr.io/n8n-io/n8n-helm-chart/n8n

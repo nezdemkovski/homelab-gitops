@@ -1,0 +1,22 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: amela-application
+  namespace: amela
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: amela-application
+  interval: 1h0m0s
+  releaseName: amela-application
+  storageNamespace: amela
+  targetNamespace: amela
+  values:
+    fullnameOverride: amela-application
+    image:
+      digest: sha256:3edd21b602ea9b6d53cc37b851b84e9186c5f0b203e6f16a04c2551017d4ac25
+      repository: ghcr.io/amela-io/application
+      tag: 0.1.15
+    imagePullSecrets:
+    - name: amela-ghcr

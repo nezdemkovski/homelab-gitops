@@ -1,0 +1,326 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "nezdemos-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Recovery"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 50
+                    },
+                    {
+                      "color": "green",
+                      "value": 67
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Strain"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 10
+                    },
+                    {
+                      "color": "red",
+                      "value": 14
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "HRV RMSSD"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Resting HR"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bpm"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sleep Hours"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "h"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 6
+                    },
+                    {
+                      "color": "green",
+                      "value": 7
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sleep Performance"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sleep Efficiency"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Workout Strain"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flags"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 240
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "nezdemos-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH cycle_days AS (\n  SELECT c.start_time::date AS day,\n         AVG(c.score_strain)::float8 AS strain,\n         AVG(c.score_average_heart_rate)::float8 AS avg_hr,\n         MAX(c.score_max_heart_rate) AS max_hr\n  FROM whoop.whoop_cycle c\n  WHERE $__timeFilter(c.start_time)\n  GROUP BY 1\n),\nrecovery_days AS (\n  SELECT c.start_time::date AS day,\n         AVG(r.score_recovery_score)::float8 AS recovery,\n         AVG(r.score_hrv_rmssd_milli)::float8 AS hrv,\n         AVG(r.score_resting_heart_rate)::float8 AS resting_hr\n  FROM whoop.whoop_recovery r\n  JOIN whoop.whoop_cycle c ON c.id = r.cycle_id\n  WHERE $__timeFilter(c.start_time)\n  GROUP BY 1\n),\nsleep_days AS (\n  SELECT COALESCE(s.end_time, s.start_time)::date AS day,\n         SUM(s.score_stage_summary_total_in_bed_time_milli)::float8 / 1000 / 60 / 60 AS sleep_hours,\n         AVG(s.score_sleep_performance_percentage)::float8 AS sleep_performance,\n         AVG(s.score_sleep_efficiency_percentage)::float8 AS sleep_efficiency\n  FROM whoop.whoop_sleep s\n  WHERE NOT COALESCE(s.nap, false)\n    AND $__timeFilter(COALESCE(s.end_time, s.start_time))\n  GROUP BY 1\n),\nworkout_days AS (\n  SELECT w.start_time::date AS day,\n         COUNT(*)::int AS workout_count,\n         SUM(w.score_strain)::float8 AS workout_strain\n  FROM whoop.whoop_workout w\n  WHERE $__timeFilter(w.start_time)\n  GROUP BY 1\n),\ndaily AS (\n  SELECT cd.day,\n         rd.recovery,\n         cd.strain,\n         rd.hrv,\n         rd.resting_hr,\n         sd.sleep_hours,\n         sd.sleep_performance,\n         sd.sleep_efficiency,\n         COALESCE(wd.workout_count, 0) AS workout_count,\n         wd.workout_strain\n  FROM cycle_days cd\n  LEFT JOIN recovery_days rd USING (day)\n  LEFT JOIN sleep_days sd USING (day)\n  LEFT JOIN workout_days wd USING (day)\n),\nenriched AS (\n  SELECT daily.*,\n         AVG(resting_hr) FILTER (WHERE resting_hr IS NOT NULL) OVER () AS avg_resting_hr\n  FROM daily\n)\nSELECT day AS \"Day\",\n       ROUND(recovery::numeric, 1) AS \"Recovery\",\n       ROUND(strain::numeric, 1) AS \"Strain\",\n       ROUND(hrv::numeric, 1) AS \"HRV RMSSD\",\n       ROUND(resting_hr::numeric, 0) AS \"Resting HR\",\n       ROUND(sleep_hours::numeric, 1) AS \"Sleep Hours\",\n       ROUND(sleep_performance::numeric, 0) AS \"Sleep Performance\",\n       ROUND(sleep_efficiency::numeric, 0) AS \"Sleep Efficiency\",\n       workout_count AS \"Workouts\",\n       ROUND(workout_strain::numeric, 1) AS \"Workout Strain\",\n       CONCAT_WS(', ',\n         CASE WHEN recovery < 40 THEN 'low recovery' END,\n         CASE WHEN sleep_hours < 6 THEN 'low sleep' END,\n         CASE WHEN strain >= 14 THEN 'high strain' END,\n         CASE WHEN resting_hr > avg_resting_hr + 5 THEN 'high resting HR' END,\n         CASE WHEN workout_count > 0 THEN 'workout day' END\n       ) AS \"Flags\"\nFROM enriched\nORDER BY day DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Daily Context",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [
+    "whoop",
+    "nezdemos",
+    "health"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "WHOOP Daily Context",
+  "uid": "whoop-daily-context",
+  "version": 1,
+  "weekStart": ""
+}

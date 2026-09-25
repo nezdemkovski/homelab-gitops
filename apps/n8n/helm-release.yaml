@@ -1,0 +1,90 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: n8n
+  namespace: n8n
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: n8n
+    namespace: n8n
+  interval: 1h0m0s
+  timeout: 10m0s
+  install:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m0s
+  upgrade:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m0s
+  driftDetection:
+    mode: enabled
+  releaseName: n8n
+  storageNamespace: n8n
+  targetNamespace: n8n
+  values:
+    config:
+      extraEnv:
+      - name: GENERIC_TIMEZONE
+        value: Europe/Prague
+      - name: NODE_ENV
+        value: production
+      - name: N8N_PROXY_HOPS
+        value: "1"
+      - name: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+        value: "true"
+      - name: N8N_SECURE_COOKIE
+        value: "true"
+      - name: WEBHOOK_URL
+        valueFrom:
+          secretKeyRef:
+            key: WEBHOOK_URL
+            name: n8n-env
+      - name: N8N_EDITOR_BASE_URL
+        valueFrom:
+          secretKeyRef:
+            key: N8N_EDITOR_BASE_URL
+            name: n8n-env
+      timezone: Europe/Prague
+    database:
+      database: n8n
+      host: n8n-postgres-cnpg-rw.n8n.svc.cluster.local
+      passwordSecret:
+        key: DB_POSTGRESDB_PASSWORD
+        name: n8n-env
+      port: 5432
+      schema: public
+      type: postgresdb
+      useExternal: true
+      user: n8n
+    image:
+      repository: docker.n8n.io/n8nio/n8n
+      tag: 2.41.2
+    ingress:
+      enabled: false
+    persistence:
+      enabled: true
+      existingClaim: n8n
+      size: 5Gi
+      storageClassName: local-path
+    queueMode:
+      enabled: false
+    redis:
+      enabled: false
+    secretRefs:
+      existingSecret: n8n-env
+    service:
+      port: 5678
+      type: ClusterIP
+    taskRunners:
+      authToken:
+        existingSecret: n8n-env
+        existingSecretKey: N8N_RUNNERS_AUTH_TOKEN
+      enabled: true
+      image:
+        repository: n8nio/runners
+        tag: 2.41.2

@@ -1,0 +1,17 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: haymaker
+  namespace: haymaker
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    tag: 0.3.0
+  secretRef:
+    name: haymaker-ghcr
+  url: oci://ghcr.io/nezdemkovski/charts/haymaker

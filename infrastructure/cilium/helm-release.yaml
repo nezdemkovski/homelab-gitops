@@ -1,0 +1,85 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cilium
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: cilium
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+      version: 1.20.2
+  driftDetection:
+    ignore:
+    - paths:
+      - /data
+      target:
+        kind: Secret
+        name: cilium-ca
+        namespace: kube-system
+    - paths:
+      - /data
+      target:
+        kind: Secret
+        name: hubble-relay-client-certs
+        namespace: kube-system
+    - paths:
+      - /data
+      target:
+        kind: Secret
+        name: hubble-server-certs
+        namespace: kube-system
+    mode: enabled
+  install:
+    crds: CreateReplace
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+  interval: 1h0m0s
+  releaseName: cilium
+  storageNamespace: kube-system
+  targetNamespace: kube-system
+  timeout: 15m0s
+  upgrade:
+    crds: CreateReplace
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+  values:
+    cgroup:
+      autoMount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
+    hubble:
+      enabled: true
+      relay:
+        enabled: true
+      ui:
+        enabled: true
+    ipam:
+      mode: kubernetes
+    kubeProxyReplacement: false
+    operator:
+      replicas: 1
+    securityContext:
+      capabilities:
+        ciliumAgent:
+        - CHOWN
+        - KILL
+        - NET_ADMIN
+        - NET_RAW
+        - IPC_LOCK
+        - SYS_ADMIN
+        - SYS_RESOURCE
+        - DAC_OVERRIDE
+        - FOWNER
+        - SETGID
+        - SETUID
+        cleanCiliumState:
+        - NET_ADMIN
+        - SYS_ADMIN
+        - SYS_RESOURCE

@@ -1,0 +1,15 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: openmarkers
+  namespace: openmarkers
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    tag: 0.1.19
+  url: oci://ghcr.io/nezdemkovski/charts/openmarkers

@@ -1,0 +1,17 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: amela-backend
+  namespace: amela
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    tag: 0.1.12
+  secretRef:
+    name: amela-ghcr
+  url: oci://ghcr.io/amela-io/charts/amela-backend
