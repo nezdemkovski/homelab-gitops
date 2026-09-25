@@ -1,0 +1,164 @@
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: homelab-kube-apiserver-egress
+spec:
+  description: Allow workload namespaces to reach the Kubernetes API.
+  endpointSelector:
+    matchExpressions:
+      - key: io.kubernetes.pod.namespace
+        operator: In
+        values:
+          - amela
+          - auth
+          - cloudflared
+          - forgejo
+          - haymaker
+          - homarr
+          - monitoring
+          - n8n
+          - openmarkers
+          - paperclip
+          - plausible
+          - uptime-kuma
+  egress:
+    - toEntities:
+        - kube-apiserver
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: homelab-cloudflared-ingress
+spec:
+  description: Allow the tunnel to reach active public workloads.
+  endpointSelector:
+    matchExpressions:
+      - key: io.kubernetes.pod.namespace
+        operator: In
+        values:
+          - amela
+          - auth
+          - forgejo
+          - haymaker
+          - homarr
+          - monitoring
+          - n8n
+          - openmarkers
+          - plausible
+          - uptime-kuma
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: cloudflared
+            k8s:app.kubernetes.io/name: cloudflared
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: homelab-cnpg-backup-egress
+spec:
+  description: Allow CloudNativePG clusters to write object-store backups.
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/managed-by: cloudnative-pg
+    matchExpressions:
+      - key: io.kubernetes.pod.namespace
+        operator: In
+        values:
+          - amela
+          - auth
+          - haymaker
+          - n8n
+          - openmarkers
+          - paperclip
+  egress:
+    - toCIDR:
+        - 10.77.77.190/32
+      toPorts:
+        - ports:
+            - port: "9000"
+              protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: homelab-cnpg-operator-ingress
+spec:
+  description: Allow the CloudNativePG operator to manage database pods.
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+    matchExpressions:
+      - key: io.kubernetes.pod.namespace
+        operator: In
+        values:
+          - amela
+          - auth
+          - haymaker
+          - n8n
+          - openmarkers
+          - paperclip
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: cnpg-system
+            k8s:app.kubernetes.io/name: cloudnative-pg
+      toPorts:
+        - ports:
+            - port: "8000"
+              protocol: TCP
+            - port: "9187"
+              protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: homelab-grafana-postgres-ingress
+spec:
+  description: Allow Grafana to query selected PostgreSQL databases.
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+    matchExpressions:
+      - key: io.kubernetes.pod.namespace
+        operator: In
+        values:
+          - auth
+          - n8n
+          - openmarkers
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: monitoring
+            k8s:app.kubernetes.io/name: grafana
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: homelab-prometheus-cnpg-metrics-ingress
+spec:
+  description: Allow Prometheus to scrape selected CloudNativePG clusters.
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/managed-by: cloudnative-pg
+      app.kubernetes.io/name: postgresql
+    matchExpressions:
+      - key: io.kubernetes.pod.namespace
+        operator: In
+        values:
+          - auth
+          - n8n
+          - openmarkers
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: monitoring
+            k8s:app.kubernetes.io/name: prometheus
+      toPorts:
+        - ports:
+            - port: "9187"
+              protocol: TCP
