@@ -31,6 +31,6 @@ spec:
   values:
     postgres:
       backup:
-        suspend: true
+        suspend: false
       hibernated: false
-    replicaCount: 0
+    replicaCount: 1

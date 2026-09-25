@@ -1,9 +1,8 @@
 # Paperclip
 
-Flux adopts the existing `paperclip` namespace and its data in place. The
-initial HelmRelease deliberately preserves the stopped state: the application
-has zero replicas, the CloudNativePG cluster remains hibernated, and scheduled
-backups remain suspended.
+Flux runs Paperclip in the existing `paperclip` namespace with its original
+data. The HelmRelease runs one application replica and a CloudNativePG instance.
+Scheduled object-store backups are enabled.
 
 Persistent state remains on the existing claims:
 
@@ -15,7 +14,6 @@ Cluster carries Helm's `keep` resource policy so removing the HelmRelease does
 not delete the database cluster. The `local-path` StorageClass also retains the
 underlying volumes.
 
-Before enabling Paperclip, resume PostgreSQL while the application stays at
-zero replicas, verify the database, and complete a fresh object-store backup.
-Only then set `replicaCount` to `1`, `postgres.hibernated` to `false`, and
-`postgres.backup.suspend` to `false` in the HelmRelease.
+The database was resumed before the application and a fresh object-store backup
+completed on 2026-09-25. Its public endpoint is
+`https://paperclip.nezdemkovski.cloud`.
