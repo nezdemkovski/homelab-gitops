@@ -4,6 +4,8 @@ metadata:
   name: n8n-postgres-cnpg
   namespace: n8n
   annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
     argocd.argoproj.io/sync-wave: "3"
 spec:
   instances: 1
