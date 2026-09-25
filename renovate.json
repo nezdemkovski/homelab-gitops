@@ -41,6 +41,18 @@
     },
     {
       "customType": "regex",
+      "description": "Track the Argo CD bootstrap release",
+      "fileMatch": [
+        "^README\\.md$"
+      ],
+      "matchStrings": [
+        "argoproj/argo-cd/(?<currentValue>v?\\d+\\.\\d+\\.\\d+)/manifests/install\\.yaml"
+      ],
+      "depNameTemplate": "argoproj/argo-cd",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
       "description": "Track Paperclip app releases independently from digest-pinned images",
       "fileMatch": [
         "^charts/paperclip/values\\.ya?ml$"
@@ -249,6 +261,15 @@
       ],
       "groupName": "supabase",
       "groupSlug": "supabase",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Group Argo CD bootstrap updates",
+      "matchDepNames": [
+        "argoproj/argo-cd"
+      ],
+      "groupName": "argo cd bootstrap",
+      "groupSlug": "argo-cd-bootstrap",
       "separateMajorMinor": false
     },
     {
