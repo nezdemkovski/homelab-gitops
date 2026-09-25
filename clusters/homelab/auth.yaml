@@ -5,7 +5,6 @@ metadata:
   name: auth
   namespace: flux-system
 spec:
-  deletionPolicy: Orphan
   dependsOn:
   - name: auth-infra
   interval: 10m0s

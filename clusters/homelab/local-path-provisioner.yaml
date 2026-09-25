@@ -5,7 +5,6 @@ metadata:
   name: local-path-provisioner
   namespace: flux-system
 spec:
-  deletionPolicy: Orphan
   interval: 10m0s
   path: ./infrastructure/local-path-provisioner
   prune: true

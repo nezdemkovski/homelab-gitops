@@ -5,7 +5,6 @@ metadata:
   name: supabase
   namespace: flux-system
 spec:
-  deletionPolicy: Orphan
   dependsOn:
   - name: onepassword-store
   interval: 10m0s

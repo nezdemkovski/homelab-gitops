@@ -5,7 +5,6 @@ metadata:
   name: plausible
   namespace: flux-system
 spec:
-  deletionPolicy: Orphan
   interval: 10m0s
   path: ./apps/plausible/release
   prune: true

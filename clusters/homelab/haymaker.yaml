@@ -5,7 +5,6 @@ metadata:
   name: haymaker
   namespace: flux-system
 spec:
-  deletionPolicy: Orphan
   interval: 10m0s
   path: ./apps/haymaker
   prune: true

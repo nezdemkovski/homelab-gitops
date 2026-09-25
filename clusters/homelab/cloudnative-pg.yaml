@@ -5,7 +5,6 @@ metadata:
   name: cloudnative-pg
   namespace: flux-system
 spec:
-  deletionPolicy: Orphan
   dependsOn:
   - name: local-path-provisioner
   interval: 10m0s
