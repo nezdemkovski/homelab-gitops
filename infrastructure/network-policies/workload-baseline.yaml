@@ -210,50 +210,6 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: homelab-argocd-egress
-  namespace: argocd
-spec:
-  podSelector: {}
-  policyTypes:
-    - Egress
-  egress:
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
-        - protocol: UDP
-          port: 53
-        - protocol: TCP
-          port: 53
-    - to:
-        - podSelector: {}
-    - to:
-        - ipBlock:
-            cidr: 10.96.0.1/32
-      ports:
-        - protocol: TCP
-          port: 443
-    - to:
-        - ipBlock:
-            cidr: 10.77.77.44/32
-      ports:
-        - protocol: TCP
-          port: 6443
-    - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
-            except:
-              - 10.0.0.0/8
-              - 172.16.0.0/12
-              - 192.168.0.0/16
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
   name: homelab-workload-egress
   namespace: forgejo
 spec:
@@ -722,7 +678,6 @@ spec:
                 operator: In
                 values:
                   - amela
-                  - argocd
                   - auth
                   - forgejo
                   - haymaker
@@ -880,26 +835,6 @@ metadata:
   namespace: amela
 spec:
   podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: cloudflared
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: cloudflared
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-cloudflared-ingress
-  namespace: argocd
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-server
   policyTypes:
     - Ingress
   ingress:
@@ -1189,44 +1124,6 @@ spec:
       ports:
         - protocol: TCP
           port: 8123
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-prometheus-argocd-metrics-ingress
-  namespace: argocd
-spec:
-  podSelector:
-    matchExpressions:
-      - key: app.kubernetes.io/name
-        operator: In
-        values:
-          - argocd-application-controller
-          - argocd-applicationset-controller
-          - argocd-notifications-controller
-          - argocd-repo-server
-          - argocd-server
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: monitoring
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: prometheus
-      ports:
-        - protocol: TCP
-          port: 8080
-        - protocol: TCP
-          port: 8082
-        - protocol: TCP
-          port: 8083
-        - protocol: TCP
-          port: 8084
-        - protocol: TCP
-          port: 9001
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy

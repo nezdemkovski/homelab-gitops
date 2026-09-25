@@ -4,7 +4,6 @@ metadata:
   name: haymaker-postgres
   namespace: haymaker
   annotations:
-    argocd.argoproj.io/sync-options: Prune=false
     kustomize.toolkit.fluxcd.io/prune: disabled
 spec:
   instances: 1
