@@ -3,16 +3,16 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: homarr
-  namespace: homarr-flux
+  namespace: homarr
 spec:
   chartRef:
     kind: OCIRepository
     name: homarr
-    namespace: homarr-flux
+    namespace: homarr
   interval: 1h0m0s
   releaseName: homarr
-  storageNamespace: homarr-flux
-  targetNamespace: homarr-flux
+  storageNamespace: homarr
+  targetNamespace: homarr
   values:
     env:
       TZ: Europe/Prague
