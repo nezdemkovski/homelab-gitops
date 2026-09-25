@@ -1,0 +1,23 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: amela-backend
+  namespace: amela
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: amela-backend
+  interval: 1h0m0s
+  releaseName: amela-backend
+  storageNamespace: amela
+  targetNamespace: amela
+  values:
+    envSecretName: amela-backend-env
+    fullnameOverride: amela-backend
+    image:
+      digest: sha256:ac7aced330b1570b7b088ce07b35fe747f5d2fa5d8ec2ff9623430afbad0229c
+      repository: ghcr.io/amela-io/backend
+      tag: 0.1.12
+    imagePullSecrets:
+    - name: amela-ghcr
