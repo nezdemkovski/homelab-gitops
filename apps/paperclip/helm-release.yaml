@@ -1,0 +1,38 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: paperclip
+  namespace: paperclip
+spec:
+  chart:
+    spec:
+      chart: ./charts/paperclip
+      reconcileStrategy: Revision
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+  interval: 1h0m0s
+  timeout: 10m0s
+  install:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m0s
+  upgrade:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m0s
+  driftDetection:
+    mode: enabled
+  releaseName: paperclip
+  storageNamespace: paperclip
+  targetNamespace: paperclip
+  values:
+    postgres:
+      backup:
+        suspend: true
+      hibernated: true
+    replicaCount: 0
