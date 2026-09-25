@@ -1,0 +1,70 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: auth
+  namespace: auth
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: auth
+    namespace: auth
+  interval: 1h0m0s
+  install:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  releaseName: auth
+  storageNamespace: auth
+  targetNamespace: auth
+  timeout: 10m
+  upgrade:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  values:
+    admin:
+      image:
+        digest: sha256:6ae7e27242764e358cc6d54babe3bc63486e6c6bda52fe36218e180023c800ba
+        tag: v0.1.100
+    api:
+      image:
+        digest: sha256:3bce8532e600902f960e5816cbdb69c34571910535ed1185538742c99927e319
+        tag: v0.1.100
+    env:
+      adminEmail: yuri@nezdemkovski.com
+      autoMigrate: "false"
+      postgresDb: auth
+      postgresHost: auth-postgres-rw.auth.svc.cluster.local
+      postgresPort: "5432"
+      publicBaseUrl: https://auth.nezdemkovski.cloud
+      redisUrlSecret:
+        key: REDIS_URL
+        name: auth-redis
+      trustProxyHeaders: "true"
+    login:
+      image:
+        digest: sha256:39f4841044ec1bf4ef427e5fd1cde1630c48c219a4c1955e1eb598ae4be5100e
+        tag: v0.1.100
+    objectStorage:
+      bucket: auth-public
+      enabled: true
+      region: us-east-1
+      storage:
+        size: 5Gi
+        storageClass: local-path
+    onepassword:
+      appItem: auth
+      redisItem: auth-redis
+      redisPasswordProperty: password
+    postgres:
+      credentialsSecret:
+        name: auth-postgres-owner
+        passwordKey: password
+        usernameKey: username
+    router:
+      image:
+        digest: sha256:237d1d5aa86a10faafcfd6883c441122c0c9ab1d98b93a11c40fc55c071a2439
+        tag: v0.1.100
