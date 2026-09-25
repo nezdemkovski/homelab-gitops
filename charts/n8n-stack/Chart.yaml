@@ -1,9 +1,0 @@
-apiVersion: v2
-name: n8n-stack
-description: n8n with its PostgreSQL backing store
-type: application
-version: 0.1.0
-dependencies:
-  - name: n8n
-    version: 1.13.0
-    repository: oci://ghcr.io/n8n-io/n8n-helm-chart
