@@ -3,6 +3,9 @@ kind: ScheduledBackup
 metadata:
   name: amela-postgres-daily-backup
   namespace: amela
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
   schedule: "0 20 3 * * *"
   backupOwnerReference: self
