@@ -11,7 +11,7 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-09-25-add-homarr-flux-1"
+configRevision: "2026-09-25-remove-homarr-flux-1"
 
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
@@ -28,8 +28,6 @@ tunnel:
       service: http://n8n-main.n8n.svc.cluster.local:5678
     - hostname: nezdemkovski.cloud
       service: http://homarr.homarr.svc.cluster.local:7575
-    - hostname: homarr-flux.nezdemkovski.cloud
-      service: http://homarr-flux.homarr-flux.svc.cluster.local:7575
     - hostname: git.nezdemkovski.cloud
       service: http://forgejo-http.forgejo.svc.cluster.local:3000
     - hostname: analytics.nezdemkovski.cloud
