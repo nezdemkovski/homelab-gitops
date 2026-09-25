@@ -5,3 +5,4 @@ resources:
   - external-secret.yaml
   - oci-repository.yaml
   - helm-release.yaml
+  - image-automation.yaml

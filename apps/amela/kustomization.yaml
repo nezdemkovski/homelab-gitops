@@ -12,3 +12,4 @@ resources:
   - oci-repository-application.yaml
   - helm-release-backend.yaml
   - helm-release-application.yaml
+  - image-automation.yaml

@@ -1,0 +1,92 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: auth-admin
+  namespace: auth
+spec:
+  image: ghcr.io/nezdemkovski/auth-admin
+  interval: 15m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-admin
+  namespace: auth
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: auth-admin
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.100 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: auth-api
+  namespace: auth
+spec:
+  image: ghcr.io/nezdemkovski/auth-api
+  interval: 15m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-api
+  namespace: auth
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: auth-api
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.100 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: auth-login
+  namespace: auth
+spec:
+  image: ghcr.io/nezdemkovski/auth-login
+  interval: 15m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-login
+  namespace: auth
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: auth-login
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.100 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: auth-router
+  namespace: auth
+spec:
+  image: ghcr.io/nezdemkovski/auth-router
+  interval: 15m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-router
+  namespace: auth
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: auth-router
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.100 <0.2.0'

@@ -10,3 +10,4 @@ resources:
   - cnpg-scheduled-backup.yaml
   - oci-repository.yaml
   - helm-release.yaml
+  - image-automation.yaml

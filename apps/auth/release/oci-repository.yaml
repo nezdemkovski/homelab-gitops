@@ -11,5 +11,5 @@ spec:
     operation: copy
   provider: generic
   ref:
-    tag: 0.2.49
+    semver: '>=0.2.49 <0.3.0'
   url: oci://ghcr.io/nezdemkovski/charts/auth

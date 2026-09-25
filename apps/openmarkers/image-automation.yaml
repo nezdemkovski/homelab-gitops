@@ -1,0 +1,21 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: openmarkers
+  namespace: openmarkers
+spec:
+  image: ghcr.io/nezdemkovski/openmarkers
+  interval: 15m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: openmarkers
+  namespace: openmarkers
+spec:
+  imageRepositoryRef:
+    name: openmarkers
+  policy:
+    semver:
+      range: '>=1.0.19 <2.0.0'

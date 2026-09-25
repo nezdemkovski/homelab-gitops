@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: cloudflare/cloudflared
-  tag: "2026.9.3"
+  tag: "2026.9.3" # {"$imagepolicy": "cloudflared:cloudflared:tag"}
   pullPolicy: IfNotPresent
 
 logLevel: info

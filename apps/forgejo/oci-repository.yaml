@@ -11,5 +11,5 @@ spec:
     operation: copy
   provider: generic
   ref:
-    tag: 17.1.7
+    semver: '>=17.1.7 <18.0.0'
   url: oci://codeberg.org/forgejo-contrib/forgejo
