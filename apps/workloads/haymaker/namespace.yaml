@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: haymaker
-  labels:
-    app.kubernetes.io/part-of: haymaker
