@@ -1,0 +1,44 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: onepassword-connect
+  namespace: external-secrets
+spec:
+  chart:
+    spec:
+      chart: connect
+      interval: 1h0m0s
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: onepassword-connect
+      version: 2.4.1
+  interval: 1h0m0s
+  install:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  releaseName: onepassword-connect
+  storageNamespace: external-secrets
+  targetNamespace: external-secrets
+  timeout: 5m
+  upgrade:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  values:
+    acceptanceTests:
+      enabled: false
+    connect:
+      api:
+        logLevel: info
+      create: true
+      credentialsName: op-credentials
+      serviceType: ClusterIP
+      sync:
+        logLevel: info
+    operator:
+      create: false
