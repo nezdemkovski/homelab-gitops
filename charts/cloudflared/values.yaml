@@ -32,8 +32,6 @@ tunnel:
       service: http://forgejo-http.forgejo.svc.cluster.local:3000
     - hostname: analytics.nezdemkovski.cloud
       service: http://plausible.plausible.svc.cluster.local:80
-    - hostname: budget.nezdemkovski.cloud
-      service: http://actual-budget.actual-budget.svc.cluster.local:80
     - hostname: auth.nezdemkovski.cloud
       service: http://auth.auth.svc.cluster.local:80
     - hostname: supabase.nezdemkovski.cloud
@@ -42,10 +40,6 @@ tunnel:
       service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
     - hostname: grafana.nezdemkovski.cloud
       service: http://grafana.monitoring.svc.cluster.local:80
-    - hostname: fnpc.nezdemkovski.cloud
-      service: http://fnpc.fnpc.svc.cluster.local:80
-    - hostname: nezdemos-api.nezdemkovski.cloud
-      service: http://nezdemos-api.nezdemos.svc.cluster.local:80
     - hostname: openmarkers.app
       service: http://openmarkers.openmarkers.svc.cluster.local:80
     - hostname: haymaker.lol

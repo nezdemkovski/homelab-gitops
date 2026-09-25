@@ -26,8 +26,6 @@ spec:
   destinations:
     - namespace: amela
       server: https://kubernetes.default.svc
-    - namespace: actual-budget
-      server: https://kubernetes.default.svc
     - namespace: auth
       server: https://kubernetes.default.svc
     - namespace: argocd
@@ -39,8 +37,6 @@ spec:
     - namespace: cnpg-system
       server: https://kubernetes.default.svc
     - namespace: external-secrets
-      server: https://kubernetes.default.svc
-    - namespace: fnpc
       server: https://kubernetes.default.svc
     - namespace: forgejo
       server: https://kubernetes.default.svc
@@ -55,8 +51,6 @@ spec:
     - namespace: local-path-storage
       server: https://kubernetes.default.svc
     - namespace: n8n
-      server: https://kubernetes.default.svc
-    - namespace: nezdemos
       server: https://kubernetes.default.svc
     - namespace: openmarkers
       server: https://kubernetes.default.svc

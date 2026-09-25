@@ -2,17 +2,6 @@ apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: homelab-kube-apiserver-egress
-  namespace: actual-budget
-spec:
-  endpointSelector: {}
-  egress:
-    - toEntities:
-        - kube-apiserver
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: homelab-kube-apiserver-egress
   namespace: amela
 spec:
   endpointSelector: {}
@@ -68,17 +57,6 @@ apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: homelab-kube-apiserver-egress
-  namespace: fnpc
-spec:
-  endpointSelector: {}
-  egress:
-    - toEntities:
-        - kube-apiserver
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: homelab-kube-apiserver-egress
   namespace: haymaker
 spec:
   endpointSelector: {}
@@ -113,17 +91,6 @@ kind: CiliumNetworkPolicy
 metadata:
   name: homelab-kube-apiserver-egress
   namespace: n8n
-spec:
-  endpointSelector: {}
-  egress:
-    - toEntities:
-        - kube-apiserver
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: homelab-kube-apiserver-egress
-  namespace: nezdemos
 spec:
   endpointSelector: {}
   egress:

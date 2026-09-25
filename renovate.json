@@ -77,16 +77,6 @@
     {
       "description": "Group updates by deployed homelab app boundary",
       "matchFileNames": [
-        "apps/workloads/actual-budget/**",
-        "charts/actual-budget/**"
-      ],
-      "groupName": "actual budget stack",
-      "groupSlug": "actual-budget-stack",
-      "separateMajorMinor": false
-    },
-    {
-      "description": "Group updates by deployed homelab app boundary",
-      "matchFileNames": [
         "apps/workloads/auth/**"
       ],
       "groupName": "auth stack",
@@ -131,16 +121,6 @@
       ],
       "groupName": "n8n stack",
       "groupSlug": "n8n-stack",
-      "separateMajorMinor": false
-    },
-    {
-      "description": "Group updates by deployed homelab app boundary",
-      "matchFileNames": [
-        "apps/workloads/nezdemos/**",
-        "charts/nezdemos/**"
-      ],
-      "groupName": "nezdemos stack",
-      "groupSlug": "nezdemos-stack",
       "separateMajorMinor": false
     },
     {

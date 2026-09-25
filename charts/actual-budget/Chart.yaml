@@ -1,6 +1,0 @@
-apiVersion: v2
-name: actual-budget
-description: Self-hosted Actual Budget server
-type: application
-version: 0.1.0
-appVersion: "26.6.0"

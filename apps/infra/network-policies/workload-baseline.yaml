@@ -2,17 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: homelab-default-deny
-  namespace: actual-budget
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-    - Egress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-default-deny
   namespace: amela
 spec:
   podSelector: {}
@@ -90,17 +79,6 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: homelab-default-deny
-  namespace: nezdemos
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-    - Egress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-default-deny
   namespace: openmarkers
 spec:
   podSelector: {}
@@ -140,50 +118,6 @@ spec:
   policyTypes:
     - Ingress
     - Egress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-workload-egress
-  namespace: actual-budget
-spec:
-  podSelector: {}
-  policyTypes:
-    - Egress
-  egress:
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
-        - protocol: UDP
-          port: 53
-        - protocol: TCP
-          port: 53
-    - to:
-        - ipBlock:
-            cidr: 10.96.0.1/32
-      ports:
-        - protocol: TCP
-          port: 443
-    - to:
-        - ipBlock:
-            cidr: 10.77.77.44/32
-      ports:
-        - protocol: TCP
-          port: 6443
-    - to:
-        - podSelector: {}
-    - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
-            except:
-              - 10.0.0.0/8
-              - 172.16.0.0/12
-              - 192.168.0.0/16
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -417,7 +351,6 @@ spec:
                 values:
                   - auth
                   - n8n
-                  - nezdemos
                   - openmarkers
           podSelector:
             matchLabels:
@@ -468,7 +401,6 @@ spec:
                 values:
                   - auth
                   - n8n
-                  - nezdemos
                   - openmarkers
           podSelector:
             matchLabels:
@@ -534,50 +466,6 @@ kind: NetworkPolicy
 metadata:
   name: homelab-workload-egress
   namespace: n8n
-spec:
-  podSelector: {}
-  policyTypes:
-    - Egress
-  egress:
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
-        - protocol: UDP
-          port: 53
-        - protocol: TCP
-          port: 53
-    - to:
-        - ipBlock:
-            cidr: 10.96.0.1/32
-      ports:
-        - protocol: TCP
-          port: 443
-    - to:
-        - ipBlock:
-            cidr: 10.77.77.44/32
-      ports:
-        - protocol: TCP
-          port: 6443
-    - to:
-        - podSelector: {}
-    - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
-            except:
-              - 10.0.0.0/8
-              - 172.16.0.0/12
-              - 192.168.0.0/16
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-workload-egress
-  namespace: nezdemos
 spec:
   podSelector: {}
   policyTypes:
@@ -833,17 +721,14 @@ spec:
               - key: kubernetes.io/metadata.name
                 operator: In
                 values:
-                  - actual-budget
                   - amela
                   - argocd
                   - auth
-                  - fnpc
                   - forgejo
                   - haymaker
                   - homarr
                   - monitoring
                   - n8n
-                  - nezdemos
                   - openmarkers
                   - paperclip
                   - plausible
@@ -857,19 +742,6 @@ spec:
               - 10.0.0.0/8
               - 172.16.0.0/12
               - 192.168.0.0/16
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-same-namespace-ingress
-  namespace: actual-budget
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - podSelector: {}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -953,19 +825,6 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: homelab-same-namespace-ingress
-  namespace: nezdemos
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - podSelector: {}
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-same-namespace-ingress
   namespace: openmarkers
 spec:
   podSelector: {}
@@ -1013,24 +872,6 @@ spec:
   ingress:
     - from:
         - podSelector: {}
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-cloudflared-ingress
-  namespace: actual-budget
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: cloudflared
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: cloudflared
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1164,24 +1005,6 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: homelab-cloudflared-ingress
-  namespace: nezdemos
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: cloudflared
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: cloudflared
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-cloudflared-ingress
   namespace: openmarkers
 spec:
   podSelector: {}
@@ -1278,29 +1101,6 @@ kind: NetworkPolicy
 metadata:
   name: homelab-grafana-postgres-ingress
   namespace: n8n
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: postgresql
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: monitoring
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: grafana
-      ports:
-        - protocol: TCP
-          port: 5432
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-grafana-postgres-ingress
-  namespace: nezdemos
 spec:
   podSelector:
     matchLabels:
@@ -1536,30 +1336,6 @@ kind: NetworkPolicy
 metadata:
   name: homelab-prometheus-cnpg-metrics-ingress
   namespace: n8n
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: postgresql
-      app.kubernetes.io/managed-by: cloudnative-pg
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: monitoring
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: prometheus
-      ports:
-        - protocol: TCP
-          port: 9187
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: homelab-prometheus-cnpg-metrics-ingress
-  namespace: nezdemos
 spec:
   podSelector:
     matchLabels:
