@@ -5,9 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     helm.sh/resource-policy: keep
-{{- if .Values.postgres.hibernated }}
-    cnpg.io/hibernation: "on"
-{{- end }}
+    cnpg.io/hibernation: {{ ternary "on" "off" .Values.postgres.hibernated | quote }}
 spec:
   instances: 1
   imageName: {{ .Values.postgres.imageName }}
