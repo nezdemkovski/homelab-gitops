@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: forgejo
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: homelab
   source:
@@ -64,8 +62,5 @@ spec:
     server: https://kubernetes.default.svc
     namespace: forgejo
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
