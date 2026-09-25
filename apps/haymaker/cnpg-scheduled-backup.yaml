@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: haymaker-postgres-daily-backup
+  namespace: haymaker
+spec:
+  schedule: "0 10 4 * * *"
+  backupOwnerReference: self
+  method: barmanObjectStore
+  cluster:
+    name: haymaker-postgres

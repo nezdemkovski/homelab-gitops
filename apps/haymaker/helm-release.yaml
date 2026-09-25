@@ -1,0 +1,45 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: haymaker
+  namespace: haymaker
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: haymaker
+    namespace: haymaker
+  install:
+    disableTakeOwnership: false
+    # The first release adopts resources rendered by Argo's client-side apply.
+    serverSideApply: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 1m
+  interval: 1h0m0s
+  releaseName: haymaker
+  storageNamespace: haymaker
+  targetNamespace: haymaker
+  timeout: 5m0s
+  upgrade:
+    disableTakeOwnership: false
+    # Keep Helm on the same apply mode after the ownership handoff.
+    serverSideApply: disabled
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 1m
+  values:
+    api:
+      existingSecret: haymaker-env
+      image:
+        digest: sha256:aa15114dc08dd3ff5452d3d6c02ae772500cab9314173eaa5b05a4ea69c4103d
+        repository: ghcr.io/nezdemkovski/haymaker
+        tag: 0.3.0
+    frontend:
+      image:
+        digest: sha256:abadba3bcb897da44b9a787ab2376ac3a77122db4a47e4995fb90f525a2054be
+        repository: ghcr.io/nezdemkovski/haymaker-frontend
+        tag: 0.3.0
+    fullnameOverride: haymaker
+    imagePullSecrets:
+    - name: haymaker-ghcr
