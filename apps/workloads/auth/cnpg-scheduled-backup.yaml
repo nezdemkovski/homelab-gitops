@@ -4,6 +4,8 @@ metadata:
   name: auth-postgres-daily-backup
   namespace: auth
   annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
     argocd.argoproj.io/sync-wave: "4"
 spec:
   schedule: "0 0 3 * * *"
