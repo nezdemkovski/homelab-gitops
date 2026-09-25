@@ -54,7 +54,10 @@ Pin deployed versions in Git. Flux image automation updates only fields with an
 `$imagepolicy` marker using the bounded policies in `image-policies.yaml`.
 The `*-latest` policies in `latest-image-policies.yaml` discover newer stable
 image releases across minor and major versions; they have no setters and never
-change the deployed image. An update alert reports new image selections.
+change the deployed image. `infrastructure/flux-update-discovery` contains
+watch-only HelmChart and OCIRepository sources for the latest stable chart
+versions; no HelmRelease references them. Telegram alerts report changes to
+these discovery sources.
 OCI chart sources and HelmReleases keep bounded semver ranges for compatible
 automatic upgrades. A broad chart range would install a new major immediately,
 so do not widen it without checking compatibility and a verified backup for

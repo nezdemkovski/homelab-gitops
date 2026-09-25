@@ -1,0 +1,112 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: plausible-latest-chart
+  namespace: plausible
+spec:
+  chart: plausible-analytics
+  interval: 1h0m0s
+  reconcileStrategy: ChartVersion
+  sourceRef:
+    kind: HelmRepository
+    name: plausible
+  version: '*'
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: supabase-latest-chart
+  namespace: supabase
+spec:
+  chart: supabase
+  interval: 1h0m0s
+  reconcileStrategy: ChartVersion
+  sourceRef:
+    kind: HelmRepository
+    name: supabase
+  version: '*'
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: cloudnative-pg-latest-chart
+  namespace: cnpg-system
+spec:
+  chart: cloudnative-pg
+  interval: 1h0m0s
+  reconcileStrategy: ChartVersion
+  sourceRef:
+    kind: HelmRepository
+    name: cloudnative-pg
+  version: '*'
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: local-path-provisioner-latest-chart
+  namespace: local-path-storage
+spec:
+  chart: local-path-provisioner
+  interval: 1h0m0s
+  reconcileStrategy: ChartVersion
+  sourceRef:
+    kind: HelmRepository
+    name: local-path-provisioner
+  version: '*'
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: metrics-server-latest-chart
+  namespace: kube-system
+spec:
+  chart: metrics-server
+  interval: 1h0m0s
+  reconcileStrategy: ChartVersion
+  sourceRef:
+    kind: HelmRepository
+    name: metrics-server
+  version: '*'
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: onepassword-connect-latest-chart
+  namespace: external-secrets
+spec:
+  chart: connect
+  interval: 1h0m0s
+  reconcileStrategy: ChartVersion
+  sourceRef:
+    kind: HelmRepository
+    name: onepassword-connect
+  version: '*'
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: external-secrets-latest-chart
+  namespace: external-secrets
+spec:
+  chart: external-secrets
+  interval: 1h0m0s
+  reconcileStrategy: ChartVersion
+  sourceRef:
+    kind: HelmRepository
+    name: external-secrets
+  version: '*'
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: cilium-latest-chart
+  namespace: flux-system
+spec:
+  chart: cilium
+  interval: 1h0m0s
+  reconcileStrategy: ChartVersion
+  sourceRef:
+    kind: HelmRepository
+    name: cilium
+  version: '*'

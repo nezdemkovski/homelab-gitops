@@ -1,0 +1,126 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: openmarkers-latest-chart
+  namespace: openmarkers
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    semver: '*'
+  url: oci://ghcr.io/nezdemkovski/charts/openmarkers
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: auth-latest-chart
+  namespace: auth
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    semver: '*'
+  url: oci://ghcr.io/nezdemkovski/charts/auth
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: n8n-latest-chart
+  namespace: n8n
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    semver: '*'
+  url: oci://ghcr.io/n8n-io/n8n-helm-chart/n8n
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: amela-backend-latest-chart
+  namespace: amela
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    semver: '*'
+  secretRef:
+    name: amela-ghcr
+  url: oci://ghcr.io/amela-io/charts/amela-backend
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: amela-application-latest-chart
+  namespace: amela
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    semver: '*'
+  secretRef:
+    name: amela-ghcr
+  url: oci://ghcr.io/amela-io/charts/amela-application
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: forgejo-latest-chart
+  namespace: forgejo
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    semver: '*'
+  url: oci://codeberg.org/forgejo-contrib/forgejo
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: homarr-latest-chart
+  namespace: homarr
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    semver: '*'
+  url: oci://ghcr.io/homarr-labs/charts/homarr
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: haymaker-latest-chart
+  namespace: haymaker
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    semver: '*'
+  secretRef:
+    name: haymaker-ghcr
+  url: oci://ghcr.io/nezdemkovski/charts/haymaker
