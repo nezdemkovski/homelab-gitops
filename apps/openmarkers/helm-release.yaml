@@ -1,0 +1,35 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openmarkers
+  namespace: openmarkers
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: openmarkers
+    namespace: openmarkers
+  interval: 1h0m0s
+  install:
+    strategy:
+      name: RetryOnFailure
+  releaseName: openmarkers
+  storageNamespace: openmarkers
+  targetNamespace: openmarkers
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+  driftDetection:
+    mode: enabled
+  values:
+    config:
+      authClientId: 2bxTB9FZXW8rVkXCd4N9QJU9-TbnrFh8
+      authIssuer: https://auth.nezdemkovski.cloud/api/openmarkers
+      authMcpResource: https://openmarkers.app/mcp
+    fullnameOverride: openmarkers
+    image:
+      repository: ghcr.io/nezdemkovski/openmarkers
+      tag: 1.0.19
+    secret:
+      create: false
+      name: openmarkers-env
