@@ -52,7 +52,6 @@ metadata:
   name: homarr-flux
   namespace: flux-system
 spec:
-  suspend: true
   git:
     checkout:
       ref:
