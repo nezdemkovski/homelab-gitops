@@ -1,0 +1,211 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: amela-application-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: amela-application
+    namespace: amela
+  policy:
+    semver:
+      range: '>=0.1.15'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: amela-backend-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: amela-backend
+    namespace: amela
+  policy:
+    semver:
+      range: '>=0.1.12'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-admin-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: auth-admin
+    namespace: auth
+  policy:
+    semver:
+      range: '>=0.1.100'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-api-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: auth-api
+    namespace: auth
+  policy:
+    semver:
+      range: '>=0.1.100'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-login-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: auth-login
+    namespace: auth
+  policy:
+    semver:
+      range: '>=0.1.100'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-router-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: auth-router
+    namespace: auth
+  policy:
+    semver:
+      range: '>=0.1.100'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: forgejo-latest
+  namespace: flux-system
+spec:
+  filterTags:
+    extract: $version
+    pattern: ^(?P<version>[0-9]+\.[0-9]+\.[0-9]+)-rootless$
+  imageRepositoryRef:
+    name: forgejo
+    namespace: forgejo
+  policy:
+    semver:
+      range: '>=15.0.2'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: haymaker-api-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: haymaker-api
+    namespace: haymaker
+  policy:
+    semver:
+      range: '>=0.3.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: haymaker-frontend-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: haymaker-frontend
+    namespace: haymaker
+  policy:
+    semver:
+      range: '>=0.3.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: homarr-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: homarr
+    namespace: homarr
+  policy:
+    semver:
+      range: '>=1.61.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: n8n-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: n8n
+    namespace: n8n
+  policy:
+    semver:
+      range: '>=2.41.2'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: n8n-runners-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: n8n-runners
+    namespace: n8n
+  policy:
+    semver:
+      range: '>=2.41.2'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: openmarkers-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: openmarkers
+    namespace: openmarkers
+  policy:
+    semver:
+      range: '>=1.0.19'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: plausible-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: plausible
+    namespace: plausible
+  policy:
+    semver:
+      range: '>=3.2.1'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: uptime-kuma-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: uptime-kuma
+    namespace: uptime-kuma
+  policy:
+    semver:
+      range: '>=2.5.5'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: cloudflared-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: cloudflared
+    namespace: cloudflared
+  policy:
+    semver:
+      range: '>=2026.9.3'

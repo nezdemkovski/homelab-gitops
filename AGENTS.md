@@ -50,10 +50,16 @@ application reset or backup mechanism.
 
 ## Versions and updates
 
-Pin deployed versions in Git. Flux image automation may update selected image
-fields that carry an `$imagepolicy` marker. OCI chart sources use bounded semver
-ranges so patch and compatible minor releases can reconcile automatically;
-major upgrades remain explicit Git changes.
+Pin deployed versions in Git. Flux image automation updates only fields with an
+`$imagepolicy` marker using the bounded policies in `image-policies.yaml`.
+The `*-latest` policies in `latest-image-policies.yaml` discover newer stable
+image releases across minor and major versions; they have no setters and never
+change the deployed image. An update alert reports new image selections.
+OCI chart sources and HelmReleases keep bounded semver ranges for compatible
+automatic upgrades. A broad chart range would install a new major immediately,
+so do not widen it without checking compatibility and a verified backup for
+stateful or infrastructure components. Promote a major by updating the Git
+range after the checks; Flux then reconciles the new version.
 
 Review ImagePolicy readiness after adding an automated dependency:
 
