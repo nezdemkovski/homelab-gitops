@@ -1,0 +1,86 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: homarr-flux-chart
+  namespace: flux-system
+spec:
+  image: ghcr.io/homarr-labs/charts/homarr
+  interval: 1h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: homarr-flux-chart
+  namespace: flux-system
+spec:
+  filterTags:
+    extract: $version
+    pattern: ^(?P<version>[0-9]+\.[0-9]+\.[0-9]+)$
+  imageRepositoryRef:
+    name: homarr-flux-chart
+  policy:
+    semver:
+      range: '>=8.29.2 <8.30.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: homarr-flux-app
+  namespace: flux-system
+spec:
+  image: ghcr.io/homarr-labs/homarr
+  interval: 1h0m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: homarr-flux-app
+  namespace: flux-system
+spec:
+  filterTags:
+    extract: $version
+    pattern: ^v(?P<version>[0-9]+\.[0-9]+\.[0-9]+)$
+  imageRepositoryRef:
+    name: homarr-flux-app
+  policy:
+    semver:
+      range: '>=1.77.2 <1.78.0'
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: flux-system-write
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: master
+  secretRef:
+    name: flux-system
+  url: ssh://git@github.com/nezdemkovski/homelab-gitops.git
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageUpdateAutomation
+metadata:
+  name: homarr-flux
+  namespace: flux-system
+spec:
+  git:
+    checkout:
+      ref:
+        branch: master
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+      messageTemplate: 'chore(deps): update Flux-managed Homarr versions'
+    push:
+      branch: master
+  interval: 1h0m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system-write
+  update:
+    path: ./clusters/homelab/apps/homarr-flux
+    strategy: Setters
