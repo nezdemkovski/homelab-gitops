@@ -5,6 +5,7 @@ metadata:
   name: plausible-reader
   namespace: flux-system
 spec:
+  deletionPolicy: Orphan
   dependsOn:
   - name: plausible
   interval: 10m0s
@@ -14,5 +15,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  suspend: true
   timeout: 5m0s
   wait: true
