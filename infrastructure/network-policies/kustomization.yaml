@@ -3,8 +3,5 @@ kind: Kustomization
 resources:
   - amela-rustfs-egress.yaml
   - clusterwide-common.yaml
-  - cilium-kube-apiserver-egress.yaml
-  - cnpg-backup-egress.yaml
-  - cnpg-operator-ingress.yaml
   - workload-baseline.yaml
   - workload-haymaker.yaml
