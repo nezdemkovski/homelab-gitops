@@ -4,4 +4,3 @@ resources:
   - namespace.yaml
   - pvc.yaml
   - helm-release.yaml
-  - image-automation.yaml
