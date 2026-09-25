@@ -5,6 +5,7 @@ metadata:
   name: openmarkers
   namespace: flux-system
 spec:
+  deletionPolicy: Orphan
   interval: 10m0s
   path: ./apps/openmarkers
   prune: true
