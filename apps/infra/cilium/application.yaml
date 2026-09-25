@@ -5,8 +5,6 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: homelab
   ignoreDifferences:
@@ -68,9 +66,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: kube-system
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - ServerSideApply=true
       - RespectIgnoreDifferences=true
