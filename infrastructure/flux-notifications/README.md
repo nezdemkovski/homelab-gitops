@@ -17,6 +17,13 @@ Helm charts. Local GitRepository charts are excluded because their revision
 changes after unrelated Git commits. Add new external HelmReleases to its
 event sources.
 
+`telegram-available-images` reports changes selected by the unbounded
+`*-latest` ImagePolicies. These policies are discovery only: an upstream
+version may be available even though the bounded deployment policy has not
+adopted it. Review compatibility and backups before widening a stateful or
+infrastructure range. New image discovery policies must be added to this
+alert's event sources.
+
 These alerts cover GitOps reconciliation and version changes, not general pod
 or host health. Use Prometheus/Alertmanager for runtime availability and node
 alerts.

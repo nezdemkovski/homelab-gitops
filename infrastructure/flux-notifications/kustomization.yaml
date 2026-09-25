@@ -6,3 +6,4 @@ resources:
   - alert.yaml
   - image-updates-alert.yaml
   - chart-upgrades-alert.yaml
+  - available-images-alert.yaml

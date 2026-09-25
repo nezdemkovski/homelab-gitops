@@ -1,0 +1,48 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: telegram-available-images
+  namespace: flux-system
+spec:
+  eventSeverity: info
+  eventSources:
+  - kind: ImagePolicy
+    name: amela-application-latest
+  - kind: ImagePolicy
+    name: amela-backend-latest
+  - kind: ImagePolicy
+    name: auth-admin-latest
+  - kind: ImagePolicy
+    name: auth-api-latest
+  - kind: ImagePolicy
+    name: auth-login-latest
+  - kind: ImagePolicy
+    name: auth-router-latest
+  - kind: ImagePolicy
+    name: forgejo-latest
+  - kind: ImagePolicy
+    name: haymaker-api-latest
+  - kind: ImagePolicy
+    name: haymaker-frontend-latest
+  - kind: ImagePolicy
+    name: homarr-latest
+  - kind: ImagePolicy
+    name: n8n-latest
+  - kind: ImagePolicy
+    name: n8n-runners-latest
+  - kind: ImagePolicy
+    name: openmarkers-latest
+  - kind: ImagePolicy
+    name: plausible-latest
+  - kind: ImagePolicy
+    name: uptime-kuma-latest
+  - kind: ImagePolicy
+    name: cloudflared-latest
+  providerRef:
+    name: telegram
+  inclusionList:
+  - Latest image tag
+  eventMetadata:
+    cluster: homelab
+    summary: New upstream image version available for review
