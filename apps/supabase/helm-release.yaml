@@ -1,0 +1,270 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: supabase
+  namespace: supabase
+spec:
+  chart:
+    spec:
+      chart: supabase
+      interval: 1h0m0s
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: supabase
+      version: '>=0.8.0 <0.9.0'
+  interval: 1h0m0s
+  timeout: 15m0s
+  install:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m0s
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m0s
+  driftDetection:
+    mode: enabled
+  values:
+    deployment:
+      analytics:
+        enabled: false
+      auth:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+      db:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: "2"
+            memory: 2Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+      functions:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+        strategy:
+          type: Recreate
+      imgproxy:
+        enabled: false
+      kong:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+      meta:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+      minio:
+        enabled: false
+      realtime:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+      rest:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+      storage:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+      studio:
+        automountServiceAccountToken: false
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+        strategy:
+          type: Recreate
+      vector:
+        enabled: false
+    environment:
+      auth:
+      - name: API_EXTERNAL_URL
+        value: https://supabase.nezdemkovski.cloud/auth/v1
+      - name: GOTRUE_API_HOST
+        value: 0.0.0.0
+      - name: GOTRUE_API_PORT
+        value: "9999"
+      - name: GOTRUE_SITE_URL
+        value: https://supabase.nezdemkovski.cloud
+      - name: GOTRUE_URI_ALLOW_LIST
+        value: https://supabase.nezdemkovski.cloud/**
+      - name: GOTRUE_DISABLE_SIGNUP
+        value: "false"
+      - name: GOTRUE_JWT_DEFAULT_GROUP_NAME
+        value: authenticated
+      - name: GOTRUE_JWT_ADMIN_ROLES
+        value: service_role
+      - name: GOTRUE_JWT_AUD
+        value: authenticated
+      - name: GOTRUE_JWT_EXP
+        value: "3600"
+      - name: GOTRUE_EXTERNAL_EMAIL_ENABLED
+        value: "true"
+      - name: GOTRUE_MAILER_AUTOCONFIRM
+        value: "true"
+      - name: GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED
+        value: "false"
+      - name: GOTRUE_SMTP_ADMIN_EMAIL
+        value: noreply@nezdemkovski.cloud
+      - name: GOTRUE_SMTP_HOST
+        value: localhost
+      - name: GOTRUE_SMTP_PORT
+        value: "1025"
+      - name: GOTRUE_EXTERNAL_PHONE_ENABLED
+        value: "false"
+      - name: GOTRUE_SMS_AUTOCONFIRM
+        value: "false"
+      - name: GOTRUE_SMTP_SENDER_NAME
+        value: Supabase
+      - name: GOTRUE_MAILER_URLPATHS_INVITE
+        value: /auth/v1/verify
+      - name: GOTRUE_MAILER_URLPATHS_CONFIRMATION
+        value: /auth/v1/verify
+      - name: GOTRUE_MAILER_URLPATHS_RECOVERY
+        value: /auth/v1/verify
+      - name: GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE
+        value: /auth/v1/verify
+      storage:
+      - name: REQUEST_ALLOW_X_FORWARDED_PATH
+        value: "true"
+      - name: FILE_SIZE_LIMIT
+        value: "52428800"
+      - name: FILE_STORAGE_BACKEND_PATH
+        value: /var/lib/storage
+      - name: TENANT_ID
+        value: stub
+      - name: REGION
+        value: stub
+      - name: GLOBAL_S3_BUCKET
+        value: stub
+      - name: ENABLE_IMAGE_TRANSFORMATION
+        value: "false"
+      studio:
+      - name: HOSTNAME
+        value: '::'
+      - name: STUDIO_PORT
+        value: "3000"
+      - name: DEFAULT_ORGANIZATION_NAME
+        value: Homelab
+      - name: DEFAULT_PROJECT_NAME
+        value: Supabase
+      - name: SUPABASE_PUBLIC_URL
+        value: https://supabase.nezdemkovski.cloud
+      - name: NEXT_ANALYTICS_BACKEND_PROVIDER
+        value: postgres
+    ingress:
+      enabled: false
+    persistence:
+      db:
+        size: 10Gi
+        storageClassName: local-path
+      deno:
+        size: 2Gi
+        storageClassName: local-path
+      functions:
+        size: 1Gi
+        storageClassName: local-path
+      imgproxy:
+        enabled: false
+      pgsodium:
+        size: 100Mi
+        storageClassName: local-path
+      snippets:
+        size: 1Gi
+        storageClassName: local-path
+      storage:
+        size: 10Gi
+        storageClassName: local-path
+    secret:
+      analytics:
+        secretRef: supabase-secrets
+        secretRefKey:
+          privateAccessToken: analyticsPrivateToken
+          publicAccessToken: analyticsPublicToken
+      dashboard:
+        secretRef: supabase-secrets
+        secretRefKey:
+          openAiApiKey: dashboardOpenAiApiKey
+          password: dashboardPassword
+          username: dashboardUsername
+      db:
+        secretRef: supabase-secrets
+        secretRefKey:
+          database: database
+          password: dbPassword
+          passwordEncoded: dbPasswordEncoded
+      jwt:
+        secretRef: supabase-secrets
+        secretRefKey:
+          anonKey: anonKey
+          secret: jwtSecret
+          serviceKey: serviceKey
+      meta:
+        secretRef: supabase-secrets
+        secretRefKey:
+          cryptoKey: metaCryptoKey
+      minio:
+        secretRef: supabase-secrets
+        secretRefKey:
+          password: s3AccessKey
+          user: s3KeyId
+      realtime:
+        secretRef: supabase-secrets
+        secretRefKey:
+          dbEncKey: realtimeDbEncKey
+          secretKeyBase: realtimeSecretKeyBase
+      s3:
+        secretRef: supabase-secrets
+        secretRefKey:
+          accessKey: s3AccessKey
+          keyId: s3KeyId
+      smtp:
+        secretRef: supabase-secrets
+        secretRefKey:
+          password: smtpPassword
+          username: smtpUsername

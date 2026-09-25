@@ -46,6 +46,7 @@ spec:
           - openmarkers
           - paperclip
           - plausible
+          - supabase
           - uptime-kuma
   ingress:
     - fromEndpoints:
