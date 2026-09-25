@@ -1,0 +1,104 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: plausible
+  namespace: plausible
+spec:
+  chart:
+    spec:
+      chart: plausible-analytics
+      interval: 1h0m0s
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: plausible
+      version: 0.4.2
+  interval: 1h0m0s
+  install:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  releaseName: plausible
+  storageNamespace: plausible
+  targetNamespace: plausible
+  timeout: 15m
+  upgrade:
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  values:
+    baseURL: ""
+    clickhouse:
+      auth:
+        existingSecret: plausible-env
+        existingSecretKey: CLICKHOUSE_PASSWORD
+        username: clickhouse
+      enabled: true
+      extraOverrides: |
+        <clickhouse>
+          <asynchronous_insert_log remove="1" />
+          <asynchronous_metric_log remove="1" />
+          <error_log remove="1" />
+          <metric_log remove="1" />
+          <part_log remove="1" />
+          <processors_profile_log remove="1" />
+          <query_log remove="1" />
+          <query_metric_log remove="1" />
+          <text_log remove="1" />
+          <trace_log remove="1" />
+        </clickhouse>
+      fullnameOverride: plausible-clickhouse
+      livenessProbe:
+        timeoutSeconds: 5
+      persistence:
+        enabled: true
+        size: 10Gi
+        storageClass: local-path
+      readinessProbe:
+        failureThreshold: 6
+        timeoutSeconds: 5
+      resources:
+        limits:
+          cpu: "2"
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          memory: 1Gi
+      resourcesPreset: none
+    disableRegistration: false
+    extraEnv:
+    - name: BASE_URL
+      valueFrom:
+        secretKeyRef:
+          key: BASE_URL
+          name: plausible-env
+    fullnameOverride: plausible
+    image:
+      repository: ghcr.io/plausible/community-edition
+      tag: v3.2.1
+    ingress:
+      enabled: false
+    postgresql:
+      auth:
+        database: plausible_db
+        existingSecret: plausible-env
+        secretKeys:
+          adminPasswordKey: POSTGRES_PASSWORD
+          userPasswordKey: POSTGRES_PASSWORD
+        username: postgres
+      enabled: true
+      fullnameOverride: plausible-postgresql
+      primary:
+        persistence:
+          enabled: true
+          size: 5Gi
+          storageClass: local-path
+    secret:
+      create: false
+      existingSecret: plausible-env
+    service:
+      port: 80
+      type: ClusterIP
