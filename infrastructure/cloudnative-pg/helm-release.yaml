@@ -1,0 +1,38 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cloudnative-pg
+  namespace: cnpg-system
+spec:
+  chart:
+    spec:
+      chart: cloudnative-pg
+      interval: 1h0m0s
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: cloudnative-pg
+      version: 0.29.1
+  install:
+    crds: Create
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  driftDetection:
+    mode: enabled
+  interval: 1h0m0s
+  releaseName: cloudnative-pg
+  storageNamespace: cnpg-system
+  targetNamespace: cnpg-system
+  timeout: 10m0s
+  upgrade:
+    crds: CreateReplace
+    disableTakeOwnership: false
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  values:
+    crds:
+      create: true
