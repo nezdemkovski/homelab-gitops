@@ -16,7 +16,6 @@ spec:
       version: 0.29.1
   install:
     crds: Create
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m
@@ -29,7 +28,6 @@ spec:
   timeout: 10m0s
   upgrade:
     crds: CreateReplace
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m

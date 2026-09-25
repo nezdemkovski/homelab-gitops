@@ -317,31 +317,6 @@ spec:
     - to:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: argocd
-          podSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - argocd-application-controller
-                  - argocd-applicationset-controller
-                  - argocd-notifications-controller
-                  - argocd-repo-server
-                  - argocd-server
-      ports:
-        - protocol: TCP
-          port: 8080
-        - protocol: TCP
-          port: 8082
-        - protocol: TCP
-          port: 8083
-        - protocol: TCP
-          port: 8084
-        - protocol: TCP
-          port: 9001
-    - to:
-        - namespaceSelector:
-            matchLabels:
               kubernetes.io/metadata.name: cloudflared
           podSelector:
             matchLabels:

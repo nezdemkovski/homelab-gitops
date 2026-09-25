@@ -16,7 +16,6 @@ spec:
       version: 2.4.1
   interval: 1h0m0s
   install:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m
@@ -25,7 +24,6 @@ spec:
   targetNamespace: external-secrets
   timeout: 5m
   upgrade:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m

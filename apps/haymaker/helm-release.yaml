@@ -10,9 +10,6 @@ spec:
     name: haymaker
     namespace: haymaker
   install:
-    disableTakeOwnership: false
-    # The first release adopts resources rendered by Argo's client-side apply.
-    serverSideApply: false
     strategy:
       name: RetryOnFailure
       retryInterval: 1m
@@ -22,9 +19,6 @@ spec:
   targetNamespace: haymaker
   timeout: 5m0s
   upgrade:
-    disableTakeOwnership: false
-    # Keep Helm on the same apply mode after the ownership handoff.
-    serverSideApply: disabled
     strategy:
       name: RetryOnFailure
       retryInterval: 1m

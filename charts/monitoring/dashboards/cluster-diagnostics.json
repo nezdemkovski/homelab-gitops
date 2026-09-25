@@ -402,62 +402,6 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Requires Argo CD metrics scraping. Empty is good.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 4
-      },
-      "id": 7,
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      },
-      "targets": [
-        {
-          "editorMode": "code",
-          "expr": "argocd_app_info{health_status!=\"Healthy\"} or argocd_app_info{sync_status!=\"Synced\"}",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "refId": "A"
-        }
-      ],
-      "title": "Argo CD apps not healthy or not synced",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
       "description": "",
       "fieldConfig": {
         "defaults": {

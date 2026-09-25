@@ -11,7 +11,6 @@ spec:
     namespace: auth
   interval: 1h0m0s
   install:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m
@@ -20,7 +19,6 @@ spec:
   targetNamespace: auth
   timeout: 10m
   upgrade:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m

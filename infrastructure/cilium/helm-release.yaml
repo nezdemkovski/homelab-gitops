@@ -36,7 +36,6 @@ spec:
     mode: enabled
   install:
     crds: CreateReplace
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
   interval: 1h0m0s
@@ -46,7 +45,6 @@ spec:
   timeout: 15m0s
   upgrade:
     crds: CreateReplace
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
   values:

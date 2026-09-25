@@ -17,7 +17,6 @@ spec:
   driftDetection:
     mode: enabled
   install:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m
@@ -27,7 +26,6 @@ spec:
   targetNamespace: kube-system
   timeout: 5m0s
   upgrade:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m

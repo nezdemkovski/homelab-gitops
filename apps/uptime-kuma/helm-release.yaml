@@ -18,7 +18,6 @@ spec:
   driftDetection:
     mode: enabled
   install:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 1m
@@ -28,7 +27,6 @@ spec:
   timeout: 5m
   upgrade:
     cleanupOnFail: true
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 1m

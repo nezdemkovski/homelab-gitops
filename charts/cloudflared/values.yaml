@@ -11,8 +11,6 @@ metrics:
   address: 0.0.0.0
   port: 2000
 
-configRevision: "2026-09-26-remove-argo"
-
 tunnel:
   id: fb9144ee-d450-448f-94ab-530094b85247
   credentialsFile: /etc/cloudflared/credentials/credentials.json
@@ -34,8 +32,6 @@ tunnel:
       service: http://plausible.plausible.svc.cluster.local:80
     - hostname: auth.nezdemkovski.cloud
       service: http://auth.auth.svc.cluster.local:80
-    - hostname: supabase.nezdemkovski.cloud
-      service: http://supabase-supabase-kong.supabase.svc.cluster.local:8000
     - hostname: status.nezdemkovski.cloud
       service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
     - hostname: grafana.nezdemkovski.cloud
@@ -46,8 +42,6 @@ tunnel:
       service: http://haymaker-frontend.haymaker.svc.cluster.local:80
     - hostname: api.haymaker.lol
       service: http://haymaker-api.haymaker.svc.cluster.local:80
-    - hostname: paperclip.nezdemkovski.cloud
-      service: http://paperclip.paperclip.svc.cluster.local:80
     - service: http_status:404
 
 credentials:

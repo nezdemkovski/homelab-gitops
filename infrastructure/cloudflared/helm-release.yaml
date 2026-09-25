@@ -16,7 +16,6 @@ spec:
   driftDetection:
     mode: enabled
   install:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
   interval: 1h0m0s
@@ -25,6 +24,5 @@ spec:
   targetNamespace: cloudflared
   timeout: 10m0s
   upgrade:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure

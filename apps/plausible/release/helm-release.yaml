@@ -16,7 +16,6 @@ spec:
       version: 0.4.2
   interval: 1h0m0s
   install:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m
@@ -25,7 +24,6 @@ spec:
   targetNamespace: plausible
   timeout: 15m
   upgrade:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m

@@ -12,12 +12,10 @@ spec:
   interval: 1h0m0s
   timeout: 10m0s
   install:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m0s
   upgrade:
-    disableTakeOwnership: false
     strategy:
       name: RetryOnFailure
       retryInterval: 5m0s

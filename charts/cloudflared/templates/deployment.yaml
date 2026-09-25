@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       annotations:
-        homelab.nezdemkovski.cloud/config-revision: {{ .Values.configRevision | quote }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
         app.kubernetes.io/name: cloudflared
     spec:
