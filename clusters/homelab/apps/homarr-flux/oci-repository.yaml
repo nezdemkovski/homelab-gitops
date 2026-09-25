@@ -5,6 +5,9 @@ metadata:
   namespace: homarr-flux
 spec:
   interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
   url: oci://ghcr.io/homarr-labs/charts/homarr
   ref:
     tag: 8.29.2
