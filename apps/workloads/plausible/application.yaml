@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: plausible
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: homelab
   source:
@@ -89,8 +87,5 @@ spec:
     server: https://kubernetes.default.svc
     namespace: plausible
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
