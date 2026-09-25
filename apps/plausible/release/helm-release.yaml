@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: plausible
-      version: '>=0.4.2 <0.5.0'
+      version: 0.4.2
   interval: 1h0m0s
   install:
     strategy:
@@ -76,7 +76,7 @@ spec:
     fullnameOverride: plausible
     image:
       repository: ghcr.io/plausible/community-edition
-      tag: v3.2.1 # {"$imagepolicy": "flux-system:plausible:tag"}
+      tag: v3.2.1
     ingress:
       enabled: false
     postgresql:

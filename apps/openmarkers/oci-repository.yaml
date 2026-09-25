@@ -11,5 +11,5 @@ spec:
     operation: copy
   provider: generic
   ref:
-    semver: '>=0.1.19 <0.2.0'
+    tag: 0.1.19
   url: oci://ghcr.io/nezdemkovski/charts/openmarkers

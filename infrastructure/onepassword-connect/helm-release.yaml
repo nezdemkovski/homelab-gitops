@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: onepassword-connect
-      version: '>=2.4.1 <2.5.0'
+      version: 2.4.1
   interval: 1h0m0s
   install:
     strategy:

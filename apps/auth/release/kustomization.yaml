@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - oci-repository.yaml
   - helm-release.yaml
-  - image-automation.yaml

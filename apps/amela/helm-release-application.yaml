@@ -15,8 +15,7 @@ spec:
   values:
     fullnameOverride: amela-application
     image:
-      digest: sha256:3edd21b602ea9b6d53cc37b851b84e9186c5f0b203e6f16a04c2551017d4ac25 # {"$imagepolicy": "flux-system:amela-application:digest"}
       repository: ghcr.io/amela-io/application
-      tag: 0.1.15 # {"$imagepolicy": "flux-system:amela-application:tag"}
+      tag: 0.1.15@sha256:3edd21b602ea9b6d53cc37b851b84e9186c5f0b203e6f16a04c2551017d4ac25
     imagePullSecrets:
     - name: amela-ghcr

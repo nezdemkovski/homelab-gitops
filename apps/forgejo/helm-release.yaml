@@ -55,8 +55,10 @@ spec:
         session:
           COOKIE_SECURE: true
     image:
+      registry: code.forgejo.org
+      repository: forgejo/forgejo
       rootless: true
-      tag: 15.0.9-rootless # {"$imagepolicy": "flux-system:forgejo:tag"}
+      tag: 15.0.9-rootless
     ingress:
       enabled: false
     persistence:

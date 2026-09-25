@@ -11,7 +11,7 @@ spec:
     operation: copy
   provider: generic
   ref:
-    semver: '>=0.1.12 <0.2.0'
+    tag: 0.1.12
   secretRef:
     name: amela-ghcr
   url: oci://ghcr.io/amela-io/charts/amela-backend

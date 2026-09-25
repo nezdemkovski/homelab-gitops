@@ -60,7 +60,7 @@ spec:
       user: n8n
     image:
       repository: docker.n8n.io/n8nio/n8n
-      tag: 2.41.3 # {"$imagepolicy": "flux-system:n8n:tag"}
+      tag: 2.41.3
     ingress:
       enabled: false
     persistence:
@@ -84,4 +84,4 @@ spec:
       enabled: true
       image:
         repository: n8nio/runners
-        tag: 2.41.3 # {"$imagepolicy": "flux-system:n8n-runners:tag"}
+        tag: 2.41.3

@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: local-path-provisioner
-      version: '>=0.0.38 <0.1.0'
+      version: 0.0.38
   driftDetection:
     mode: enabled
   install:

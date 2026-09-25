@@ -11,5 +11,5 @@ spec:
     operation: copy
   provider: generic
   ref:
-    semver: '>=8.29.2 <8.30.0'
+    tag: 8.29.2
   url: oci://ghcr.io/homarr-labs/charts/homarr

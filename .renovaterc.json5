@@ -1,0 +1,110 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "github>home-operations/renovate-presets#8.1.0",
+    "github>home-operations/renovate-presets//apps/cnpg.json5#8.1.0",
+    ":timezone(Europe/Prague)",
+  ],
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: ["before 3am on the first day of the month"],
+    commitMessageExtra: "({{manager}})",
+    additionalBranchPrefix: "{{manager}}-",
+  },
+  hostRules: [
+    {
+      description: "Authenticate against private GHCR images and charts",
+      matchHost: "ghcr.io",
+      hostType: "docker",
+      username: "{{ secrets.GHCR_USERNAME }}",
+      password: "{{ secrets.GHCR_TOKEN }}",
+    },
+  ],
+  packageRules: [
+    // Auto-merge rules
+    {
+      description: "Auto-merge own images and charts on every release",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"],
+      matchUpdateTypes: ["major", "minor", "patch", "digest"],
+      automerge: true,
+      automergeType: "branch",
+      ignoreTests: true,
+    },
+    {
+      description: "Auto-merge upstream patch releases after they settle",
+      matchDatasources: ["docker", "helm"],
+      matchPackageNames: ["!/^ghcr\\.io/nezdemkovski//", "!/^ghcr\\.io/amela-io//"],
+      matchUpdateTypes: ["patch", "digest"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "3 days",
+      ignoreTests: true,
+    },
+    {
+      description: "Auto-merge GitHub Actions",
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "3 days",
+      ignoreTests: true,
+    },
+    {
+      description: "Auto-merge Renovate Presets",
+      matchManagers: ["renovate-config"],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+      automergeType: "branch",
+      ignoreTests: true,
+    },
+    // Grouping rules
+    {
+      description: "Auth Group",
+      groupName: "auth",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/^ghcr\\.io/nezdemkovski/auth-/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: "Haymaker Group",
+      groupName: "haymaker",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/^ghcr\\.io/nezdemkovski/haymaker/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: "n8n Group",
+      groupName: "n8n",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.n8n.io/n8nio/n8n", "n8nio/runners"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    // Labeling rules
+    {
+      matchUpdateTypes: ["major"],
+      addLabels: ["type/major"],
+    },
+    {
+      matchUpdateTypes: ["minor"],
+      addLabels: ["type/minor"],
+    },
+    {
+      matchUpdateTypes: ["patch"],
+      addLabels: ["type/patch"],
+    },
+    {
+      matchUpdateTypes: ["digest"],
+      addLabels: ["type/digest"],
+    },
+  ],
+}
