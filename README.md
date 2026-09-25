@@ -1,30 +1,23 @@
 # Homelab GitOps
 
-Declarative Kubernetes configuration for the Talos homelab cluster.
+The active cluster configuration is reconciled by Flux from the `flux-gitops`
+branch at `clusters/homelab`.
 
-Argo CD watches this repository and reconciles manifests from `apps/`.
+Argo CD and its former `apps/` tree were retired after the Flux migration. Their
+history remains available in Git.
 
 ## Bootstrap
 
-Install Argo CD once, then apply the root application:
+Flux was bootstrapped with its CLI against the dedicated branch and canonical
+cluster path:
 
 ```bash
-export KUBECONFIG=/Users/yuri/Sites/homelab-gitops/kubeconfig
-
-kubectl create namespace argocd
-kubectl apply -n argocd --server-side --force-conflicts \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.5.3/manifests/install.yaml
-
-kubectl apply -f bootstrap/project.yaml
-kubectl apply -f bootstrap/root-app.yaml
+flux bootstrap github \
+  --owner=nezdemkovski \
+  --repository=homelab-gitops \
+  --branch=flux-gitops \
+  --path=clusters/homelab \
+  --personal
 ```
 
-After that, add or update manifests under `apps/` and let Argo CD reconcile them.
-
-## Layout
-
-```text
-bootstrap/      Argo CD resources applied manually once.
-apps/infra/     Cluster infrastructure apps like ingress, cert-manager, storage.
-apps/workloads/ User applications.
-```
+Application and infrastructure manifests now live on the `flux-gitops` branch.

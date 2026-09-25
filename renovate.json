@@ -12,11 +12,6 @@
   "labels": [
     "dependencies"
   ],
-  "argocd": {
-    "fileMatch": [
-      "^apps/(?:infra|workloads)/.+/application\\.ya?ml$"
-    ]
-  },
   "kubernetes": {
     "fileMatch": [
       "^apps/(?:infra|workloads)/.+\\.ya?ml$"
@@ -38,18 +33,6 @@
         "imageName:\\s*(?<depName>[^:\\s]+(?:/[^:\\s]+)+):(?<currentValue>[^\\s]+)"
       ],
       "datasourceTemplate": "docker"
-    },
-    {
-      "customType": "regex",
-      "description": "Track the Argo CD bootstrap release",
-      "fileMatch": [
-        "^README\\.md$"
-      ],
-      "matchStrings": [
-        "argoproj/argo-cd/(?<currentValue>v?\\d+\\.\\d+\\.\\d+)/manifests/install\\.yaml"
-      ],
-      "depNameTemplate": "argoproj/argo-cd",
-      "datasourceTemplate": "github-releases"
     },
     {
       "customType": "regex",
@@ -244,18 +227,8 @@
       "separateMajorMinor": false
     },
     {
-      "description": "Group Argo CD bootstrap updates",
-      "matchDepNames": [
-        "argoproj/argo-cd"
-      ],
-      "groupName": "argo cd bootstrap",
-      "groupSlug": "argo-cd-bootstrap",
-      "separateMajorMinor": false
-    },
-    {
       "description": "Keep GitOps updates as reviewable pull requests",
       "matchManagers": [
-        "argocd",
         "kubernetes",
         "helm-values",
         "custom.regex"
@@ -265,7 +238,6 @@
     {
       "description": "Require explicit dashboard approval for major infrastructure updates",
       "matchManagers": [
-        "argocd",
         "kubernetes",
         "helm-values",
         "custom.regex"
