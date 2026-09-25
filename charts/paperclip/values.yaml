@@ -2,8 +2,8 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/paperclipai/paperclip
-  release: "v2026.916.1"
-  digest: sha256:beb09c3e5e0fd372ab89f5761464b329c201d89bdd4d54b49ef58f7a0532e561
+  # GitHub release v2026.916.1 / GHCR tag 2026.916.1.
+  digest: sha256:a02ac35ac41df911af477422ea0e781cf41d2b2c600c66f0a5ac9d8c63f52c2c
   pullPolicy: IfNotPresent
 
 env:
