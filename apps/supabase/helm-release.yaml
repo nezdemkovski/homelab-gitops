@@ -201,23 +201,31 @@ spec:
       enabled: false
     persistence:
       db:
+        annotations: &retainedPvc
+          helm.sh/resource-policy: keep
+          kustomize.toolkit.fluxcd.io/prune: disabled
         size: 10Gi
         storageClassName: local-path
       deno:
+        annotations: *retainedPvc
         size: 2Gi
         storageClassName: local-path
       functions:
+        annotations: *retainedPvc
         size: 1Gi
         storageClassName: local-path
       imgproxy:
         enabled: false
       pgsodium:
+        annotations: *retainedPvc
         size: 100Mi
         storageClassName: local-path
       snippets:
+        annotations: *retainedPvc
         size: 1Gi
         storageClassName: local-path
       storage:
+        annotations: *retainedPvc
         size: 10Gi
         storageClassName: local-path
     secret:
