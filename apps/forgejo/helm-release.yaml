@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -57,7 +56,7 @@ spec:
           COOKIE_SECURE: true
     image:
       rootless: true
-      tag: 15.0.2-rootless # {"$imagepolicy": "flux-system:forgejo:tag"}
+      tag: 15.0.9-rootless # {"$imagepolicy": "flux-system:forgejo:tag"}
     ingress:
       enabled: false
     persistence:
