@@ -18,4 +18,4 @@ spec:
     name: homarr
   policy:
     semver:
-      range: '>=1.61.0 <2.0.0'
+      range: '>=1.61.0 <1.62.0'

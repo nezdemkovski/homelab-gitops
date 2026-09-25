@@ -18,4 +18,4 @@ spec:
     name: uptime-kuma
   policy:
     semver:
-      range: '>=2.5.5 <3.0.0'
+      range: '>=2.5.5 <2.6.0'

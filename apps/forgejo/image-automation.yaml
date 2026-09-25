@@ -21,4 +21,4 @@ spec:
     name: forgejo
   policy:
     semver:
-      range: '>=15.0.2 <16.0.0'
+      range: '>=15.0.2 <15.1.0'

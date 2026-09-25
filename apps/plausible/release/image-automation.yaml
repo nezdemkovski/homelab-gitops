@@ -18,4 +18,4 @@ spec:
     name: plausible
   policy:
     semver:
-      range: '>=3.2.1 <4.0.0'
+      range: '>=3.2.1 <3.3.0'

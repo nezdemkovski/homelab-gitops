@@ -18,4 +18,4 @@ spec:
     name: cloudflared
   policy:
     semver:
-      range: '>=2026.9.3 <2027.0.0'
+      range: '>=2026.9.3 <2026.10.0'

@@ -18,7 +18,7 @@ spec:
     name: n8n
   policy:
     semver:
-      range: '>=2.41.2 <3.0.0'
+      range: '>=2.41.2 <2.42.0'
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
@@ -39,4 +39,4 @@ spec:
     name: n8n-runners
   policy:
     semver:
-      range: '>=2.41.2 <3.0.0'
+      range: '>=2.41.2 <2.42.0'
