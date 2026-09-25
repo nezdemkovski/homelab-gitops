@@ -1,13 +1,15 @@
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
   name: homarr
   namespace: homarr-flux
 spec:
-  interval: 1h
+  interval: 1h0m0s
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
-  url: oci://ghcr.io/homarr-labs/charts/homarr
+  provider: generic
   ref:
     tag: 8.29.2 # {"$imagepolicy": "flux-system:homarr-flux-chart:tag"}
+  url: oci://ghcr.io/homarr-labs/charts/homarr

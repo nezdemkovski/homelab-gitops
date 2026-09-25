@@ -5,9 +5,20 @@ metadata:
   namespace: homarr-flux
 spec:
   interval: 30m
+  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: homarr
+  install:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  upgrade:
+    strategy:
+      name: RetryOnFailure
+      retryInterval: 5m
+  driftDetection:
+    mode: enabled
   values:
     replicaCount: 1
     image:
