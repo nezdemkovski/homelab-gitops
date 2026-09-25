@@ -25,12 +25,12 @@ spec:
   values:
     admin:
       image:
-        digest: sha256:6ae7e27242764e358cc6d54babe3bc63486e6c6bda52fe36218e180023c800ba # {"$imagepolicy": "auth:auth-admin:digest"}
-        tag: v0.1.100 # {"$imagepolicy": "auth:auth-admin:tag"}
+        digest: sha256:6ae7e27242764e358cc6d54babe3bc63486e6c6bda52fe36218e180023c800ba # {"$imagepolicy": "flux-system:auth-admin:digest"}
+        tag: v0.1.100 # {"$imagepolicy": "flux-system:auth-admin:tag"}
     api:
       image:
-        digest: sha256:3bce8532e600902f960e5816cbdb69c34571910535ed1185538742c99927e319 # {"$imagepolicy": "auth:auth-api:digest"}
-        tag: v0.1.100 # {"$imagepolicy": "auth:auth-api:tag"}
+        digest: sha256:3bce8532e600902f960e5816cbdb69c34571910535ed1185538742c99927e319 # {"$imagepolicy": "flux-system:auth-api:digest"}
+        tag: v0.1.100 # {"$imagepolicy": "flux-system:auth-api:tag"}
     env:
       adminEmail: yuri@nezdemkovski.com
       autoMigrate: "false"
@@ -44,8 +44,8 @@ spec:
       trustProxyHeaders: "true"
     login:
       image:
-        digest: sha256:39f4841044ec1bf4ef427e5fd1cde1630c48c219a4c1955e1eb598ae4be5100e # {"$imagepolicy": "auth:auth-login:digest"}
-        tag: v0.1.100 # {"$imagepolicy": "auth:auth-login:tag"}
+        digest: sha256:39f4841044ec1bf4ef427e5fd1cde1630c48c219a4c1955e1eb598ae4be5100e # {"$imagepolicy": "flux-system:auth-login:digest"}
+        tag: v0.1.100 # {"$imagepolicy": "flux-system:auth-login:tag"}
     objectStorage:
       bucket: auth-public
       enabled: true
@@ -64,5 +64,5 @@ spec:
         usernameKey: username
     router:
       image:
-        digest: sha256:237d1d5aa86a10faafcfd6883c441122c0c9ab1d98b93a11c40fc55c071a2439 # {"$imagepolicy": "auth:auth-router:digest"}
-        tag: v0.1.100 # {"$imagepolicy": "auth:auth-router:tag"}
+        digest: sha256:237d1d5aa86a10faafcfd6883c441122c0c9ab1d98b93a11c40fc55c071a2439 # {"$imagepolicy": "flux-system:auth-router:digest"}
+        tag: v0.1.100 # {"$imagepolicy": "flux-system:auth-router:tag"}

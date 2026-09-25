@@ -5,20 +5,12 @@ metadata:
   name: n8n
   namespace: n8n
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: docker.n8n.io/n8nio/n8n
   interval: 15m0s
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: n8n
-  namespace: n8n
-spec:
-  imageRepositoryRef:
-    name: n8n
-  policy:
-    semver:
-      range: '>=2.41.2 <2.42.0'
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
@@ -26,17 +18,9 @@ metadata:
   name: n8n-runners
   namespace: n8n
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: n8nio/runners
   interval: 15m0s
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: n8n-runners
-  namespace: n8n
-spec:
-  imageRepositoryRef:
-    name: n8n-runners
-  policy:
-    semver:
-      range: '>=2.41.2 <2.42.0'

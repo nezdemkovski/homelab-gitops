@@ -5,24 +5,14 @@ metadata:
   name: haymaker-api
   namespace: haymaker
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: ghcr.io/nezdemkovski/haymaker
   interval: 15m0s
   secretRef:
     name: haymaker-ghcr
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: haymaker-api
-  namespace: haymaker
-spec:
-  digestReflectionPolicy: Always
-  imageRepositoryRef:
-    name: haymaker-api
-  interval: 15m0s
-  policy:
-    semver:
-      range: '>=0.3.0 <0.4.0'
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
@@ -30,21 +20,11 @@ metadata:
   name: haymaker-frontend
   namespace: haymaker
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: ghcr.io/nezdemkovski/haymaker-frontend
   interval: 15m0s
   secretRef:
     name: haymaker-ghcr
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: haymaker-frontend
-  namespace: haymaker
-spec:
-  digestReflectionPolicy: Always
-  imageRepositoryRef:
-    name: haymaker-frontend
-  interval: 15m0s
-  policy:
-    semver:
-      range: '>=0.3.0 <0.4.0'

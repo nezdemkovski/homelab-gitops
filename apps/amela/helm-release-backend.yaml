@@ -16,8 +16,8 @@ spec:
     envSecretName: amela-backend-env
     fullnameOverride: amela-backend
     image:
-      digest: sha256:ac7aced330b1570b7b088ce07b35fe747f5d2fa5d8ec2ff9623430afbad0229c # {"$imagepolicy": "amela:amela-backend:digest"}
+      digest: sha256:ac7aced330b1570b7b088ce07b35fe747f5d2fa5d8ec2ff9623430afbad0229c # {"$imagepolicy": "flux-system:amela-backend:digest"}
       repository: ghcr.io/amela-io/backend
-      tag: 0.1.12 # {"$imagepolicy": "amela:amela-backend:tag"}
+      tag: 0.1.12 # {"$imagepolicy": "flux-system:amela-backend:tag"}
     imagePullSecrets:
     - name: amela-ghcr

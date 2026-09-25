@@ -26,14 +26,14 @@ spec:
     api:
       existingSecret: haymaker-env
       image:
-        digest: sha256:aa15114dc08dd3ff5452d3d6c02ae772500cab9314173eaa5b05a4ea69c4103d # {"$imagepolicy": "haymaker:haymaker-api:digest"}
+        digest: sha256:aa15114dc08dd3ff5452d3d6c02ae772500cab9314173eaa5b05a4ea69c4103d # {"$imagepolicy": "flux-system:haymaker-api:digest"}
         repository: ghcr.io/nezdemkovski/haymaker
-        tag: 0.3.0 # {"$imagepolicy": "haymaker:haymaker-api:tag"}
+        tag: 0.3.0 # {"$imagepolicy": "flux-system:haymaker-api:tag"}
     frontend:
       image:
-        digest: sha256:abadba3bcb897da44b9a787ab2376ac3a77122db4a47e4995fb90f525a2054be # {"$imagepolicy": "haymaker:haymaker-frontend:digest"}
+        digest: sha256:abadba3bcb897da44b9a787ab2376ac3a77122db4a47e4995fb90f525a2054be # {"$imagepolicy": "flux-system:haymaker-frontend:digest"}
         repository: ghcr.io/nezdemkovski/haymaker-frontend
-        tag: 0.3.0 # {"$imagepolicy": "haymaker:haymaker-frontend:tag"}
+        tag: 0.3.0 # {"$imagepolicy": "flux-system:haymaker-frontend:tag"}
     fullnameOverride: haymaker
     imagePullSecrets:
     - name: haymaker-ghcr

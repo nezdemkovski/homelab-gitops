@@ -57,7 +57,7 @@ spec:
           COOKIE_SECURE: true
     image:
       rootless: true
-      tag: 15.0.2-rootless # {"$imagepolicy": "forgejo:forgejo:tag"}
+      tag: 15.0.2-rootless # {"$imagepolicy": "flux-system:forgejo:tag"}
     ingress:
       enabled: false
     persistence:

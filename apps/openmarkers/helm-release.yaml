@@ -29,7 +29,7 @@ spec:
     fullnameOverride: openmarkers
     image:
       repository: ghcr.io/nezdemkovski/openmarkers
-      tag: 1.0.19 # {"$imagepolicy": "openmarkers:openmarkers:tag"}
+      tag: 1.0.19 # {"$imagepolicy": "flux-system:openmarkers:tag"}
     secret:
       create: false
       name: openmarkers-env

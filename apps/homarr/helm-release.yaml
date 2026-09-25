@@ -21,7 +21,7 @@ spec:
         existingSecret: homarr-env
         key: SECRET_ENCRYPTION_KEY
     image:
-      tag: v1.61.0 # {"$imagepolicy": "homarr:homarr:tag"}
+      tag: v1.61.0 # {"$imagepolicy": "flux-system:homarr:tag"}
     persistence:
       homarrDatabase:
         enabled: true

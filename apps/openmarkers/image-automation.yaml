@@ -5,17 +5,9 @@ metadata:
   name: openmarkers
   namespace: openmarkers
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: ghcr.io/nezdemkovski/openmarkers
   interval: 15m0s
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: openmarkers
-  namespace: openmarkers
-spec:
-  imageRepositoryRef:
-    name: openmarkers
-  policy:
-    semver:
-      range: '>=1.0.19 <1.1.0'

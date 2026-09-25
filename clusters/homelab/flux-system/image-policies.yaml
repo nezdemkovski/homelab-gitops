@@ -1,0 +1,227 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: amela-application
+  namespace: flux-system
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: amela-application
+    namespace: amela
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.15 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: amela-backend
+  namespace: flux-system
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: amela-backend
+    namespace: amela
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.12 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-admin
+  namespace: flux-system
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: auth-admin
+    namespace: auth
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.100 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-api
+  namespace: flux-system
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: auth-api
+    namespace: auth
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.100 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-login
+  namespace: flux-system
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: auth-login
+    namespace: auth
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.100 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: auth-router
+  namespace: flux-system
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: auth-router
+    namespace: auth
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.1.100 <0.2.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: forgejo
+  namespace: flux-system
+spec:
+  filterTags:
+    extract: $version
+    pattern: ^(?P<version>[0-9]+\.[0-9]+\.[0-9]+)-rootless$
+  imageRepositoryRef:
+    name: forgejo
+    namespace: forgejo
+  policy:
+    semver:
+      range: '>=15.0.2 <15.1.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: haymaker-api
+  namespace: flux-system
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: haymaker-api
+    namespace: haymaker
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.3.0 <0.4.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: haymaker-frontend
+  namespace: flux-system
+spec:
+  digestReflectionPolicy: Always
+  imageRepositoryRef:
+    name: haymaker-frontend
+    namespace: haymaker
+  interval: 15m0s
+  policy:
+    semver:
+      range: '>=0.3.0 <0.4.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: homarr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: homarr
+    namespace: homarr
+  policy:
+    semver:
+      range: '>=1.61.0 <1.62.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: n8n
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: n8n
+    namespace: n8n
+  policy:
+    semver:
+      range: '>=2.41.2 <2.42.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: n8n-runners
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: n8n-runners
+    namespace: n8n
+  policy:
+    semver:
+      range: '>=2.41.2 <2.42.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: openmarkers
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: openmarkers
+    namespace: openmarkers
+  policy:
+    semver:
+      range: '>=1.0.19 <1.1.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: plausible
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: plausible
+    namespace: plausible
+  policy:
+    semver:
+      range: '>=3.2.1 <3.3.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: uptime-kuma
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: uptime-kuma
+    namespace: uptime-kuma
+  policy:
+    semver:
+      range: '>=2.5.5 <2.6.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: cloudflared
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: cloudflared
+    namespace: cloudflared
+  policy:
+    semver:
+      range: '>=2026.9.3 <2026.10.0'

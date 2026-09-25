@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: louislam/uptime-kuma
-  tag: "2.5.5" # {"$imagepolicy": "uptime-kuma:uptime-kuma:tag"}
+  tag: "2.5.5" # {"$imagepolicy": "flux-system:uptime-kuma:tag"}
   pullPolicy: IfNotPresent
 
 service:

@@ -76,7 +76,7 @@ spec:
     fullnameOverride: plausible
     image:
       repository: ghcr.io/plausible/community-edition
-      tag: v3.2.1 # {"$imagepolicy": "plausible:plausible:tag"}
+      tag: v3.2.1 # {"$imagepolicy": "flux-system:plausible:tag"}
     ingress:
       enabled: false
     postgresql:

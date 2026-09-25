@@ -5,17 +5,9 @@ metadata:
   name: homarr
   namespace: homarr
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: ghcr.io/homarr-labs/homarr
   interval: 15m0s
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: homarr
-  namespace: homarr
-spec:
-  imageRepositoryRef:
-    name: homarr
-  policy:
-    semver:
-      range: '>=1.61.0 <1.62.0'

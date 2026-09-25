@@ -5,17 +5,9 @@ metadata:
   name: cloudflared
   namespace: cloudflared
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: cloudflare/cloudflared
   interval: 15m0s
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: cloudflared
-  namespace: cloudflared
-spec:
-  imageRepositoryRef:
-    name: cloudflared
-  policy:
-    semver:
-      range: '>=2026.9.3 <2026.10.0'

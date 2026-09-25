@@ -5,17 +5,9 @@ metadata:
   name: plausible
   namespace: plausible
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: ghcr.io/plausible/community-edition
   interval: 15m0s
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: plausible
-  namespace: plausible
-spec:
-  imageRepositoryRef:
-    name: plausible
-  policy:
-    semver:
-      range: '>=3.2.1 <3.3.0'

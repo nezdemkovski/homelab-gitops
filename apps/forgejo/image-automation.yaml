@@ -5,20 +5,9 @@ metadata:
   name: forgejo
   namespace: forgejo
 spec:
+  accessFrom:
+    namespaceSelectors:
+      - matchLabels:
+          kubernetes.io/metadata.name: flux-system
   image: code.forgejo.org/forgejo/forgejo
   interval: 15m0s
----
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: forgejo
-  namespace: forgejo
-spec:
-  filterTags:
-    extract: $version
-    pattern: ^(?P<version>[0-9]+\.[0-9]+\.[0-9]+)-rootless$
-  imageRepositoryRef:
-    name: forgejo
-  policy:
-    semver:
-      range: '>=15.0.2 <15.1.0'
