@@ -65,6 +65,12 @@ branch or PR for every new release, including majors. It follows
   as majors. `claude-renovate-review.yaml` comments on each PR with breaking
   changes found in the release notes.
 
+Renovate runs self-hosted from GitHub Actions as the `nezdemkovski-renovate`
+GitHub App. Its workflow secrets come from the `renovate` item in the
+dedicated `homelab-ci` 1Password vault through the `OP_SERVICE_ACCOUNT_TOKEN`
+repository secret; that service account must only read `homelab-ci`, never
+`Homelab`.
+
 Before merging a major of a stateful or infrastructure component, check the
 release notes against this repository and verify a recent restorable backup.
 Images and charts must keep a `repository`/`registry` next to `tag` in values
