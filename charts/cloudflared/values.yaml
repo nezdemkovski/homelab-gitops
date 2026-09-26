@@ -40,8 +40,6 @@ tunnel:
       service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
     - hostname: grafana.nezdemkovski.cloud
       service: http://grafana.monitoring.svc.cluster.local:80
-    - hostname: konflate.nezdemkovski.cloud
-      service: http://konflate.konflate.svc.cluster.local:8080
     - hostname: openmarkers.app
       service: http://openmarkers.openmarkers.svc.cluster.local:80
     - hostname: haymaker.lol

@@ -41,7 +41,6 @@ spec:
           - forgejo
           - haymaker
           - homarr
-          - konflate
           - monitoring
           - n8n
           - openmarkers
