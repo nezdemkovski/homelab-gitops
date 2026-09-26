@@ -14,21 +14,10 @@ Operational rules for agents working in this Flux GitOps repository.
 - Generate Flux resources with the Flux CLI when possible, then commit the
   exported YAML. Do not apply long-lived resources by hand.
 
-Before pushing a change, render the whole cluster offline with
-[flate](https://github.com/home-operations/flate), as the `Flate` workflow does:
-
-```bash
-flate test all --path ./clusters/homelab
-```
-
-The `Dependency Review` workflow renders every PR with Flate. For
-same-repository Renovate PRs with a successful render, Claude reviews all
-changed versions and returns a structured verdict. A trusted CI step labels
-the PR and merges only an approved, unchanged head; a blocked or failed
-review stays open for human investigation. Konflate remains an optional
-read-only PR diff viewer, not an approval or merge gate. Private OCI sources
-that require a cluster Secret are skipped during offline rendering; Claude
-must not approve a changed workload when that leaves the update unverified.
+The `Dependency Review` workflow reviews same-repository Renovate PRs with
+Claude. A trusted CI step labels the PR and merges only an approved,
+unchanged head; a blocked or failed review stays open for human
+investigation. Konflate remains an optional read-only PR diff viewer.
 
 For a single Kustomization you can also render the affected path:
 
@@ -76,15 +65,15 @@ It groups related dependencies per application or infrastructure stack and
 adds `type/major`, `type/minor`, `type/patch`, or `type/digest`
 labels. Renovate never merges a branch or PR itself.
 
-On each Renovate PR, the `Dependency Review` workflow runs Flate first.
-Claude then checks all releases in the version range, upstream application
-changes behind wrapper charts/images, and this repository's consumers.
+On each Renovate PR, Claude checks all releases in the version range,
+upstream application changes behind wrapper charts/images, and this
+repository's consumers.
 The trusted finalizer adds `review/approved` or `review/needs-human`,
 plus `risk/breaking-change` and `risk/migration` when applicable.
 An approval merges the reviewed SHA immediately; uncertain findings,
 relevant breaking changes, required migration, missing release notes,
-unverified stateful-major backup, render failures, or review failures require
-human investigation. A green render alone is not runtime or data proof.
+unverified stateful-major backup, or review failures require human
+investigation.
 
 Renovate runs self-hosted from GitHub Actions every hour as the
 `nezdemkovski-renovate` GitHub App. Its workflow credentials are GitHub
