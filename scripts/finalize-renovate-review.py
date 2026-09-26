@@ -185,8 +185,8 @@ def main() -> int:
     set_labels(repo, number, desired)
     upsert_comment(repo, number, comment_body(data, verdict, reason))
     if verdict != "approved":
-        print("Review requires human decision")
-        return 1
+        print("Review did not approve; PR remains open")
+        return 0
 
     result = subprocess.run(
         ["gh", "pr", "merge", str(number), "--repo", repo,

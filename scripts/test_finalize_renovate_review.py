@@ -61,6 +61,42 @@ class ReviewTests(unittest.TestCase):
         self.assertEqual(data["verdict"], "needs-human")
         self.assertIsNone(reason)
 
+    def test_nonapproval_reports_success_without_merging(self):
+        pr = {
+            "state": "open",
+            "draft": False,
+            "base": {"ref": "master", "sha": "base-sha"},
+            "head": {
+                "sha": "head-sha",
+                "ref": "renovate/example",
+                "repo": {"full_name": "owner/repo"},
+            },
+            "user": {"login": gate.BOT},
+        }
+        env = {
+            "GITHUB_REPOSITORY": "owner/repo",
+            "PR_NUMBER": "42",
+            "EXPECTED_SHA": "head-sha",
+            "EXPECTED_BASE_SHA": "base-sha",
+        }
+        for data, reason in (
+            ({"verdict": "needs-human", "summary": "Manual review needed.",
+              "findings": [], "sources": [], "breaking_change": False,
+              "migration_required": False}, None),
+            ({}, "Claude returned no usable review evidence"),
+        ):
+            with self.subTest(reason=reason), patch.dict("os.environ", env), \
+                    patch.object(gate, "gh", return_value=pr), \
+                    patch.object(gate, "review", return_value=(data, reason)), \
+                    patch.object(gate, "ensure_labels"), \
+                    patch.object(gate, "set_labels") as labels, \
+                    patch.object(gate, "upsert_comment") as comment, \
+                    patch.object(gate.subprocess, "run") as merge:
+                self.assertEqual(gate.main(), 0)
+                labels.assert_called_once_with("owner/repo", 42, ["review/needs-human"])
+                self.assertIn("**Claude verdict:** needs human review", comment.call_args.args[2])
+                merge.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()
