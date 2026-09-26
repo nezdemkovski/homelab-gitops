@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Flate
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - renovate/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Flate - Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Flate
+        uses: home-operations/flate/action@631b76b69c4e58c6f4d1cb01e23616fa61aebafa # v0.6.5
+        with:
+          cache: true
+
+      # Renders every Kustomization and HelmRelease under clusters/homelab.
+      # OCI charts whose pull secret comes from an ExternalSecret are skipped.
+      - name: Test
+        run: flate test all --path ./clusters/homelab

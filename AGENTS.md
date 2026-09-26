@@ -14,7 +14,14 @@ Operational rules for agents working in this Flux GitOps repository.
 - Generate Flux resources with the Flux CLI when possible, then commit the
   exported YAML. Do not apply long-lived resources by hand.
 
-Before pushing a change, render and validate the affected path:
+Before pushing a change, render the whole cluster offline with
+[flate](https://github.com/home-operations/flate), as the `Flate` workflow does:
+
+```bash
+flate test all --path ./clusters/homelab
+```
+
+For a single Kustomization you can also render the affected path:
 
 ```bash
 flux build kustomization <name> --path ./clusters/homelab --kustomization-file ./clusters/homelab/<name>.yaml
@@ -54,22 +61,29 @@ Pin exact versions in Git: chart `version`, OCIRepository `ref.tag`, and image
 `tag` (own images as `tag: x.y.z@sha256:...`). Do not use semver ranges; Flux
 deploys exactly what Git says.
 
-Renovate (`.renovaterc.json5`, `.github/workflows/renovate.yaml`) opens a
-branch or PR for every new release, including majors. It follows
+Renovate (`.renovaterc.json5`, `.github/workflows/renovate.yaml`) proposes
+every new release, including majors. It follows
 `onedr0p/home-ops` and the `home-operations/renovate-presets`:
 
 - own images and charts under `ghcr.io/nezdemkovski` and `ghcr.io/amela-io`
   merge automatically on every release;
-- upstream patch and digest updates merge automatically after 3 days;
-- upstream minor and major updates arrive as PRs, and 0.x minors are treated
-  as majors. `claude-renovate-review.yaml` comments on each PR with breaking
-  changes found in the release notes.
+- upstream patch, digest and minor updates merge automatically 3 days after
+  release, once the `Flate` check passes; 0.x minors are treated as breaking
+  and open a PR;
+- majors wait for a checkbox on the Renovate Dashboard issue, then open a PR
+  that `claude-renovate-review.yaml` reviews;
+- updates are grouped per stack (`apps/<app>` plus its chart or
+  `infrastructure/<component>`); CloudNativePG images form one group, and
+  own releases form a separate `<app> release` group.
 
-Renovate runs self-hosted from GitHub Actions as the `nezdemkovski-renovate`
-GitHub App. Its workflow credentials are GitHub repository secrets
-(`RENOVATE_APP_CLIENT_ID`, `RENOVATE_APP_PRIVATE_KEY`, `GHCR_TOKEN`,
-`CLAUDE_CODE_OAUTH_TOKEN`); they are CI-only and are not mirrored in
-1Password.
+A PR from Renovate therefore means either a major you approved or an update
+whose `Flate` check failed.
+
+Renovate runs self-hosted from GitHub Actions every hour as the
+`nezdemkovski-renovate` GitHub App. Its workflow credentials are GitHub
+repository secrets (`RENOVATE_APP_CLIENT_ID`, `RENOVATE_APP_PRIVATE_KEY`,
+`GHCR_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN`); they are CI-only and are not
+mirrored in 1Password.
 
 Before merging a major of a stateful or infrastructure component, check the
 release notes against this repository and verify a recent restorable backup.

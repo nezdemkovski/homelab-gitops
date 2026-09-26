@@ -31,7 +31,7 @@
       automergeType: "branch",
       ignoreTests: false,
     },
-    // Upstream updates merge on their own once Flux Local renders the whole
+    // Upstream updates merge on their own once Flate renders the whole
     // cluster, so a PR only appears when that check fails
     {
       description: "Auto-merge upstream patch releases after they settle",
