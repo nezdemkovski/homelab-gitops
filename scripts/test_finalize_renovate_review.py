@@ -98,7 +98,11 @@ class ReviewTests(unittest.TestCase):
                     patch.object(gate.subprocess, "run") as merge:
                 self.assertEqual(gate.main(), 0)
                 labels.assert_called_once_with("owner/repo", 42, ["review/needs-human"])
-                self.assertIn("**Claude verdict:** needs human review", comment.call_args.args[2])
+                expected_verdict = (
+                    "approved" if data.get("verdict") == "approve"
+                    else "needs human review" if data else "unavailable"
+                )
+                self.assertIn(f"**Claude verdict:** {expected_verdict}", comment.call_args.args[2])
                 if files:
                     self.assertIn("workflows permission", comment.call_args.args[2])
                 merge.assert_not_called()

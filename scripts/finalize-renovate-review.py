@@ -176,6 +176,10 @@ def main() -> int:
             reason = "PR has 100 or more files; merge eligibility needs human review"
         elif any(item["filename"].startswith(".github/workflows/") for item in files):
             reason = "GitHub App cannot merge workflow changes without workflows permission"
+    claude_verdict = {
+        "approve": "approved",
+        "needs-human": "needs human review",
+    }.get(data.get("verdict"), "unavailable")
     verdict = (
         "approved"
         if data.get("verdict") == "approve" and reason is None
@@ -189,7 +193,7 @@ def main() -> int:
 
     ensure_labels(repo)
     set_labels(repo, number, desired)
-    upsert_comment(repo, number, comment_body(data, verdict, reason))
+    upsert_comment(repo, number, comment_body(data, claude_verdict, reason))
     if verdict != "approved":
         print("Review did not approve; PR remains open")
         return 0
@@ -205,7 +209,7 @@ def main() -> int:
         set_labels(repo, number, ["review/needs-human"])
         upsert_comment(
             repo, number,
-            comment_body(data, "needs human review",
+            comment_body(data, claude_verdict,
                          f"GitHub could not merge the approved PR: "
                          f"{result.stderr.strip()[:1000]}"),
         )
