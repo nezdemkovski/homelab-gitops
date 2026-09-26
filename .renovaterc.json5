@@ -89,6 +89,14 @@
       },
       minimumGroupSize: 2,
     },
+    // Branching rules
+    {
+      // Without this a major (postgresql 17 ➔ 18) and a minor that lands on
+      // the same new major (18.4 ➔ 18.6) share one `<dep>-18.x` branch
+      description: "Keep majors on their own branches",
+      matchUpdateTypes: ["major"],
+      additionalBranchPrefix: "major-",
+    },
     // Labeling rules
     {
       matchUpdateTypes: ["major"],
