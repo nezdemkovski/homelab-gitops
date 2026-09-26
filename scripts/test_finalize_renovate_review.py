@@ -79,16 +79,20 @@ class ReviewTests(unittest.TestCase):
             "EXPECTED_SHA": "head-sha",
             "EXPECTED_BASE_SHA": "base-sha",
         }
-        for data, reason, files in (
+        for data, reason, files, major in (
             ({"verdict": "needs-human", "summary": "Manual review needed.",
               "findings": [], "sources": [], "breaking_change": False,
-              "migration_required": False}, None, None),
-            ({}, "Claude returned no usable review evidence", None),
+              "migration_required": False}, None, None, False),
+            ({}, "Claude returned no usable review evidence", None, False),
             ({"verdict": "approve", "summary": "The update is safe.",
               "findings": [], "sources": ["https://github.com/example/release"],
               "breaking_change": False, "migration_required": False}, None,
-             [{"filename": ".github/workflows/review.yaml"}]),
+             [{"filename": ".github/workflows/review.yaml"}], False),
+            ({"verdict": "approve", "summary": "The update is safe.",
+              "findings": [], "sources": ["https://github.com/example/release"],
+              "breaking_change": False, "migration_required": False}, None, None, True),
         ):
+            pr["labels"] = [{"name": "type/major"}] if major else []
             with self.subTest(reason=reason), patch.dict("os.environ", env), \
                     patch.object(gate, "gh", side_effect=[pr, files] if files else [pr]), \
                     patch.object(gate, "review", return_value=(data, reason)), \
@@ -105,6 +109,8 @@ class ReviewTests(unittest.TestCase):
                 self.assertIn(f"**Claude verdict:** {expected_verdict}", comment.call_args.args[2])
                 if files:
                     self.assertIn("workflows permission", comment.call_args.args[2])
+                if major:
+                    self.assertIn("verified backup and human merge", comment.call_args.args[2])
                 merge.assert_not_called()
 
 

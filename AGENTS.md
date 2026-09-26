@@ -21,6 +21,8 @@ GitHub API or merge errors still fail the job.
 Workflow-file updates also stay open for manual merge because the GitHub App
 does not have the `workflows` permission. The comment shows Claude's verdict
 separately from the gate's decision to merge.
+Renovate PRs labeled `type/major` also stay open until a human verifies a
+restorable backup and merges them.
 
 For a single Kustomization you can also render the affected path:
 

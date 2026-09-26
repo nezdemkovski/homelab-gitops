@@ -171,11 +171,14 @@ def main() -> int:
 
     data, reason = review()
     if data.get("verdict") == "approve" and reason is None:
-        files = gh(f"repos/{repo}/pulls/{number}/files?per_page=100")
-        if len(files) == 100:
-            reason = "PR has 100 or more files; merge eligibility needs human review"
-        elif any(item["filename"].startswith(".github/workflows/") for item in files):
-            reason = "GitHub App cannot merge workflow changes without workflows permission"
+        if any(label["name"] == "type/major" for label in pr.get("labels", [])):
+            reason = "Major update requires verified backup and human merge"
+        else:
+            files = gh(f"repos/{repo}/pulls/{number}/files?per_page=100")
+            if len(files) == 100:
+                reason = "PR has 100 or more files; merge eligibility needs human review"
+            elif any(item["filename"].startswith(".github/workflows/") for item in files):
+                reason = "GitHub App cannot merge workflow changes without workflows permission"
     claude_verdict = {
         "approve": "approved",
         "needs-human": "needs human review",
