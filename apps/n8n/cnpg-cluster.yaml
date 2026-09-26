@@ -7,7 +7,7 @@ metadata:
     kustomize.toolkit.fluxcd.io/prune: disabled
 spec:
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.11-system-trixie
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.6-system-trixie
   bootstrap:
     initdb:
       database: n8n
@@ -19,6 +19,7 @@ spec:
     size: 5Gi
   backup:
     barmanObjectStore:
+      serverName: n8n-postgres-cnpg-pg18
       destinationPath: "s3://cnpg-backups/n8n-postgres-cnpg"
       endpointURL: "http://10.77.77.190:9000"
       s3Credentials:
