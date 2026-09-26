@@ -58,45 +58,35 @@
       automergeType: "branch",
       ignoreTests: true,
     },
-    // Grouping rules
-    {
-      description: "Auth Group",
-      groupName: "auth",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/^ghcr\\.io/nezdemkovski/auth-/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 2,
-    },
-    {
-      description: "Haymaker Group",
-      groupName: "haymaker",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/^ghcr\\.io/nezdemkovski/haymaker/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 2,
-    },
-    {
-      description: "n8n Group",
-      groupName: "n8n",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["docker.n8n.io/n8nio/n8n", "n8nio/runners"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 2,
-    },
-    // Branching rules
-    {
-      // Without this a major (postgresql 17 ➔ 18) and a minor that lands on
-      // the same new major (18.4 ➔ 18.6) share one `<dep>-18.x` branch
-      description: "Keep majors on their own branches",
-      matchUpdateTypes: ["major"],
-      additionalBranchPrefix: "major-",
-    },
+    // Grouping rules: one branch per deployed stack, so a stack never runs
+    // half-updated. Majors still get their own `major-<stack>` branch.
+
+    { groupName: "amela", matchFileNames: ["apps/amela/**"] },
+    { groupName: "auth", matchFileNames: ["apps/auth/**"] },
+    { groupName: "forgejo", matchFileNames: ["apps/forgejo/**"] },
+    { groupName: "haymaker", matchFileNames: ["apps/haymaker/**"] },
+    { groupName: "homarr", matchFileNames: ["apps/homarr/**"] },
+    { groupName: "monitoring", matchFileNames: ["apps/monitoring/**", "charts/monitoring/**"] },
+    { groupName: "n8n", matchFileNames: ["apps/n8n/**"] },
+    { groupName: "openmarkers", matchFileNames: ["apps/openmarkers/**"] },
+    { groupName: "paperclip", matchFileNames: ["apps/paperclip/**", "charts/paperclip/**"] },
+    { groupName: "plausible", matchFileNames: ["apps/plausible/**"] },
+    { groupName: "supabase", matchFileNames: ["apps/supabase/**"] },
+    { groupName: "uptime-kuma", matchFileNames: ["apps/uptime-kuma/**", "charts/uptime-kuma/**"] },
+    { groupName: "cilium", matchFileNames: ["infrastructure/cilium/**"] },
+    { groupName: "cloudflared", matchFileNames: ["infrastructure/cloudflared/**", "charts/cloudflared/**"] },
+    { groupName: "cloudnative-pg", matchFileNames: ["infrastructure/cloudnative-pg/**"] },
+    { groupName: "external-secrets", matchFileNames: ["infrastructure/external-secrets/**"] },
+    { groupName: "local-path-provisioner", matchFileNames: ["infrastructure/local-path-provisioner/**"] },
+    { groupName: "metrics-server", matchFileNames: ["infrastructure/metrics-server/**"] },
+    { groupName: "onepassword-connect", matchFileNames: ["infrastructure/onepassword-connect/**"] },
+
+    // Own releases deploy on their own cadence: grouping them with upstream
+    // updates would hold an automerge behind a manual review
+    { groupName: "amela release", matchFileNames: ["apps/amela/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
+    { groupName: "auth release", matchFileNames: ["apps/auth/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
+    { groupName: "haymaker release", matchFileNames: ["apps/haymaker/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
+    { groupName: "openmarkers release", matchFileNames: ["apps/openmarkers/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
     // Labeling rules
     {
       matchUpdateTypes: ["major"],
