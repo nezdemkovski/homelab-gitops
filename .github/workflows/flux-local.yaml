@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Flux Local
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - renovate/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Flux Local - Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Renders every Kustomization and HelmRelease under clusters/homelab,
+      # including private GHCR charts and local charts with dependencies
+      - name: Test
+        env:
+          # renovate: datasource=docker depName=ghcr.io/allenporter/flux-local
+          FLUX_LOCAL_VERSION: v8.4.0
+          GHCR_USERNAME: ${{ github.repository_owner }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          docker run --rm \
+            -e HOME=/tmp -e GHCR_USERNAME -e GHCR_TOKEN \
+            -v "$GITHUB_WORKSPACE:/src:ro" \
+            --entrypoint sh "ghcr.io/allenporter/flux-local:$FLUX_LOCAL_VERSION" -c '
+              set -eu
+              cp -r /src /tmp/w && cd /tmp/w
+              echo "$GHCR_TOKEN" | helm registry login ghcr.io \
+                -u "$GHCR_USERNAME" --password-stdin --registry-config /tmp/registry.json
+              for chart in charts/*/; do
+                grep -q "^dependencies:" "$chart/Chart.yaml" || continue
+                for repo in $(grep -E "^\s+repository: https?://" "$chart/Chart.yaml" | awk "{print \$2}" | sort -u); do
+                  helm repo add "$(echo "$repo" | md5sum | cut -c1-8)" "$repo" >/dev/null
+                done
+                helm dependency build "$chart" >/dev/null
+              done
+              flux-local test --enable-helm --all-namespaces \
+                --path clusters/homelab --registry-config /tmp/registry.json
+            '
