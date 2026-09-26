@@ -5,7 +5,7 @@ import json
 import os
 import subprocess
 import sys
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
 MARKER = "<!-- automated-renovate-review -->"
 BOT = "nezdemkovski-renovate[bot]"
@@ -29,6 +29,20 @@ def gh(*args: str, data: object | None = None) -> object:
     if result.returncode:
         raise RuntimeError(f"gh {' '.join(args)}: {result.stderr.strip()}")
     return json.loads(result.stdout) if result.stdout.strip() else None
+
+
+def usable_source(source: str) -> bool:
+    try:
+        url = urlparse(source)
+        hostname = url.hostname
+    except ValueError:
+        return False
+    return (
+        url.scheme == "https"
+        and bool(hostname)
+        and hostname not in {"example.com", "example.org", "example.net"}
+        and not hostname.endswith((".example.com", ".example.org", ".example.net"))
+    )
 
 
 def review() -> tuple[dict, str | None]:
@@ -57,12 +71,14 @@ def review() -> tuple[dict, str | None]:
         return {}, "Claude returned no explanation"
     if any(not isinstance(item, str) for item in data["findings"] + data["sources"]):
         return {}, "Claude returned malformed findings or sources"
-    if data["verdict"] == "approve" and (
-        not data["sources"]
-        or any("example.com" in source for source in data["sources"])
-        or data["summary"].strip().lower().startswith("test summary")
+    summary = data["summary"].strip().lower()
+    placeholder_summary = summary in {"test", "test summary", "placeholder", "todo", "n/a"}
+    invalid_sources = any(not usable_source(source) for source in data["sources"])
+    if placeholder_summary or invalid_sources or (
+        data["verdict"] == "approve" and not data["sources"]
     ):
-        return data, "Claude returned no usable evidence for approval"
+        # Do not publish an invalid model response as review evidence.
+        return {}, "Claude returned no usable review evidence"
     if data["verdict"] == "approve" and (
         data["breaking_change"] or data["migration_required"]
     ):
