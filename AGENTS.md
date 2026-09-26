@@ -70,14 +70,14 @@ every new release, including majors. It follows
 - upstream patch, digest and minor updates merge automatically 3 days after
   release, once the `Flate` check passes; 0.x minors are treated as breaking
   and open a PR;
-- majors wait for a checkbox on the Renovate Dashboard issue, then open a PR
-  that `claude-renovate-review.yaml` reviews;
+- upstream majors open a PR immediately for manual review and merge;
+  `claude-renovate-review.yaml` reviews the PR;
 - updates are grouped per stack (`apps/<app>` plus its chart or
-  `infrastructure/<component>`); CloudNativePG images form one group, and
-  own releases form a separate `<app> release` group.
+  `infrastructure/<component>`); each CloudNativePG image update stays with
+  its app, and own releases form a separate `<app> release` group.
 
-A PR from Renovate therefore means either a major you approved or an update
-whose `Flate` check failed.
+A PR from Renovate therefore means either an upstream major or an update whose
+`Flate` check failed.
 
 Renovate runs self-hosted from GitHub Actions every hour as the
 `nezdemkovski-renovate` GitHub App. Its workflow credentials are GitHub

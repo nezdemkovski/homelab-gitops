@@ -95,26 +95,12 @@
     { groupName: "metrics-server", matchFileNames: ["infrastructure/metrics-server/**"] },
     { groupName: "onepassword-connect", matchFileNames: ["infrastructure/onepassword-connect/**"] },
 
-    // Shared by every CloudNativePG cluster, so they move together
-    {
-      groupName: "postgresql",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
-    },
-
     // Own releases deploy on their own cadence: grouping them with upstream
     // updates would hold an automerge behind a manual review
     { groupName: "amela release", matchFileNames: ["apps/amela/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
     { groupName: "auth release", matchFileNames: ["apps/auth/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
     { groupName: "haymaker release", matchFileNames: ["apps/haymaker/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
     { groupName: "openmarkers release", matchFileNames: ["apps/openmarkers/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
-    // Majors wait for a checkbox on the Dependency Dashboard instead of
-    // opening a PR on their own; own releases are exempt
-    {
-      matchUpdateTypes: ["major"],
-      matchPackageNames: ["!/^ghcr\\.io/nezdemkovski//", "!/^ghcr\\.io/amela-io//"],
-      dependencyDashboardApproval: true,
-    },
     // Labeling rules
     {
       matchUpdateTypes: ["major"],
