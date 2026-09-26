@@ -61,8 +61,8 @@ class ReviewTests(unittest.TestCase):
         self.assertEqual(data["verdict"], "needs-human")
         self.assertIsNone(reason)
 
-    def test_nonapproval_reports_success_without_merging(self):
-        pr = {
+    def pull_request(self):
+        return {
             "state": "open",
             "draft": False,
             "base": {"ref": "master", "sha": "base-sha"},
@@ -72,25 +72,38 @@ class ReviewTests(unittest.TestCase):
                 "repo": {"full_name": "owner/repo"},
             },
             "user": {"login": gate.BOT},
+            "labels": [],
         }
-        env = {
+
+    def environment(self):
+        return {
             "GITHUB_REPOSITORY": "owner/repo",
             "PR_NUMBER": "42",
             "EXPECTED_SHA": "head-sha",
             "EXPECTED_BASE_SHA": "base-sha",
         }
+
+    def approval(self):
+        return {
+            "verdict": "approve",
+            "summary": "The update is safe.",
+            "findings": [],
+            "sources": ["https://github.com/example/release"],
+            "breaking_change": False,
+            "migration_required": False,
+        }
+
+    def test_nonapproval_reports_success_without_merging(self):
+        pr = self.pull_request()
+        env = self.environment()
         for data, reason, files, major in (
             ({"verdict": "needs-human", "summary": "Manual review needed.",
               "findings": [], "sources": [], "breaking_change": False,
               "migration_required": False}, None, None, False),
             ({}, "Claude returned no usable review evidence", None, False),
-            ({"verdict": "approve", "summary": "The update is safe.",
-              "findings": [], "sources": ["https://github.com/example/release"],
-              "breaking_change": False, "migration_required": False}, None,
+            (self.approval(), None,
              [{"filename": ".github/workflows/review.yaml"}], False),
-            ({"verdict": "approve", "summary": "The update is safe.",
-              "findings": [], "sources": ["https://github.com/example/release"],
-              "breaking_change": False, "migration_required": False}, None, None, True),
+            (self.approval(), None, None, True),
         ):
             pr["labels"] = [{"name": "type/major"}] if major else []
             with self.subTest(reason=reason), patch.dict("os.environ", env), \
@@ -112,6 +125,43 @@ class ReviewTests(unittest.TestCase):
                 if major:
                     self.assertIn("verified backup and human merge", comment.call_args.args[2])
                 merge.assert_not_called()
+
+    def test_approval_merges_only_the_reviewed_head(self):
+        with patch.dict("os.environ", self.environment()), \
+                patch.object(gate, "gh", side_effect=[self.pull_request(), []]), \
+                patch.object(gate, "review", return_value=(self.approval(), None)), \
+                patch.object(gate, "ensure_labels"), \
+                patch.object(gate, "set_labels") as labels, \
+                patch.object(gate, "upsert_comment"), \
+                patch.object(gate.subprocess, "run") as merge:
+            merge.return_value.returncode = 0
+            self.assertEqual(gate.main(), 0)
+        labels.assert_called_once_with("owner/repo", 42, ["review/approved"])
+        merge.assert_called_once()
+        command = merge.call_args.args[0]
+        self.assertEqual(command[:3], ["gh", "pr", "merge"])
+        self.assertIn("--squash", command)
+        self.assertEqual(
+            command[command.index("--match-head-commit") + 1], "head-sha"
+        )
+
+    def test_rejected_merge_flags_the_pr_for_a_human(self):
+        with patch.dict("os.environ", self.environment()), \
+                patch.object(gate, "gh", side_effect=[self.pull_request(), []]), \
+                patch.object(gate, "review", return_value=(self.approval(), None)), \
+                patch.object(gate, "ensure_labels"), \
+                patch.object(gate, "set_labels") as labels, \
+                patch.object(gate, "upsert_comment") as comment, \
+                patch.object(gate.subprocess, "run") as merge:
+            merge.return_value.returncode = 1
+            merge.return_value.stderr = "Head branch was modified"
+            self.assertEqual(gate.main(), 1)
+        self.assertEqual(
+            labels.call_args_list[-1].args, ("owner/repo", 42, ["review/needs-human"])
+        )
+        body = comment.call_args.args[2]
+        self.assertIn("GitHub could not merge the approved PR", body)
+        self.assertIn("Head branch was modified", body)
 
 
 if __name__ == "__main__":
