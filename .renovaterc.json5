@@ -91,6 +91,7 @@
     { groupName: "cloudflared", matchFileNames: ["infrastructure/cloudflared/**", "charts/cloudflared/**"] },
     { groupName: "cloudnative-pg", matchFileNames: ["infrastructure/cloudnative-pg/**"] },
     { groupName: "external-secrets", matchFileNames: ["infrastructure/external-secrets/**"] },
+    { groupName: "konflate", matchFileNames: ["infrastructure/konflate/**"] },
     { groupName: "local-path-provisioner", matchFileNames: ["infrastructure/local-path-provisioner/**"] },
     { groupName: "metrics-server", matchFileNames: ["infrastructure/metrics-server/**"] },
     { groupName: "onepassword-connect", matchFileNames: ["infrastructure/onepassword-connect/**"] },

@@ -1,0 +1,33 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: konflate
+  namespace: konflate
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: konflate
+    namespace: konflate
+  interval: 1h0m0s
+  releaseName: konflate
+  storageNamespace: konflate
+  targetNamespace: konflate
+  values:
+    config:
+      helmApiVersions: '{{ join "," .Capabilities.APIVersions }}'
+      kubeVersion: "{{ .Capabilities.KubeVersion.Version }}"
+      mcp: true
+      prFilterExpr: pr.baseRef == "master"
+      renderForkPrs: false
+      repo: github://nezdemkovski/homelab-gitops
+      restrictEgress: "true"
+    networkPolicy:
+      enabled: true
+      type: cilium
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 256Mi

@@ -21,6 +21,12 @@ Before pushing a change, render the whole cluster offline with
 flate test all --path ./clusters/homelab
 ```
 
+Konflate renders open PRs against `master` and serves their resource diffs
+read-only in the cluster. Reach its UI/API with
+`kubectl --context admin@homelab -n konflate port-forward svc/konflate 8080:8080`
+and open `http://localhost:8080`. It has no GitHub write credential, so the
+`Flate` workflow remains Renovate's CI check for automatic updates.
+
 For a single Kustomization you can also render the affected path:
 
 ```bash
