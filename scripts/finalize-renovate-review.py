@@ -18,7 +18,7 @@ LABELS = {
 
 
 def gh(*args: str, data: object | None = None) -> object:
-    command = ["gh", *args]
+    command = ["gh", "api", *args]
     result = subprocess.run(
         command,
         input=json.dumps(data) if data is not None else None,
@@ -57,8 +57,12 @@ def review() -> tuple[dict, str | None]:
         return {}, "Claude returned no explanation"
     if any(not isinstance(item, str) for item in data["findings"] + data["sources"]):
         return {}, "Claude returned malformed findings or sources"
-    if data["verdict"] == "approve" and not data["sources"]:
-        return data, "Claude found no source supporting approval"
+    if data["verdict"] == "approve" and (
+        not data["sources"]
+        or any("example.com" in source for source in data["sources"])
+        or data["summary"].strip().lower().startswith("test summary")
+    ):
+        return data, "Claude returned no usable evidence for approval"
     if data["verdict"] == "approve" and (
         data["breaking_change"] or data["migration_required"]
     ):
