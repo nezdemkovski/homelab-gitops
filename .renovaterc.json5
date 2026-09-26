@@ -5,6 +5,10 @@
     "github>home-operations/renovate-presets//apps/cnpg.json5#8.1.0",
     ":timezone(Europe/Prague)",
   ],
+  prCreation: "immediate",
+  rebaseWhen: "behind-base-branch",
+  automerge: false,
+  dependencyDashboardApproval: false,
   lockFileMaintenance: {
     enabled: true,
     schedule: ["before 3am on the first day of the month"],
@@ -21,57 +25,6 @@
     },
   ],
   packageRules: [
-    // Auto-merge rules
-    {
-      description: "Auto-merge own images and charts on every release",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"],
-      matchUpdateTypes: ["major", "minor", "patch", "digest"],
-      automerge: true,
-      automergeType: "branch",
-      ignoreTests: false,
-    },
-    // Upstream updates merge on their own once Flate renders the whole
-    // cluster, so a PR only appears when that check fails
-    {
-      description: "Auto-merge upstream patch releases after they settle",
-      matchDatasources: ["docker", "helm"],
-      matchPackageNames: ["!/^ghcr\\.io/nezdemkovski//", "!/^ghcr\\.io/amela-io//"],
-      matchUpdateTypes: ["patch", "digest"],
-      automerge: true,
-      automergeType: "branch",
-      minimumReleaseAge: "3 days",
-      ignoreTests: false,
-    },
-    {
-      // 0.x minors may break, so the presets treat them as majors
-      description: "Auto-merge upstream minor releases after they settle",
-      matchDatasources: ["docker", "helm"],
-      matchPackageNames: ["!/^ghcr\\.io/nezdemkovski//", "!/^ghcr\\.io/amela-io//"],
-      matchUpdateTypes: ["minor"],
-      matchCurrentVersion: "!/^v?0\\./",
-      automerge: true,
-      automergeType: "branch",
-      minimumReleaseAge: "3 days",
-      ignoreTests: false,
-    },
-    {
-      description: "Auto-merge GitHub Actions",
-      matchManagers: ["github-actions"],
-      matchUpdateTypes: ["minor", "patch", "digest"],
-      automerge: true,
-      automergeType: "branch",
-      minimumReleaseAge: "3 days",
-      ignoreTests: true,
-    },
-    {
-      description: "Auto-merge Renovate Presets",
-      matchManagers: ["renovate-config"],
-      matchUpdateTypes: ["minor", "patch"],
-      automerge: true,
-      automergeType: "branch",
-      ignoreTests: true,
-    },
     // Grouping rules: one branch per deployed stack, so a stack never runs
     // half-updated. Majors get their own `major-<stack>` branch.
 
@@ -96,8 +49,7 @@
     { groupName: "metrics-server", matchFileNames: ["infrastructure/metrics-server/**"] },
     { groupName: "onepassword-connect", matchFileNames: ["infrastructure/onepassword-connect/**"] },
 
-    // Own releases deploy on their own cadence: grouping them with upstream
-    // updates would hold an automerge behind a manual review
+    // Keep own releases separate so each PR has one coherent risk review.
     { groupName: "amela release", matchFileNames: ["apps/amela/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
     { groupName: "auth release", matchFileNames: ["apps/auth/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
     { groupName: "haymaker release", matchFileNames: ["apps/haymaker/**"], matchPackageNames: ["/^ghcr\\.io/nezdemkovski//", "/^ghcr\\.io/amela-io//"] },
@@ -118,6 +70,15 @@
     {
       matchUpdateTypes: ["digest"],
       addLabels: ["type/digest"],
+    },
+    // The review workflow owns merging. Override automerge and dashboard
+    // approval rules inherited from the shared preset for every dependency.
+    {
+      description: "Open every update as a PR for Claude review",
+      matchPackageNames: ["/.*/"],
+      automerge: false,
+      automergeType: "pr",
+      dependencyDashboardApproval: false,
     },
   ],
 }

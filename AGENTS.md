@@ -21,13 +21,14 @@ Before pushing a change, render the whole cluster offline with
 flate test all --path ./clusters/homelab
 ```
 
-Konflate renders open PRs against `master` and serves their resource diffs
-read-only in the cluster. Reach its UI/API with
-`kubectl --context admin@homelab -n konflate port-forward svc/konflate 18080:8080`
-and open `http://localhost:18080`. It has no GitHub write credential, so the
-`Flate` workflow remains Renovate's CI check for automatic updates.
-Private OCI sources that require a cluster Secret are skipped during offline
-rendering; a green diff is not proof that those workloads rendered.
+The `Dependency Review` workflow renders every PR with Flate. For
+same-repository Renovate PRs with a successful render, Claude reviews all
+changed versions and returns a structured verdict. A trusted CI step labels
+the PR and merges only an approved, unchanged head; a blocked or failed
+review stays open for human investigation. Konflate remains an optional
+read-only PR diff viewer, not an approval or merge gate. Private OCI sources
+that require a cluster Secret are skipped during offline rendering; Claude
+must not approve a changed workload when that leaves the update unverified.
 
 For a single Kustomization you can also render the affected path:
 
@@ -69,23 +70,21 @@ Pin exact versions in Git: chart `version`, OCIRepository `ref.tag`, and image
 `tag` (own images as `tag: x.y.z@sha256:...`). Do not use semver ranges; Flux
 deploys exactly what Git says.
 
-Renovate (`.renovaterc.json5`, `.github/workflows/renovate.yaml`) proposes
-every new release, including majors. It follows
-`onedr0p/home-ops` and the `home-operations/renovate-presets`:
+Renovate (`.renovaterc.json5`, `.github/workflows/renovate.yaml`)
+opens a PR for every discovered release, including majors and own images.
+It groups related dependencies per application or infrastructure stack and
+adds `type/major`, `type/minor`, `type/patch`, or `type/digest`
+labels. Renovate never merges a branch or PR itself.
 
-- own images and charts under `ghcr.io/nezdemkovski` and `ghcr.io/amela-io`
-  merge automatically on every release;
-- upstream patch, digest and minor updates merge automatically 3 days after
-  release, once the `Flate` check passes; 0.x minors are treated as breaking
-  and open a PR;
-- upstream majors open a PR immediately for manual review and merge;
-  `claude-renovate-review.yaml` reviews the PR;
-- updates are grouped per stack (`apps/<app>` plus its chart or
-  `infrastructure/<component>`); each CloudNativePG image update stays with
-  its app, and own releases form a separate `<app> release` group.
-
-A PR from Renovate therefore means either an upstream major or an update whose
-`Flate` check failed.
+On each Renovate PR, the `Dependency Review` workflow runs Flate first.
+Claude then checks all releases in the version range, upstream application
+changes behind wrapper charts/images, and this repository's consumers.
+The trusted finalizer adds `review/approved` or `review/needs-human`,
+plus `risk/breaking-change` and `risk/migration` when applicable.
+An approval merges the reviewed SHA immediately; uncertain findings,
+relevant breaking changes, required migration, missing release notes,
+unverified stateful-major backup, render failures, or review failures require
+human investigation. A green render alone is not runtime or data proof.
 
 Renovate runs self-hosted from GitHub Actions every hour as the
 `nezdemkovski-renovate` GitHub App. Its workflow credentials are GitHub
@@ -93,8 +92,8 @@ repository secrets (`RENOVATE_APP_CLIENT_ID`, `RENOVATE_APP_PRIVATE_KEY`,
 `GHCR_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN`); they are CI-only and are not
 mirrored in 1Password.
 
-Before merging a major of a stateful or infrastructure component, check the
-release notes against this repository and verify a recent restorable backup.
+For a human-reviewed stateful or infrastructure major, check release notes
+against this repository and verify a recent restorable backup before merge.
 Images and charts must keep a `repository`/`registry` next to `tag` in values
 so Renovate can detect them. The Renovate Dependency Dashboard issue lists
 pending and rate-limited updates.

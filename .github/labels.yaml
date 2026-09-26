@@ -8,3 +8,11 @@
   color: "ff9800"
 - name: type/major
   color: "f6412d"
+- name: review/approved
+  color: "2da44e"
+- name: review/needs-human
+  color: "d73a4a"
+- name: risk/breaking-change
+  color: "f6412d"
+- name: risk/migration
+  color: "ff9800"
