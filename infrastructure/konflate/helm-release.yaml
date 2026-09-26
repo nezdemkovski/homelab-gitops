@@ -19,9 +19,16 @@ spec:
       kubeVersion: "{{ .Capabilities.KubeVersion.Version }}"
       mcp: true
       prFilterExpr: pr.baseRef == "master"
+      publicUrl: https://konflate.nezdemkovski.cloud
       renderForkPrs: false
       repo: github://nezdemkovski/homelab-gitops
       restrictEgress: "true"
+      verifyImages: true
+    monitoring:
+      serviceMonitor:
+        enabled: true
+        labels:
+          release: monitoring
     networkPolicy:
       enabled: true
       type: cilium
