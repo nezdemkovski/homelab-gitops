@@ -35,6 +35,10 @@ spec:
         - name: paperclip
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.permissions.uid }}
+            runAsGroup: {{ .Values.permissions.gid }}
           env:
             - name: HOST
               value: {{ .Values.env.host | quote }}
