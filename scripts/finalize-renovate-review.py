@@ -170,15 +170,21 @@ def main() -> int:
         return 0
 
     data, reason = review()
+    stale_base = False
     if data.get("verdict") == "approve" and reason is None:
         if any(label["name"] == "type/major" for label in pr.get("labels", [])):
             reason = "Major update requires verified backup and human merge"
         else:
-            files = gh(f"repos/{repo}/pulls/{number}/files?per_page=100")
-            if len(files) == 100:
-                reason = "PR has 100 or more files; merge eligibility needs human review"
-            elif any(item["filename"].startswith(".github/workflows/") for item in files):
-                reason = "GitHub App cannot merge workflow changes without workflows permission"
+            current_base = gh(f"repos/{repo}/git/ref/heads/master")["object"]["sha"]
+            stale_base = current_base != expected_base_sha
+            if stale_base:
+                reason = "Base branch advanced; Renovate will rebase and review again"
+            else:
+                files = gh(f"repos/{repo}/pulls/{number}/files?per_page=100")
+                if len(files) == 100:
+                    reason = "PR has 100 or more files; merge eligibility needs human review"
+                elif any(item["filename"].startswith(".github/workflows/") for item in files):
+                    reason = "GitHub App cannot merge workflow changes without workflows permission"
     claude_verdict = {
         "approve": "approved",
         "needs-human": "needs human review",
@@ -188,7 +194,9 @@ def main() -> int:
         if data.get("verdict") == "approve" and reason is None
         else "needs human review"
     )
-    desired = ["review/approved" if verdict == "approved" else "review/needs-human"]
+    desired = [] if stale_base else [
+        "review/approved" if verdict == "approved" else "review/needs-human"
+    ]
     if data.get("breaking_change"):
         desired.append("risk/breaking-change")
     if data.get("migration_required"):
@@ -209,15 +217,18 @@ def main() -> int:
         check=False,
     )
     if result.returncode:
-        set_labels(repo, number, ["review/needs-human"])
+        base_changed = "Base branch was modified" in result.stderr
+        set_labels(repo, number, [] if base_changed else ["review/needs-human"])
         upsert_comment(
             repo, number,
             comment_body(data, claude_verdict,
+                         "Base branch advanced; Renovate will rebase and review again"
+                         if base_changed else
                          f"GitHub could not merge the approved PR: "
                          f"{result.stderr.strip()[:1000]}"),
         )
         print(result.stderr, file=sys.stderr)
-        return 1
+        return 0 if base_changed else 1
     print(f"Merged approved Renovate PR #{number} at {expected_sha}")
     return 0
 

@@ -79,29 +79,52 @@ class ReviewTests(unittest.TestCase):
             "EXPECTED_SHA": "head-sha",
             "EXPECTED_BASE_SHA": "base-sha",
         }
-        for data, reason, files, major in (
+        approval = {
+            "verdict": "approve", "summary": "The update is safe.",
+            "findings": [], "sources": ["https://github.com/example/release"],
+            "breaking_change": False, "migration_required": False,
+        }
+        for data, reason, files, major, stale, merge_race in (
             ({"verdict": "needs-human", "summary": "Manual review needed.",
               "findings": [], "sources": [], "breaking_change": False,
-              "migration_required": False}, None, None, False),
-            ({}, "Claude returned no usable review evidence", None, False),
-            ({"verdict": "approve", "summary": "The update is safe.",
-              "findings": [], "sources": ["https://github.com/example/release"],
-              "breaking_change": False, "migration_required": False}, None,
-             [{"filename": ".github/workflows/review.yaml"}], False),
-            ({"verdict": "approve", "summary": "The update is safe.",
-              "findings": [], "sources": ["https://github.com/example/release"],
-              "breaking_change": False, "migration_required": False}, None, None, True),
+              "migration_required": False}, None, None, False, False, False),
+            ({}, "Claude returned no usable review evidence", None, False, False, False),
+            (approval, None, [{"filename": ".github/workflows/review.yaml"}],
+             False, False, False),
+            (approval, None, None, True, False, False),
+            (approval, None, None, False, True, False),
+            (approval, None, None, False, False, True),
+            (approval, None, None, False, False, False),
         ):
             pr["labels"] = [{"name": "type/major"}] if major else []
-            with self.subTest(reason=reason), patch.dict("os.environ", env), \
-                    patch.object(gate, "gh", side_effect=[pr, files] if files else [pr]), \
+            responses = [pr]
+            if data.get("verdict") == "approve" and reason is None and not major:
+                responses.append({"object": {"sha": "new-base" if stale else "base-sha"}})
+                if not stale:
+                    responses.append(files or [])
+            with self.subTest(major=major, stale=stale, merge_race=merge_race), \
+                    patch.dict("os.environ", env), \
+                    patch.object(gate, "gh", side_effect=responses), \
                     patch.object(gate, "review", return_value=(data, reason)), \
                     patch.object(gate, "ensure_labels"), \
                     patch.object(gate, "set_labels") as labels, \
                     patch.object(gate, "upsert_comment") as comment, \
                     patch.object(gate.subprocess, "run") as merge:
+                if merge_race:
+                    merge.return_value.returncode = 1
+                    merge.return_value.stderr = "Base branch was modified"
+                else:
+                    merge.return_value.returncode = 0
                 self.assertEqual(gate.main(), 0)
-                labels.assert_called_once_with("owner/repo", 42, ["review/needs-human"])
+                approved_path = data.get("verdict") == "approve" and not (
+                    files or major or stale or merge_race
+                )
+                expected_labels = (
+                    [] if stale or merge_race
+                    else ["review/approved"] if approved_path
+                    else ["review/needs-human"]
+                )
+                self.assertEqual(labels.call_args.args, ("owner/repo", 42, expected_labels))
                 expected_verdict = (
                     "approved" if data.get("verdict") == "approve"
                     else "needs human review" if data else "unavailable"
@@ -111,7 +134,12 @@ class ReviewTests(unittest.TestCase):
                     self.assertIn("workflows permission", comment.call_args.args[2])
                 if major:
                     self.assertIn("verified backup and human merge", comment.call_args.args[2])
-                merge.assert_not_called()
+                if stale or merge_race:
+                    self.assertIn("Renovate will rebase", comment.call_args.args[2])
+                if merge_race or approved_path:
+                    merge.assert_called_once()
+                else:
+                    merge.assert_not_called()
 
 
 if __name__ == "__main__":
