@@ -18,6 +18,8 @@ The `Dependency Review` workflow reviews same-repository Renovate PRs with
 Claude. A trusted CI step labels the PR and merges only an approved,
 unchanged head. A non-approval keeps the PR open and the check green;
 GitHub API or merge errors still fail the job.
+Workflow-file updates also stay open for manual merge because the GitHub App
+does not have the `workflows` permission.
 
 For a single Kustomization you can also render the affected path:
 
