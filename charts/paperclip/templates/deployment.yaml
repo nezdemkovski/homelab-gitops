@@ -33,7 +33,7 @@ spec:
               mountPath: {{ .Values.env.home }}
       containers:
         - name: paperclip
-          image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: HOST
