@@ -23,10 +23,6 @@ does not have the `workflows` permission. The comment shows Claude's verdict
 separately from the gate's decision to merge.
 Renovate PRs labeled `type/major` also stay open until a human verifies a
 restorable backup and merges them.
-If `master` advances during a review, the gate leaves the PR open with a green
-check for Renovate to rebase and review again.
-Renovate runs after each `master` push as well as on its hourly schedule, so
-stale branches are regenerated automatically without manual rebases.
 
 For a single Kustomization you can also render the affected path:
 

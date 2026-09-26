@@ -6,6 +6,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - .renovaterc.json5
+      - .renovate/**.json5
   schedule:
     - cron: 20 * * * *
   workflow_dispatch:
@@ -30,7 +33,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: read
