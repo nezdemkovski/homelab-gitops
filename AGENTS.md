@@ -23,9 +23,11 @@ flate test all --path ./clusters/homelab
 
 Konflate renders open PRs against `master` and serves their resource diffs
 read-only in the cluster. Reach its UI/API with
-`kubectl --context admin@homelab -n konflate port-forward svc/konflate 8080:8080`
-and open `http://localhost:8080`. It has no GitHub write credential, so the
+`kubectl --context admin@homelab -n konflate port-forward svc/konflate 18080:8080`
+and open `http://localhost:18080`. It has no GitHub write credential, so the
 `Flate` workflow remains Renovate's CI check for automatic updates.
+Private OCI sources that require a cluster Secret are skipped during offline
+rendering; a green diff is not proof that those workloads rendered.
 
 For a single Kustomization you can also render the affected path:
 
