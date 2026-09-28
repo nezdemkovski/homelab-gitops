@@ -83,7 +83,7 @@ jobs:
             or configuration migration. Summarize why you chose the verdict
             and list specific findings with source URLs.
           claude_args: |
-            --model claude-sonnet-5
+            --model claude-sonnet-5-5
             --max-turns 50
             --allowedTools "Read,Glob,Grep,WebFetch,WebSearch,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh release list:*),Bash(gh release view:*)"
             --json-schema '{"type":"object","additionalProperties":false,"properties":{"verdict":{"type":"string","enum":["approve","needs-human"]},"breaking_change":{"type":"boolean"},"migration_required":{"type":"boolean"},"summary":{"type":"string"},"findings":{"type":"array","items":{"type":"string"}},"sources":{"type":"array","items":{"type":"string"}}},"required":["verdict","breaking_change","migration_required","summary","findings","sources"]}'
