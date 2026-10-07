@@ -11,5 +11,5 @@ spec:
     operation: copy
   provider: generic
   ref:
-    tag: 1.14.0
+    tag: 1.15.0
   url: oci://ghcr.io/n8n-io/n8n-helm-chart/n8n
