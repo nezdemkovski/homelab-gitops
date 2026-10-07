@@ -41,7 +41,7 @@ permissions:
 jobs:
   main:
     name: Renovate
-    runs-on: [self-hosted, Linux, ARM64, studio-linux]
+    runs-on: ubuntu-latest
     permissions:
       packages: read
     steps:
