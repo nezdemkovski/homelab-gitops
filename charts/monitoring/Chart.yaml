@@ -5,11 +5,11 @@ type: application
 version: 0.1.1
 dependencies:
   - name: kube-prometheus-stack
-    version: 91.9.0
+    version: 92.3.0
     repository: https://prometheus-community.github.io/helm-charts
   - name: grafana
     version: 13.5.0
     repository: https://grafana-community.github.io/helm-charts
   - name: grafana-mcp
-    version: 0.25.3
+    version: 0.27.2
     repository: https://grafana-community.github.io/helm-charts
