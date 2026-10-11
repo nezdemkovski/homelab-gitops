@@ -5,3 +5,4 @@ resources:
   - clusterwide-common.yaml
   - workload-baseline.yaml
   - workload-haymaker.yaml
+  - workload-playdamnit.yaml

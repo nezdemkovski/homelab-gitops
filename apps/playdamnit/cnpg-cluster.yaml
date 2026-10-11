@@ -1,0 +1,53 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: playdamnit-postgres
+  namespace: playdamnit
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.6-system-trixie
+  bootstrap:
+    initdb:
+      database: playdamnit
+      owner: playdamnit
+      secret:
+        name: playdamnit-postgres-owner
+      # pg_trgm is a trusted extension; the app's migrations create it as the owner
+  postgresql:
+    parameters:
+      # The catalog is a ~9 GB IGDB mirror: let the planner and vacuum keep up with it
+      shared_buffers: 512MB
+      effective_cache_size: 1536MB
+      maintenance_work_mem: 256MB
+      work_mem: 16MB
+      io_method: worker
+  resources:
+    requests:
+      cpu: 250m
+      memory: 1Gi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+  storage:
+    storageClass: local-path
+    # Full IGDB mirror measured at ~9 GB with indexes; leave room for growth and WAL
+    size: 30Gi
+  backup:
+    barmanObjectStore:
+      serverName: playdamnit-postgres-pg18
+      destinationPath: "s3://cnpg-backups/playdamnit-postgres"
+      endpointURL: "http://10.77.77.190:9000"
+      s3Credentials:
+        accessKeyId:
+          name: cnpg-backup-s3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: cnpg-backup-s3
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+      data:
+        compression: gzip
+    retentionPolicy: "30d"

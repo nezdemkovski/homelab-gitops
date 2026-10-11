@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: playdamnit-postgres-daily-backup
+  namespace: playdamnit
+spec:
+  # Before the 02:00 incremental catalog sync
+  schedule: "0 30 1 * * *"
+  backupOwnerReference: self
+  cluster:
+    name: playdamnit-postgres

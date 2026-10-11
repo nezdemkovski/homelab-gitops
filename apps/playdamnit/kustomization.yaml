@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - ghcr-pull-secret.yaml
+  - cnpg-backup-secret.yaml
+  - cnpg-owner-secret.yaml
+  - external-secret-api.yaml
+  - external-secret-librarian.yaml
+  - cnpg-cluster.yaml
+  - cnpg-scheduled-backup.yaml
+  - oci-repository-api.yaml
+  - oci-repository-librarian.yaml
+  - oci-repository-web.yaml
+  - helm-release-api.yaml
+  - helm-release-librarian.yaml
+  - helm-release-web.yaml

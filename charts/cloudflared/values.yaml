@@ -46,6 +46,11 @@ tunnel:
       service: http://haymaker-frontend.haymaker.svc.cluster.local:80
     - hostname: api.haymaker.lol
       service: http://haymaker-api.haymaker.svc.cluster.local:80
+    - hostname: games.nezdemkovski.cloud
+      path: ^/api/.*
+      service: http://playdamnit-api.playdamnit.svc.cluster.local:80
+    - hostname: games.nezdemkovski.cloud
+      service: http://playdamnit-web.playdamnit.svc.cluster.local:80
     - service: http_status:404
 
 credentials:

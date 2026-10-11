@@ -1,0 +1,19 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: playdamnit-web
+  namespace: playdamnit
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: playdamnit-web
+  interval: 1h0m0s
+  releaseName: playdamnit-web
+  values:
+    fullnameOverride: playdamnit-web
+    image:
+      repository: ghcr.io/nezdemkovski/playdamnit-web
+      tag: 0.1.0
+    imagePullSecrets:
+    - name: playdamnit-ghcr

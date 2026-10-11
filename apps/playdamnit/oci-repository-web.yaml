@@ -1,0 +1,17 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: playdamnit-web
+  namespace: playdamnit
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    tag: 0.1.0
+  secretRef:
+    name: playdamnit-ghcr
+  url: oci://ghcr.io/nezdemkovski/charts/playdamnit-web

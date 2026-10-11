@@ -1,0 +1,19 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: playdamnit-librarian
+  namespace: playdamnit
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: playdamnit-librarian
+  interval: 1h0m0s
+  releaseName: playdamnit-librarian
+  values:
+    fullnameOverride: playdamnit-librarian
+    image:
+      repository: ghcr.io/nezdemkovski/playdamnit-librarian
+      tag: 0.1.0
+    imagePullSecrets:
+    - name: playdamnit-ghcr

@@ -19,6 +19,7 @@ spec:
           - n8n
           - openmarkers
           - paperclip
+          - playdamnit
           - plausible
           - uptime-kuma
   egress:
@@ -45,6 +46,7 @@ spec:
           - n8n
           - openmarkers
           - paperclip
+          - playdamnit
           - plausible
           - supabase
           - uptime-kuma
@@ -73,6 +75,7 @@ spec:
           - n8n
           - openmarkers
           - paperclip
+          - playdamnit
   egress:
     - toCIDR:
         - 10.77.77.190/32
@@ -100,6 +103,7 @@ spec:
           - n8n
           - openmarkers
           - paperclip
+          - playdamnit
   ingress:
     - fromEndpoints:
         - matchLabels:
