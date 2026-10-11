@@ -661,6 +661,7 @@ spec:
                   - n8n
                   - openmarkers
                   - paperclip
+                  - playdamnit
                   - plausible
                   - supabase
                   - uptime-kuma
