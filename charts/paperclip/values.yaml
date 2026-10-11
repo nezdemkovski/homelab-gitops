@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/paperclipai/paperclip
-  tag: 2026.916.1@sha256:a02ac35ac41df911af477422ea0e781cf41d2b2c600c66f0a5ac9d8c63f52c2c
+  tag: 2026.1005.0@sha256:de762433b50d56ed9180fef96a13fa236b37856c5c7a7718e8f19afe3d1e8670
   pullPolicy: IfNotPresent
 
 env:
