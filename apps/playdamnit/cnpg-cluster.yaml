@@ -14,6 +14,13 @@ spec:
       owner: playdamnit
       secret:
         name: playdamnit-postgres-owner
+      # Unicode-aware case mapping (builtin provider) and character classes (lc_ctype) so lower(),
+      # ILIKE and pg_trgm handle Cyrillic, CJK and the rest; byte-order collation stays fast
+      encoding: UTF8
+      localeProvider: builtin
+      builtinLocale: C.UTF-8
+      localeCollate: C
+      localeCType: C.UTF-8
       # pg_trgm is a trusted extension; the app's migrations create it as the owner
   postgresql:
     parameters:
