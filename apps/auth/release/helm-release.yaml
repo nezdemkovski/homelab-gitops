@@ -55,8 +55,8 @@ spec:
         storageClass: local-path
     onepassword:
       appItem: auth
-      redisItem: auth-redis
-      redisPasswordProperty: password
+      redisItem: auth
+      redisPasswordProperty: REDIS_PASSWORD
     postgres:
       credentialsSecret:
         name: auth-postgres-owner

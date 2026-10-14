@@ -41,7 +41,7 @@ postgres:
 
 onepassword:
   appItem: paperclip
-  postgresItem: paperclip-postgres
+  postgresItem: paperclip
 
 service:
   type: ClusterIP

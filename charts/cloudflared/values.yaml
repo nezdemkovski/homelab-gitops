@@ -61,7 +61,7 @@ credentials:
       kind: ClusterSecretStore
       name: onepassword
     remoteRef:
-      key: cloudflare-homelab-k8s
+      key: cloudflared
       property: credentials.json
 
 livenessProbe:

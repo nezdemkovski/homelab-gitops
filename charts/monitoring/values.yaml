@@ -1,6 +1,6 @@
 onepassword:
-  mcpItem: grafana-mcp
-  nezdemosReaderItem: nezdemos-grafana-reader
+  mcpItem: grafana
+  nezdemosReaderItem: nezdemos
   plausibleItem: plausible
 
 kube-prometheus-stack:
