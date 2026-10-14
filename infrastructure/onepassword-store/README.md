@@ -8,9 +8,8 @@ in Git and must remain in the `external-secrets` namespace.
 ## Vault layout
 
 The `Homelab` vault has one active Secure Note per service, without tags.
-Keep application keys,
-database credentials and registry credentials in sections of that item rather
-than separate `*-postgres`, `*-redis` or `*-ghcr` items. Shared services retain
+Keep application keys, database credentials and registry credentials in sections
+of that item rather than separate `*-postgres`, `*-redis` or `*-ghcr` items. Shared services retain
 their own item: for example, `synology-rustfs` owns backup storage credentials;
 consumers reference that item instead of copying the credentials.
 
@@ -31,8 +30,9 @@ Passwords, tokens and connection strings containing credentials are concealed
 fields. URL-encode credentials in connection strings. `DB_URL` uses Kubernetes
 service DNS and is reachable from the cluster. From a Mac, run the item's
 `DB_PORT_FORWARD` command, then connect with `DB_LOCAL_URL` while the forwarding
-session is open. PostgreSQL forwarding uses local port `15432`; stop the previous
-session before forwarding another service.
+session is open. Commands use `kubectl --context admin@homelab` and the global
+`~/.kube/config`, without repository paths. PostgreSQL forwarding uses local port
+`15432`; stop the previous session before forwarding another service.
 
 `amela` includes backend, frontend, PostgreSQL and registry fields. `auth`
 includes PostgreSQL and Redis. `nezdemos` includes API, WHOOP and database reader
@@ -50,3 +50,9 @@ When reorganizing items, populate the destination first, update references in
 Git, reconcile Flux and force-refresh the affected ExternalSecrets. Verify Ready
 conditions and unchanged consumer Secret data before archiving source items.
 Keep archived items recoverable; do not permanently delete them as part of cleanup.
+
+## Local client configuration
+
+See [global config paths and contexts](../../README.md#access). Recovery
+attachments and client commands are recorded in the `kubernetes` and `talos`
+Secure Notes. Preserve other contexts when restoring; never put configs in Git.

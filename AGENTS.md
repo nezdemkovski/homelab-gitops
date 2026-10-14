@@ -1,119 +1,112 @@
 # AGENTS.md
 
-Operational rules for agents working in this Flux GitOps repository.
+Operational rules for this Talos/Flux homelab. Start with the current Git state,
+affected manifests and live resource status; do not infer deployment state from
+an old release or a previous run.
 
-## Reconciliation model
+## GitOps workflow
 
-- `master` is the source of truth for the single `homelab` cluster.
-- Flux bootstraps from `clusters/homelab/flux-system` and reconciles the
-  component Kustomizations declared in `clusters/homelab/`.
-- Application manifests live in `apps/<app>/`; shared controllers and cluster
-  services live in `infrastructure/<component>/`.
-- Keep one Flux Kustomization per application or independently operated
-  component. Express ordering with `spec.dependsOn`.
-- Generate Flux resources with the Flux CLI when possible, then commit the
-  exported YAML. Do not apply long-lived resources by hand.
+- `master` is the source of truth for the `homelab` cluster. Flux is the only
+  deployment reconciler. Bootstrap resources are in
+  `clusters/homelab/flux-system`; component Kustomizations are in
+  `clusters/homelab/`; workloads are in `apps/`; shared services are in
+  `infrastructure/`; local charts are in `charts/`.
+- Keep one Kustomization per independently operated component, with
+  `spec.dependsOn` for ordering. Prefer `flux create ... --export` for new Flux
+  resources. Commit durable resources instead of applying them by hand.
+- Use global `~/.kube/config` with explicit context `admin@homelab`, and
+  `~/.talos/config` with context `homelab`. Keep files `0600`, outside the repo;
+  preserve other contexts when restoring. Recovery attachments are in the
+  `kubernetes` and `talos` 1Password notes.
 
-The `Dependency Review` workflow reviews same-repository Renovate PRs with
-Claude. A trusted CI step labels the PR and merges only an approved,
-unchanged head. A non-approval keeps the PR open and the check green;
-GitHub API or merge errors still fail the job.
-Workflow-file updates also stay open for manual merge because the GitHub App
-does not have the `workflows` permission. The comment shows Claude's verdict
-separately from the gate's decision to merge.
-Renovate PRs labeled `type/major` also stay open until a human verifies a
-restorable backup and merges them.
-
-For a single Kustomization you can also render the affected path:
+From the repo root, render the selected Kustomization's **`spec.path`** as
+`<manifest-path>` below. Do not use the directory holding its Flux definition
+unless that is the resource's actual target path.
 
 ```bash
-flux build kustomization <name> --path ./clusters/homelab --kustomization-file ./clusters/homelab/<name>.yaml
+flux --context admin@homelab build kustomization <name> --path <manifest-path> \
+  --kustomization-file ./clusters/homelab/<name>.yaml --dry-run --in-memory-build
+git diff --check
 ```
 
-After pushing, reconcile through Flux and wait for Ready:
+Offline builds skip Secret/ConfigMap-backed substitutions. For changed charts,
+also render Helm templates with the actual release name, namespace and values;
+a rendered HelmRelease alone does not validate chart output.
+
+After pushing, reconcile and verify the expected revision and Ready conditions:
 
 ```bash
-flux reconcile source git flux-system
-flux reconcile kustomization <name> --with-source
-flux get kustomizations
+flux --context admin@homelab reconcile source git flux-system
+flux --context admin@homelab reconcile kustomization <name> --with-source
+flux --context admin@homelab get kustomizations
+flux --context admin@homelab get helmreleases -A
 ```
 
-Use `flux suspend kustomization <name>` only for a bounded maintenance window.
-Resume it as soon as the maintenance operation is complete and record any live
-change back in Git.
+Check the affected workload and real service behavior as well. Limit Flux
+suspension to a bounded maintenance window, resume afterward, and record durable
+live changes in Git. Talos OS and Kubernetes upgrades are separate operations;
+Flux does not upgrade the node OS.
 
-## Data retention
+## Persistent data
 
-Flux pruning is enabled for workloads so deleting a manifest removes the
-corresponding stateless resources. Stateful boundaries must opt out explicitly:
+- Set `kustomize.toolkit.fluxcd.io/prune: disabled` on namespaces containing
+  persistent application data, Git-managed PVCs and CloudNativePG Clusters.
+- Keep storage reclaim policies `Retain` and verified backups outside the node.
+  `local-path` volumes are node-bound.
+- Before removing, renaming or moving stateful resources, inspect PVC/PV bindings
+  and verify a recent restorable backup. Never delete a namespace to reset or
+  back up an application.
 
-- add `kustomize.toolkit.fluxcd.io/prune: disabled` to namespaces that contain
-  persistent application data;
-- add the same annotation to Git-managed PVCs and CloudNativePG `Cluster`
-  resources;
-- keep storage reclaim policies set to `Retain`;
-- keep verified backups outside the Kubernetes node.
+## Versions and dependency review
 
-Before removing or renaming a stateful resource, inspect its PVC/PV binding and
-verify a recent restorable backup. Never use namespace deletion as an
-application reset or backup mechanism.
+Pin exact chart versions, OCI `ref.tag` and image tags; own images include a
+version and digest (`x.y.z@sha256:...`). Keep registry/repository beside the tag
+so Renovate can detect it. Do not use semver ranges.
 
-## Versions and updates
+[Renovate configuration](.renovaterc.json5) groups updates by stack and labels
+major/minor/patch/digest updates. The [Renovate workflow](.github/workflows/renovate.yaml)
+runs hourly and proposes PRs; Renovate's own automerge is disabled.
 
-Pin exact versions in Git: chart `version`, OCIRepository `ref.tag`, and image
-`tag` (own images as `tag: x.y.z@sha256:...`). Do not use semver ranges; Flux
-deploys exactly what Git says.
+[Dependency Review](.github/workflows/claude-renovate-review.yaml) reviews
+same-repository Renovate PRs. Claude checks the full release range, upstream
+changes behind wrapper charts/images and local consumers. It returns a verdict;
+the [trusted finalizer](scripts/finalize-renovate-review.py) from `master` owns
+labels, the comment and merging, and checks both head and base revisions.
 
-Renovate (`.renovaterc.json5`, `.github/workflows/renovate.yaml`)
-opens a PR for every discovered release, including majors and own images.
-It groups related dependencies per application or infrastructure stack and
-adds `type/major`, `type/minor`, `type/patch`, or `type/digest`
-labels. Renovate never merges a branch or PR itself.
+- Uncertainty, relevant breaking changes, required migration, missing release
+  notes or review failure require human investigation.
+- All `type/major` PRs stay open for verified backup and human merge. Workflow
+  changes also stay open: the merge token does not request `workflows` permission.
+  PRs with 100 or more changed files require human review.
+- The finalizer adds `review/approved` or `review/needs-human` and applicable
+  `risk/breaking-change` / `risk/migration` labels. It merges only the approved,
+  unchanged head that passes its gates. The comment separates Claude's verdict
+  from the merge decision. A non-approval can leave the check green while the PR
+  stays open; GitHub API or merge failures fail the job.
 
-On each Renovate PR, Claude checks all releases in the version range,
-upstream application changes behind wrapper charts/images, and this
-repository's consumers.
-The trusted finalizer adds `review/approved` or `review/needs-human`,
-plus `risk/breaking-change` and `risk/migration` when applicable.
-An approval merges the reviewed SHA immediately; uncertain findings,
-relevant breaking changes, required migration, missing release notes,
-unverified stateful-major backup, or review failures require human
-investigation.
-
-Renovate runs self-hosted from GitHub Actions every hour as the
-`nezdemkovski-renovate` GitHub App. Its workflow credentials are GitHub
-repository secrets (`RENOVATE_APP_CLIENT_ID`, `RENOVATE_APP_PRIVATE_KEY`,
-`GHCR_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN`); they are CI-only and are not
-mirrored in 1Password.
-
-For a human-reviewed stateful or infrastructure major, check release notes
-against this repository and verify a recent restorable backup before merge.
-Images and charts must keep a `repository`/`registry` next to `tag` in values
-so Renovate can detect them. The Renovate Dependency Dashboard issue lists
-pending and rate-limited updates.
+CI credentials (`RENOVATE_APP_CLIENT_ID`, `RENOVATE_APP_PRIVATE_KEY`, `GHCR_TOKEN`,
+`CLAUDE_CODE_OAUTH_TOKEN`) belong in GitHub repository secrets, not 1Password.
 
 ## Secrets
 
-Secrets live in the `Homelab` 1Password vault. External Secrets Operator reads
-them through the cluster-wide `onepassword` ClusterSecretStore. Commit only
-ExternalSecret references. Never commit generated Secrets, 1Password Connect
-credentials, Cloudflare Tunnel credentials, kubeconfigs, or service tokens.
+Runtime secrets live in the `Homelab` 1Password vault and reach ESO through
+1Password Connect and the `onepassword` ClusterSecretStore. Keep one Secure Note
+per service, without tags; follow the [vault field conventions](infrastructure/onepassword-store/README.md).
+Commit only ExternalSecret references, never generated Secrets, credentials,
+client configs or tokens. Config recovery attachments are not runtime secrets.
 
-## Network policies
+After changing mappings, verify a fresh ExternalSecret sync and consumer
+readiness. For reorganization without rotation, compare consumer Secret data via
+hashes without displaying values; unchanged data needs no restart.
 
-Cilium enforces Kubernetes and Cilium network policies. Workload namespaces
-are deny-by-default. Add the narrowest required ingress and egress rule for a
-new dependency, including DNS, Kubernetes API, Cloudflare Tunnel, monitoring,
-database, or backup traffic as needed.
+## Network and public routes
 
-Public internet egress excludes private address ranges. Add a documented,
-service-specific rule for access to LAN services such as `10.77.77.0/24`.
-Validate DNS, API access, public endpoints, database connectivity, and backup
-traffic after changing shared policies.
+Cilium enforces deny-by-default workload policies. Add only required ingress and
+egress for DNS, Kubernetes API, applications, databases, backups, monitoring and
+tunnel traffic. Public internet egress excludes private ranges; LAN dependencies
+such as `10.77.77.0/24` need a documented service-specific rule. Validate affected
+connections after shared-policy changes.
 
-## Public hostnames
-
-Cloudflare Tunnel routes are stored in `charts/cloudflared/values.yaml`.
-Changing the generated ConfigMap changes its pod-template checksum and rolls
-cloudflared automatically. Keep hostnames stable and named for the service they
-provide.
+Public routes are in `charts/cloudflared/values.yaml`. Keep hostnames stable and
+named for the service. Route changes alter the ConfigMap checksum and roll the
+tunnel pods; verify the rollout, Service backends, DNS and public response.
