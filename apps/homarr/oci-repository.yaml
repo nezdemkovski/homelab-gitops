@@ -11,5 +11,5 @@ spec:
     operation: copy
   provider: generic
   ref:
-    tag: 8.35.0
+    tag: 8.36.0
   url: oci://ghcr.io/homarr-labs/charts/homarr
