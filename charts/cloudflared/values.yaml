@@ -46,6 +46,14 @@ tunnel:
       service: http://haymaker-frontend.haymaker.svc.cluster.local:80
     - hostname: api.haymaker.lol
       service: http://haymaker-api.haymaker.svc.cluster.local:80
+    - hostname: playdamnit.com
+      path: ^/api/.*
+      service: http://playdamnit-api.playdamnit.svc.cluster.local:80
+    - hostname: playdamnit.com
+      service: http://playdamnit-web.playdamnit.svc.cluster.local:80
+    - hostname: www.playdamnit.com
+      service: http://playdamnit-web.playdamnit.svc.cluster.local:80
+    # Compatibility for installed apps and existing IGDB callbacks.
     - hostname: games.nezdemkovski.cloud
       path: ^/api/.*
       service: http://playdamnit-api.playdamnit.svc.cluster.local:80
