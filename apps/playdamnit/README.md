@@ -2,17 +2,17 @@
 
 The canonical public origin is `https://playdamnit.com`. Cloudflared sends `/api/*` to
 `playdamnit-api` and other paths to `playdamnit-web`. The web image redirects
-`www.playdamnit.com` and legacy `games.nezdemkovski.cloud` web requests to the canonical
-origin, preserving paths and query strings. The legacy API route stays available for installed
-iOS versions and existing IGDB callbacks during the migration.
+`www.playdamnit.com` requests to the canonical origin, preserving paths and query strings.
+The previous hostname is retired: its tunnel routes and DNS record have been removed.
+Installed iOS versions must use the new origin; IGDB callbacks are registered on it.
 
 Cloudflare DNS is managed with `cf`: the apex has a proxied CNAME to the tunnel ID in
 `charts/cloudflared/values.yaml`, and `www` has a proxied CNAME to the apex. These DNS records
 are separate from the Git-managed ingress configuration.
 
 Auth callbacks, email links and passkey rpID use `BETTER_AUTH_URL` in the API ExternalSecret.
-`TRUSTED_ORIGINS` also accepts the legacy app origin for compatibility. The verified Resend
-sending domain is `playdamnit.com`; account emails use `noreply@playdamnit.com`.
+`TRUSTED_ORIGINS` accepts only the canonical origin. The verified Resend sending domain is
+`playdamnit.com`; account emails use `noreply@playdamnit.com`.
 
 The librarian registers IGDB callbacks using `WEBHOOK_BASE_URL`. After changing either
 ExternalSecret, verify a fresh ESO refresh and roll the consuming deployment: changing Secret
