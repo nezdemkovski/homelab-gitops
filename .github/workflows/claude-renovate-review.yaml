@@ -34,7 +34,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Generate read-only review token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: review-token
         with:
           client-id: ${{ secrets.RENOVATE_APP_CLIENT_ID }}
@@ -91,7 +91,7 @@ jobs:
       # The merge credential is created after Claude exits and is never
       # available to Claude or to code checked out from the PR.
       - name: Generate merge token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: merge-token
         with:
           client-id: ${{ secrets.RENOVATE_APP_CLIENT_ID }}
