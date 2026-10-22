@@ -14,7 +14,10 @@ spec:
     fullnameOverride: thataway-api
     image:
       repository: ghcr.io/nezdemkovski/thataway-api
-      tag: 0.2.0@sha256:0ff50a0ba6bf3a9c9cc634edfdcded74a5a8918e56bc887c8422ba36cb460c60
+      tag: 0.2.1@sha256:21db3d21c956e1f0f7d4fcccdfc932b69eb96287694519d62d1ba94dc0c03fe1
+    env:
+      # Art URLs are built on the public hostname
+      PUBLIC_URL: https://thataway.nezdemkovski.cloud
     imagePullSecrets:
     - name: thataway-ghcr
     # POSTGRES_URL, built from the credentials in 1Password
