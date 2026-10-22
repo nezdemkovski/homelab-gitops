@@ -22,7 +22,7 @@ spec:
         key: SECRET_ENCRYPTION_KEY
     image:
       repository: ghcr.io/homarr-labs/homarr
-      tag: v2.6.0
+      tag: v2.7.0
     persistence:
       homarrDatabase:
         enabled: true
