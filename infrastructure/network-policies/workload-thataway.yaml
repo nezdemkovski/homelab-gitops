@@ -40,6 +40,13 @@ spec:
     # The API talks to its database; the operator talks to the database pods
     - to:
         - podSelector: {}
+    # The illustrations' bucket: RustFS on the NAS
+    - to:
+        - ipBlock:
+            cidr: 10.77.77.190/32
+      ports:
+        - protocol: TCP
+          port: 9000
     # Wikidata, Wikipedia and Commons fill the database
     - to:
         - ipBlock:

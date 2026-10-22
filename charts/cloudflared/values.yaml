@@ -53,6 +53,10 @@ tunnel:
       service: http://playdamnit-web.playdamnit.svc.cluster.local:80
     - hostname: www.playdamnit.com
       service: http://playdamnit-web.playdamnit.svc.cluster.local:80
+    # The illustrations' bucket on the NAS, read straight from RustFS (path-style, like amela)
+    - hostname: thataway.nezdemkovski.cloud
+      path: ^/thataway-art/.*
+      service: http://10.77.77.190:9000
     - hostname: thataway.nezdemkovski.cloud
       service: http://thataway-api.thataway.svc.cluster.local:80
     - service: http_status:404

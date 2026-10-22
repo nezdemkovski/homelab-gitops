@@ -16,8 +16,11 @@ spec:
       repository: ghcr.io/nezdemkovski/thataway-api
       tag: 0.2.1@sha256:21db3d21c956e1f0f7d4fcccdfc932b69eb96287694519d62d1ba94dc0c03fe1
     env:
-      # Art URLs are built on the public hostname
       PUBLIC_URL: https://thataway.nezdemkovski.cloud
+      # Illustrations: the thataway-art bucket on the NAS, read by the app through the tunnel
+      S3_ENDPOINT: http://10.77.77.190:9000
+      S3_BUCKET: thataway-art
+      ART_PUBLIC_BASE_URL: https://thataway.nezdemkovski.cloud/thataway-art
     imagePullSecrets:
     - name: thataway-ghcr
     # POSTGRES_URL, built from the credentials in 1Password
