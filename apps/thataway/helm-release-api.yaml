@@ -14,7 +14,7 @@ spec:
     fullnameOverride: thataway-api
     image:
       repository: ghcr.io/nezdemkovski/thataway-api
-      tag: 0.1.1@sha256:edb45ca248e0999642a1ce36081a3f3403b3eb8fd5c588bfb450c26af647f7b2
+      tag: 0.1.2@sha256:db1da4ca648e3d3fa69319f3d02d7f6fb7c8e0baa9261cb21798e814d1f6c81b
     imagePullSecrets:
     - name: thataway-ghcr
     # POSTGRES_URL, built from the credentials in 1Password
