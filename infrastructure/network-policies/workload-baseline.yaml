@@ -664,6 +664,7 @@ spec:
                   - playdamnit
                   - plausible
                   - supabase
+                  - thataway
                   - uptime-kuma
           podSelector: {}
     - to:
