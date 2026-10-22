@@ -47,6 +47,30 @@ suspension to a bounded maintenance window, resume afterward, and record durable
 live changes in Git. Talos OS and Kubernetes upgrades are separate operations;
 Flux does not upgrade the node OS.
 
+## Released-client compatibility before deployment (mandatory)
+
+Playdamnit has released native clients. Apply this rule to Playdamnit and every
+other workload serving supported released applications: **do not deploy an API
+change that breaks those installed clients.** Read the product repository's
+`AGENTS.md` and its released-client compatibility rules before changing release
+pins, routes, authentication configuration or other API-affecting infrastructure.
+
+- Before an API-affecting rollout, verify compatibility evidence for the exact
+  image/source revision against supported released client versions and commits.
+  Require checks using original shipped decoders/models and affected old request
+  shapes; a green build with a regenerated SDK is insufficient.
+- Preserve endpoint paths, response and request shapes, types/nullability, enum
+  cases, status/error behavior, authentication, defaults and business semantics.
+  Routing, secret/configuration and dependency changes can break clients even
+  when the OpenAPI document is unchanged.
+- Deploy compatible server support before a new client depends on it. A web
+  deployment or TestFlight upload does not update already-installed apps. Verify
+  old client behavior against the deployed API and keep a compatible rollback.
+- If a change cannot preserve the existing contract, keep the old version served
+  and introduce a versioned contract. Do not deploy the incompatible change to an
+  existing endpoint or retire support without explicit product-owner approval of
+  the support and migration plan.
+
 ## Persistent data
 
 - Set `kustomize.toolkit.fluxcd.io/prune: disabled` on namespaces containing
