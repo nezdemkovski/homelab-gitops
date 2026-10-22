@@ -14,7 +14,7 @@ spec:
     fullnameOverride: thataway-api
     image:
       repository: ghcr.io/nezdemkovski/thataway-api
-      tag: 0.2.1@sha256:21db3d21c956e1f0f7d4fcccdfc932b69eb96287694519d62d1ba94dc0c03fe1
+      tag: 0.3.0@sha256:1807acd336049334119aa9e70024ce7aeb61c43090422070811d9fc70f5317d0
     env:
       PUBLIC_URL: https://thataway.nezdemkovski.cloud
       # Illustrations: the thataway-art bucket on the NAS, read by the app through the tunnel

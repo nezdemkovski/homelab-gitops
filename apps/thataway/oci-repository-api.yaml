@@ -11,7 +11,7 @@ spec:
     operation: copy
   provider: generic
   ref:
-    tag: 0.2.1
+    tag: 0.3.0
   secretRef:
     name: thataway-ghcr
   url: oci://ghcr.io/nezdemkovski/charts/thataway-api
