@@ -20,6 +20,7 @@ spec:
           - openmarkers
           - paperclip
           - playdamnit
+          - thataway
           - plausible
           - uptime-kuma
   egress:
@@ -47,6 +48,7 @@ spec:
           - openmarkers
           - paperclip
           - playdamnit
+          - thataway
           - plausible
           - supabase
           - uptime-kuma
@@ -76,6 +78,7 @@ spec:
           - openmarkers
           - paperclip
           - playdamnit
+          - thataway
   egress:
     - toCIDR:
         - 10.77.77.190/32
@@ -104,6 +107,7 @@ spec:
           - openmarkers
           - paperclip
           - playdamnit
+          - thataway
   ingress:
     - fromEndpoints:
         - matchLabels:

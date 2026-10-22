@@ -1,0 +1,53 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: thataway-postgres
+  namespace: thataway
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  instances: 1
+  # The PostGIS build of the CloudNativePG image; Postgres 18 is not published with PostGIS yet
+  imageName: ghcr.io/cloudnative-pg/postgis:17-3.5-9
+  bootstrap:
+    initdb:
+      database: thataway
+      owner: thataway
+      # No owner secret here: the operator generates `thataway-postgres-app` (username, password, uri)
+      # and the API reads POSTGRES_URL from it
+      postInitApplicationSQL:
+        # PostGIS is not a trusted extension, so the owner cannot create it; the migrations expect it
+        - CREATE EXTENSION IF NOT EXISTS postgis;
+  postgresql:
+    parameters:
+      shared_buffers: 128MB
+      effective_cache_size: 384MB
+      work_mem: 8MB
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 768Mi
+  storage:
+    storageClass: local-path
+    # Places cache: a dense city is a few megabytes; room for the world's visited tiles and WAL
+    size: 5Gi
+  backup:
+    barmanObjectStore:
+      serverName: thataway-postgres-pg17
+      destinationPath: "s3://cnpg-backups/thataway-postgres"
+      endpointURL: "http://10.77.77.190:9000"
+      s3Credentials:
+        accessKeyId:
+          name: cnpg-backup-s3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: cnpg-backup-s3
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+      data:
+        compression: gzip
+    retentionPolicy: "14d"

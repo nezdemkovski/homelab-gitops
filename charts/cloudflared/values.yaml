@@ -53,6 +53,8 @@ tunnel:
       service: http://playdamnit-web.playdamnit.svc.cluster.local:80
     - hostname: www.playdamnit.com
       service: http://playdamnit-web.playdamnit.svc.cluster.local:80
+    - hostname: thataway.nezdemkovski.cloud
+      service: http://thataway-api.thataway.svc.cluster.local:80
     - service: http_status:404
 
 credentials:

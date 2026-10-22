@@ -1,0 +1,17 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: thataway-api
+  namespace: thataway
+spec:
+  interval: 1h0m0s
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  provider: generic
+  ref:
+    tag: 0.1.0
+  secretRef:
+    name: thataway-ghcr
+  url: oci://ghcr.io/nezdemkovski/charts/thataway-api

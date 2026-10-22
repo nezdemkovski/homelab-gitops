@@ -6,3 +6,4 @@ resources:
   - workload-baseline.yaml
   - workload-haymaker.yaml
   - workload-playdamnit.yaml
+  - workload-thataway.yaml
