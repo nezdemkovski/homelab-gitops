@@ -13,8 +13,8 @@ spec:
     initdb:
       database: thataway
       owner: thataway
-      # No owner secret here: the operator generates `thataway-postgres-app` (username, password, uri)
-      # and the API reads POSTGRES_URL from it
+      secret:
+        name: thataway-postgres-owner
       postInitApplicationSQL:
         # PostGIS is not a trusted extension, so the owner cannot create it; the migrations expect it
         - CREATE EXTENSION IF NOT EXISTS postgis;

@@ -4,6 +4,8 @@ resources:
   - namespace.yaml
   - ghcr-pull-secret.yaml
   - cnpg-backup-secret.yaml
+  - cnpg-owner-secret.yaml
+  - external-secret-api.yaml
   - cnpg-cluster.yaml
   - cnpg-scheduled-backup.yaml
   - oci-repository-api.yaml
