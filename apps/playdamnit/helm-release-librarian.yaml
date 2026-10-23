@@ -14,6 +14,6 @@ spec:
     fullnameOverride: playdamnit-librarian
     image:
       repository: ghcr.io/nezdemkovski/playdamnit-librarian
-      tag: 0.1.67@sha256:166cfb83480b4034c4c544d7d0abcb403a1acca7c49d8d02a3f820ceef9fb41b
+      tag: 0.1.68@sha256:e12d70fad81025850a3aef4e076e87ec6c6f73dcba917cb4c0137727ad055afb
     imagePullSecrets:
     - name: playdamnit-ghcr
