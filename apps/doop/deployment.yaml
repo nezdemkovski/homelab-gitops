@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: doop
+  namespace: doop
+spec:
+  # Multiplayer rooms and upload tickets are process-local.
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: doop
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: doop
+    spec:
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        - name: doop-registry
+      containers:
+        - name: doop
+          image: ghcr.io/nezdemkovski/doop:0.12.0@sha256:d84b61ed81e3bdf1ceb1667134f482f71f8a3d54722bff155de82abc9f663bc1
+          ports:
+            - name: http
+              containerPort: 4400
+          envFrom:
+            - secretRef:
+                name: doop-env
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: BETTER_AUTH_URL
+              value: https://doop.nezdemkovski.cloud
+            - name: TRUSTED_ORIGINS
+              value: https://doop.nezdemkovski.cloud
+            - name: BUCKET
+              value: doop-assets
+            - name: ENDPOINT
+              value: http://10.77.77.190:9000
+            - name: REGION
+              value: us-east-1
+            - name: SMTP_HOST
+              value: smtp.resend.com
+            - name: SMTP_PORT
+              value: "587"
+            - name: SMTP_USER
+              value: resend
+            - name: REQUIRE_EMAIL_VERIFICATION
+              value: "true"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 30
+          volumeMounts:
+            - name: chromium-shm
+              mountPath: /dev/shm
+      volumes:
+        - name: chromium-shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 256Mi

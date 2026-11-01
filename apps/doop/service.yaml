@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: doop
+  namespace: doop
+spec:
+  selector:
+    app.kubernetes.io/name: doop
+  ports:
+    - name: http
+      port: 4400
+      targetPort: http
