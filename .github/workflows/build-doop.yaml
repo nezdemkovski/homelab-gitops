@@ -2,9 +2,6 @@ name: Build Doop
 
 on:
   workflow_dispatch:
-  push:
-    branches: [master, codex/deploy-doop]
-    paths: [.github/workflows/build-doop.yaml]
 
 permissions:
   contents: read

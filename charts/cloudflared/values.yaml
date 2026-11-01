@@ -59,6 +59,8 @@ tunnel:
       service: http://10.77.77.190:9000
     - hostname: thataway.nezdemkovski.cloud
       service: http://thataway-api.thataway.svc.cluster.local:80
+    - hostname: doop.nezdemkovski.cloud
+      service: http://doop.doop.svc.cluster.local:4400
     - service: http_status:404
 
 credentials:

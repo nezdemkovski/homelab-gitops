@@ -30,6 +30,7 @@
 
     { groupName: "amela", matchFileNames: ["apps/amela/**"] },
     { groupName: "auth", matchFileNames: ["apps/auth/**"] },
+    { groupName: "doop", matchFileNames: ["apps/doop/**"] },
     { groupName: "forgejo", matchFileNames: ["apps/forgejo/**"] },
     { groupName: "haymaker", matchFileNames: ["apps/haymaker/**"] },
     { groupName: "homarr", matchFileNames: ["apps/homarr/**"] },
