@@ -14,6 +14,12 @@ are deployed through Git.
 | `infrastructure/<component>/` | Controllers, policies and shared cluster services |
 | `charts/` | Local Helm charts |
 | `.github/workflows/`, `scripts/` | Dependency automation and its trusted review gate |
+| `docs/home-network.md` | Physical network diagrams, switch port/VLAN tables and recovery notes |
+
+## Home network
+
+[Home network](docs/home-network.md): wiring diagrams, addressing, switch ports,
+VLAN/PVID configuration and recovery. Network devices are managed outside Flux.
 
 ## Access
 
