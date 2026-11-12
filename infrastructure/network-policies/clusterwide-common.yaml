@@ -178,3 +178,23 @@ spec:
         - ports:
             - port: "9187"
               protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: homelab-prometheus-flux-metrics-egress
+spec:
+  description: Allow only Prometheus to scrape Flux controller metrics.
+  endpointSelector:
+    matchLabels:
+      k8s:io.kubernetes.pod.namespace: monitoring
+      k8s:app.kubernetes.io/name: prometheus
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: flux-system
+            k8s:app.kubernetes.io/part-of: flux
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP

@@ -37,3 +37,24 @@ owner-only permissions and is removed when the bridge exits. Tokens are not
 embedded in client configuration or process arguments.
 The bridge selects a free loopback port in `18080–18111`. Those exact hosts are
 allowed by the server; arbitrary Host headers and browser Origins remain denied.
+
+## Flux monitoring
+
+`flux-system` PodMonitor scrapes the four installed Flux controllers on their
+`http-prom` port every 30 seconds. A service-specific egress rule allows only
+Prometheus to reach those pods on TCP 8080; Flux's bootstrap `allow-scraping`
+policy already permits the matching ingress.
+
+The existing kube-state-metrics also exports `gotk_resource_info` for
+Kustomization, HelmRelease and source resources, with list/watch permissions
+restricted to those resource types. Its standard Kubernetes collectors remain
+enabled for the existing cluster dashboards.
+
+The Flux folder provisions **Flux Cluster Stats** and **Flux Control Plane**.
+Dashboard JSON and custom-resource metric mappings are adapted from
+[fluxcd/flux2-monitoring-example](https://github.com/fluxcd/flux2-monitoring-example/tree/7ab65dc8b90f7a6751d88f18bbb4e1bee33bf334)
+at commit `7ab65dc8b90f7a6751d88f18bbb4e1bee33bf334`; see
+[dashboards/flux-LICENSE](dashboards/flux-LICENSE). Local adaptations pin the
+Prometheus UID, set namespace defaults, retain core collectors and render zero
+for healthy failing-resource stat panels. Empty Bucket/error series are normal
+when the cluster has no corresponding resources or events.
