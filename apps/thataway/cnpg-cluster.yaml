@@ -36,7 +36,8 @@ spec:
     size: 5Gi
   backup:
     barmanObjectStore:
-      serverName: thataway-postgres-pg17
+      # Each PostgreSQL system needs its own WAL archive, including after a database recreation.
+      serverName: thataway-postgres-7699284233969639443
       destinationPath: "s3://cnpg-backups/thataway-postgres"
       endpointURL: "http://10.77.77.190:9000"
       s3Credentials:
