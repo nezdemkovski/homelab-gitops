@@ -1,3 +1,4 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -24,20 +25,56 @@ spec:
   driftDetection:
     mode: enabled
   postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              group: core.supabase.io
-              kind: SingleDatabase
-              name: supabase
-            patch: |
-              apiVersion: core.supabase.io/v1alpha1
-              kind: SingleDatabase
-              metadata:
-                name: supabase
-                annotations:
-                  kustomize.toolkit.fluxcd.io/prune: disabled
-                  helm.sh/resource-policy: keep
+  - kustomize:
+      patches:
+      - target:
+          group: core.supabase.io
+          kind: SingleDatabase
+          name: supabase
+        patch: |
+          apiVersion: core.supabase.io/v1alpha1
+          kind: SingleDatabase
+          metadata:
+            name: supabase
+            annotations:
+              kustomize.toolkit.fluxcd.io/prune: disabled
+              helm.sh/resource-policy: keep
+      - target:
+          group: core.supabase.io
+          kind: Storage
+          name: supabase
+        patch: |
+          apiVersion: core.supabase.io/v1alpha1
+          kind: Storage
+          metadata:
+            name: supabase
+            annotations:
+              kustomize.toolkit.fluxcd.io/prune: disabled
+              helm.sh/resource-policy: keep
+      - target:
+          group: core.supabase.io
+          kind: Studio
+          name: supabase
+        patch: |
+          apiVersion: core.supabase.io/v1alpha1
+          kind: Studio
+          metadata:
+            name: supabase
+            annotations:
+              kustomize.toolkit.fluxcd.io/prune: disabled
+              helm.sh/resource-policy: keep
+      - target:
+          group: core.supabase.io
+          kind: Project
+          name: supabase
+        patch: |
+          apiVersion: core.supabase.io/v1alpha1
+          kind: Project
+          metadata:
+            name: supabase
+            annotations:
+              kustomize.toolkit.fluxcd.io/prune: disabled
+              helm.sh/resource-policy: keep
   values:
     fullnameOverride: supabase
     project:
@@ -50,7 +87,8 @@ spec:
     singleDatabase:
       storage:
         storageClassName: local-path
-        accessModes: [ReadWriteOnce]
+        accessModes:
+        - ReadWriteOnce
         resources:
           requests:
             storage: 10Gi
@@ -59,33 +97,263 @@ spec:
           automountServiceAccountToken: false
           terminationGracePeriodSeconds: 120
           containers:
-            - name: postgres
-              resources:
-                requests:
-                  cpu: 250m
-                  memory: 512Mi
-                limits:
-                  memory: 2Gi
-              lifecycle:
-                preStop:
-                  exec:
-                    command: [/sbin/su-exec, postgres, pg_ctl, -D, /var/lib/postgresql/data, -w, -t, "60", -m, fast, stop]
+          - name: postgres
+            resources:
+              requests:
+                cpu: 250m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+            lifecycle:
+              preStop:
+                exec:
+                  command:
+                  - "/sbin/su-exec"
+                  - postgres
+                  - pg_ctl
+                  - "-D"
+                  - "/var/lib/postgresql/data"
+                  - "-w"
+                  - "-t"
+                  - '60'
+                  - "-m"
+                  - fast
+                  - stop
     auth:
-      enable: false
+      enable: true
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: auth
+            resources:
+              limits:
+                cpu: 500m
+                memory: 256Mi
+              requests:
+                cpu: 50m
+                memory: 64Mi
+      config:
+      - name: API_EXTERNAL_URL
+        value: https://supabase.nezdemkovski.cloud/auth/v1
+      - name: GOTRUE_API_HOST
+        value: 0.0.0.0
+      - name: GOTRUE_API_PORT
+        value: '9999'
+      - name: GOTRUE_SITE_URL
+        value: https://supabase.nezdemkovski.cloud
+      - name: GOTRUE_URI_ALLOW_LIST
+        value: https://supabase.nezdemkovski.cloud/**
+      - name: GOTRUE_DISABLE_SIGNUP
+        value: 'false'
+      - name: GOTRUE_JWT_DEFAULT_GROUP_NAME
+        value: authenticated
+      - name: GOTRUE_JWT_ADMIN_ROLES
+        value: service_role
+      - name: GOTRUE_JWT_AUD
+        value: authenticated
+      - name: GOTRUE_JWT_EXP
+        value: '3600'
+      - name: GOTRUE_EXTERNAL_EMAIL_ENABLED
+        value: 'true'
+      - name: GOTRUE_MAILER_AUTOCONFIRM
+        value: 'true'
+      - name: GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED
+        value: 'false'
+      - name: GOTRUE_SMTP_ADMIN_EMAIL
+        value: noreply@nezdemkovski.cloud
+      - name: GOTRUE_SMTP_HOST
+        value: localhost
+      - name: GOTRUE_SMTP_PORT
+        value: '1025'
+      - name: GOTRUE_EXTERNAL_PHONE_ENABLED
+        value: 'false'
+      - name: GOTRUE_SMS_AUTOCONFIRM
+        value: 'false'
+      - name: GOTRUE_SMTP_SENDER_NAME
+        value: Supabase
+      - name: GOTRUE_MAILER_URLPATHS_INVITE
+        value: "/auth/v1/verify"
+      - name: GOTRUE_MAILER_URLPATHS_CONFIRMATION
+        value: "/auth/v1/verify"
+      - name: GOTRUE_MAILER_URLPATHS_RECOVERY
+        value: "/auth/v1/verify"
+      - name: GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE
+        value: "/auth/v1/verify"
     rest:
-      enable: false
+      enable: true
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: rest
+            resources:
+              limits:
+                cpu: 500m
+                memory: 256Mi
+              requests:
+                cpu: 50m
+                memory: 64Mi
     meta:
-      enable: false
+      enable: true
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: meta
+            resources:
+              limits:
+                cpu: 500m
+                memory: 256Mi
+              requests:
+                cpu: 50m
+                memory: 64Mi
     realtime:
-      enable: false
+      enable: true
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: realtime
+            resources:
+              limits:
+                cpu: 500m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
     storage:
-      enable: false
+      enable: true
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: storage
+            resources:
+              limits:
+                cpu: 500m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+          - name: imgproxy
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+      config:
+      - name: REQUEST_ALLOW_X_FORWARDED_PATH
+        value: 'true'
+      - name: FILE_SIZE_LIMIT
+        value: '52428800'
+      - name: FILE_STORAGE_BACKEND_PATH
+        value: "/var/lib/storage"
+      - name: TENANT_ID
+        value: stub
+      - name: REGION
+        value: stub
+      - name: GLOBAL_S3_BUCKET
+        value: stub
+      - name: ENABLE_IMAGE_TRANSFORMATION
+        value: 'false'
+      storage:
+        storageClassName: local-path
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
     studio:
-      enable: false
+      enable: true
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: studio
+            resources:
+              limits:
+                cpu: 500m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+      config:
+      - name: HOSTNAME
+        value: "::"
+      - name: STUDIO_PORT
+        value: '3000'
+      - name: DEFAULT_ORGANIZATION_NAME
+        value: Homelab
+      - name: DEFAULT_PROJECT_NAME
+        value: Supabase
+      - name: SUPABASE_PUBLIC_URL
+        value: https://supabase.nezdemkovski.cloud
+      - name: NEXT_ANALYTICS_BACKEND_PROVIDER
+        value: postgres
+      storage:
+        storageClassName: local-path
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
     envoy:
-      enable: false
+      enable: true
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: envoy
+            resources:
+              limits:
+                cpu: 500m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 256Mi
     edgeRuntime:
-      enable: false
+      enable: true
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+          - name: edge-runtime
+            resources:
+              limits:
+                cpu: 500m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+      config:
+      - name: VERIFY_JWT
+        value: 'false'
     supavisor:
       enable: false
     analytics:
