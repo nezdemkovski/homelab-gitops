@@ -1,0 +1,97 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: supabase-project
+  namespace: supabase
+spec:
+  interval: 1h
+  timeout: 15m
+  chart:
+    spec:
+      chart: supabase-project
+      version: 0.8.4
+      sourceRef:
+        kind: HelmRepository
+        name: supabase
+  install:
+    disableWait: true
+    strategy:
+      name: RetryOnFailure
+  upgrade:
+    disableWait: true
+    strategy:
+      name: RetryOnFailure
+  driftDetection:
+    mode: enabled
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: core.supabase.io
+              kind: SingleDatabase
+              name: supabase
+            patch: |
+              apiVersion: core.supabase.io/v1alpha1
+              kind: SingleDatabase
+              metadata:
+                name: supabase
+                annotations:
+                  kustomize.toolkit.fluxcd.io/prune: disabled
+                  helm.sh/resource-policy: keep
+  values:
+    fullnameOverride: supabase
+    project:
+      publicUrl: https://supabase.nezdemkovski.cloud
+      migrations:
+        enable: false
+        pod:
+          spec:
+            automountServiceAccountToken: false
+    singleDatabase:
+      storage:
+        storageClassName: local-path
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 10Gi
+      pod:
+        spec:
+          automountServiceAccountToken: false
+          # Bounded migration gate; removed after cold copy and secret sync.
+          nodeSelector:
+            homelab.nezdemkovski.cloud/supabase-migration-ready: "true"
+          terminationGracePeriodSeconds: 120
+          containers:
+            - name: postgres
+              resources:
+                requests:
+                  cpu: 250m
+                  memory: 512Mi
+                limits:
+                  memory: 2Gi
+              lifecycle:
+                preStop:
+                  exec:
+                    command: [/sbin/su-exec, postgres, pg_ctl, -D, /var/lib/postgresql/data, -w, -t, "60", -m, fast, stop]
+    auth:
+      enable: false
+    rest:
+      enable: false
+    meta:
+      enable: false
+    realtime:
+      enable: false
+    storage:
+      enable: false
+    studio:
+      enable: false
+    envoy:
+      enable: false
+    edgeRuntime:
+      enable: false
+    supavisor:
+      enable: false
+    analytics:
+      enable: false
+    vector:
+      enable: false
