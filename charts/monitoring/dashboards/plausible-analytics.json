@@ -76,7 +76,7 @@
           },
           "format": 1,
           "queryType": "sql",
-          "rawSql": "SELECT count() AS \"Sessions\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})",
+          "rawSql": "SELECT sum(sign) AS \"Sessions\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})",
           "refId": "A"
         }
       ],
@@ -200,7 +200,7 @@
           },
           "format": 1,
           "queryType": "sql",
-          "rawSql": "SELECT sum(pageviews) AS \"Pageviews\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})",
+          "rawSql": "SELECT sum(pageviews * sign) AS \"Pageviews\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})",
           "refId": "A"
         }
       ],
@@ -270,7 +270,7 @@
           },
           "format": 1,
           "queryType": "sql",
-          "rawSql": "SELECT 100 * avg(is_bounce) AS \"Bounce rate\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})",
+          "rawSql": "SELECT 100 * sum(is_bounce * sign) / nullIf(sum(sign), 0) AS \"Bounce rate\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})",
           "refId": "A"
         }
       ],
@@ -332,7 +332,7 @@
           },
           "format": 1,
           "queryType": "sql",
-          "rawSql": "SELECT avg(duration) AS \"Avg duration\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})",
+          "rawSql": "SELECT sum(duration * sign) / nullIf(sum(sign), 0) AS \"Avg duration\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})",
           "refId": "A"
         }
       ],
@@ -486,7 +486,7 @@
           },
           "format": 1,
           "queryType": "sql",
-          "rawSql": "SELECT $__timeInterval(start) AS time,\n       count() AS \"Sessions\",\n       uniqExact(user_id) AS \"Visitors\",\n       sum(pageviews) AS \"Pageviews\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY time\nORDER BY time",
+          "rawSql": "SELECT $__timeInterval(start) AS time,\n       sum(sign) AS \"Sessions\",\n       uniqExact(user_id) AS \"Visitors\",\n       sum(pageviews * sign) AS \"Pageviews\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY time\nORDER BY time",
           "refId": "A"
         }
       ],
@@ -690,7 +690,7 @@
           },
           "format": 1,
           "queryType": "sql",
-          "rawSql": "SELECT if(empty(referrer_source), 'Direct', referrer_source) AS \"Source\",\n       count() AS \"Sessions\",\n       uniqExact(user_id) AS \"Visitors\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY \"Source\"\nORDER BY \"Sessions\" DESC\nLIMIT 20",
+          "rawSql": "SELECT if(empty(referrer_source), 'Direct', referrer_source) AS \"Source\",\n       sum(sign) AS \"Sessions\",\n       uniqExact(user_id) AS \"Visitors\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY \"Source\"\nORDER BY \"Sessions\" DESC\nLIMIT 20",
           "refId": "A"
         }
       ],
@@ -802,7 +802,7 @@
           },
           "format": 1,
           "queryType": "sql",
-          "rawSql": "SELECT if(empty(country_name), 'Unknown', country_name) AS \"Country\",\n       count() AS \"Sessions\",\n       uniqExact(user_id) AS \"Visitors\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY \"Country\"\nORDER BY \"Sessions\" DESC\nLIMIT 20",
+          "rawSql": "SELECT if(empty(country_name), 'Unknown', country_name) AS \"Country\",\n       sum(sign) AS \"Sessions\",\n       uniqExact(user_id) AS \"Visitors\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY \"Country\"\nORDER BY \"Sessions\" DESC\nLIMIT 20",
           "refId": "A"
         }
       ],
@@ -858,7 +858,7 @@
           },
           "format": 1,
           "queryType": "sql",
-          "rawSql": "SELECT browser AS \"Browser\",\n       operating_system AS \"OS\",\n       screen_size AS \"Screen\",\n       count() AS \"Sessions\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY browser, operating_system, screen_size\nORDER BY \"Sessions\" DESC\nLIMIT 20",
+          "rawSql": "SELECT browser AS \"Browser\",\n       operating_system AS \"OS\",\n       screen_size AS \"Screen\",\n       sum(sign) AS \"Sessions\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY browser, operating_system, screen_size\nORDER BY \"Sessions\" DESC\nLIMIT 20",
           "refId": "A"
         }
       ],
