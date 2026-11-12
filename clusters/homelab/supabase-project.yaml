@@ -14,5 +14,72 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 2m0s
-  wait: true
+  timeout: 15m0s
+  wait: false
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: supabase-project
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: SingleDatabase
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: Project
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: Auth
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: Rest
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: Meta
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: Realtime
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: Storage
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: Studio
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: Envoy
+    name: supabase
+    namespace: supabase
+  - apiVersion: core.supabase.io/v1alpha1
+    kind: EdgeRuntime
+    name: supabase
+    namespace: supabase
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    name: supabase-operator-postgres
+    namespace: supabase
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    name: supabase-operator-keys
+    namespace: supabase
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    name: supabase-operator-envoy
+    namespace: supabase
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    name: supabase-operator-storage
+    namespace: supabase
+  healthCheckExprs:
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    current: >-
+      has(status.conditions) && status.conditions.exists(c,
+        c.type == 'Ready' && c.status == 'True' && c.reason == 'SecretSynced')

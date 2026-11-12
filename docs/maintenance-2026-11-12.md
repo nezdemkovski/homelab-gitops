@@ -204,3 +204,33 @@ Live checks after scrape warm-up and normal reconciliation events:
 New Flux metric history starts when this collection was enabled. The existing
 MCP image-renderer limitation still applies; verification used real backend
 query results and frame schemas.
+
+## Supabase persistence and operator migration (cutover pending)
+
+- Recovered the legacy PostgreSQL database and pgsodium configuration inside the
+  cluster, verified file checksums and an isolated restore, and retained the
+  original PVCs plus `supabase-db-recovery-20261112`. No full database or key
+  export was written to the Mac. This retained copy is on-node, not an off-node
+  backup; VM backups remain disabled as requested.
+- Corrected the legacy chart's PostgreSQL mount and shutdown command. Added and
+  applied the Talos kubelet shared bind mount for local-path storage so the new
+  operator's `subPath` mounts resolve to the persistent XFS disk.
+- Installed `supabase-operator` and `supabase-project` charts `0.8.4` from master.
+  The existing PostgreSQL 17.6.1.136 database and pgsodium key were copied into
+  the new project's PVC and verified before startup. Initial bootstrap SQL is
+  disabled for the already-initialized database. All ten enabled project CRs
+  became Ready.
+- Preserved the original database password, JWT secret, anon/service-role keys,
+  dashboard login, Realtime/Meta crypto keys and Storage credentials. Existing
+  credentials merge through ESO. Seven newly generated operator key fields
+  remain only in Kubernetes until personal 1Password CLI access is restored:
+  Connect reads the existing item but its write request returned HTTP 403.
+- Private checks passed for Auth health, REST table reads with the old anon key
+  and new publishable key, Storage status, Studio authentication, Meta health,
+  missing-credential rejection and public-only JWKS. A synthetic row survived
+  database pod recreation; the database identifier stayed unchanged. Restarting
+  the operator preserved all five credential Secrets. The test table and copy
+  helper were removed afterward.
+- Public cutover and legacy HelmRelease retirement are pending vaulting the new
+  keys and wiring their ESO mappings. The existing public hostname still serves
+  the legacy installation. See `apps/supabase/README.md` for the remaining steps.
