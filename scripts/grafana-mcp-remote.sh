@@ -23,28 +23,49 @@ trap 'exit 143' TERM
 
 "${KUBECTL}" --kubeconfig "${HOME}/.kube/config" --context admin@homelab \
   -n monitoring get secret grafana-mcp-server-token -o json |
-  python3 -c 'import sys,json,base64; d=json.load(sys.stdin); token=base64.b64decode(d["data"]["token"]).decode(); assert token and "\n" not in token; print("Authorization: Bearer "+token); print("Host: localhost:8000")' > "${HEADERS_FILE}"
+  python3 -c 'import sys,json,base64; d=json.load(sys.stdin); token=base64.b64decode(d["data"]["token"]).decode(); assert token and "\n" not in token; print("Authorization: Bearer "+token)' > "${HEADERS_FILE}"
 
-LOCAL_PORT="$(python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",0)); print(s.getsockname()[1]); s.close()')"
-"${KUBECTL}" --kubeconfig "${HOME}/.kube/config" --context admin@homelab \
-  -n monitoring port-forward --address 127.0.0.1 service/grafana-mcp \
-  "${LOCAL_PORT}:8000" > "${FORWARD_LOG}" 2>&1 &
-PORT_FORWARD_PID="$!"
+for attempt in {1..3}; do
+  LOCAL_PORT="$(python3 - <<'PYPORT'
+import random
+import socket
+ports = list(range(18080, 18112))
+random.SystemRandom().shuffle(ports)
+for port in ports:
+    with socket.socket() as listener:
+        try:
+            listener.bind(("127.0.0.1", port))
+        except OSError:
+            continue
+        print(port)
+        break
+else:
+    raise SystemExit("No free Grafana MCP bridge port")
+PYPORT
+)"
+  "${KUBECTL}" --kubeconfig "${HOME}/.kube/config" --context admin@homelab \
+    -n monitoring port-forward --address 127.0.0.1 service/grafana-mcp \
+    "${LOCAL_PORT}:8000" > "${FORWARD_LOG}" 2>&1 &
+  PORT_FORWARD_PID="$!"
 
-for _ in {1..50}; do
-  SSE_RESPONSE="$(curl -fsS --header "@${HEADERS_FILE}" --max-time 1 "http://127.0.0.1:${LOCAL_PORT}/sse" 2>/dev/null || true)"
-  if [[ "${SSE_RESPONSE}" == *"event: endpoint"* ]]; then
-    "${NPX}" -y mcp-remote@0.16.6 "http://127.0.0.1:${LOCAL_PORT}/sse" \
-      --allow-http --transport sse-only --header-file "${HEADERS_FILE}" <&0 &
-    BRIDGE_PID="$!"
-    wait "${BRIDGE_PID}"
-    exit $?
-  fi
-  if ! kill -0 "${PORT_FORWARD_PID}" 2>/dev/null; then
-    cat "${FORWARD_LOG}" >&2
-    exit 1
-  fi
-  sleep 0.2
+  for _ in {1..30}; do
+    SSE_RESPONSE="$(curl -fsS --header "@${HEADERS_FILE}" --max-time 1 "http://127.0.0.1:${LOCAL_PORT}/sse" 2>/dev/null || true)"
+    if [[ "${SSE_RESPONSE}" == *"event: endpoint"* ]]; then
+      "${NPX}" -y mcp-remote@0.16.6 "http://127.0.0.1:${LOCAL_PORT}/sse" \
+        --allow-http --transport sse-only --header-file "${HEADERS_FILE}" <&0 &
+      BRIDGE_PID="$!"
+      wait "${BRIDGE_PID}"
+      exit $?
+    fi
+    if ! kill -0 "${PORT_FORWARD_PID}" 2>/dev/null; then
+      if grep -q 'address already in use' "${FORWARD_LOG}"; then continue 2; fi
+      cat "${FORWARD_LOG}" >&2
+      exit 1
+    fi
+    sleep 0.2
+  done
+  kill "${PORT_FORWARD_PID}" 2>/dev/null || true
+  wait "${PORT_FORWARD_PID}" 2>/dev/null || true
 done
 cat "${FORWARD_LOG}" >&2
 exit 1

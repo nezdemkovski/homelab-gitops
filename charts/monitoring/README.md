@@ -35,3 +35,5 @@ The bridge uses global `~/.kube/config` with `admin@homelab`, forwards only on
 localhost, and reads the caller token at startup. Its temporary header file has
 owner-only permissions and is removed when the bridge exits. Tokens are not
 embedded in client configuration or process arguments.
+The bridge selects a free loopback port in `18080–18111`. Those exact hosts are
+allowed by the server; arbitrary Host headers and browser Origins remain denied.
