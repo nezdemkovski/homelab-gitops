@@ -203,7 +203,7 @@ def main() -> int:
 
     result = subprocess.run(
         ["gh", "pr", "merge", str(number), "--repo", repo,
-         "--squash", "--match-head-commit", expected_sha],
+         "--rebase", "--match-head-commit", expected_sha],
         text=True,
         capture_output=True,
         check=False,

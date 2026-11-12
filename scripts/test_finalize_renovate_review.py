@@ -140,7 +140,7 @@ class ReviewTests(unittest.TestCase):
         merge.assert_called_once()
         command = merge.call_args.args[0]
         self.assertEqual(command[:3], ["gh", "pr", "merge"])
-        self.assertIn("--squash", command)
+        self.assertIn("--rebase", command)
         self.assertEqual(
             command[command.index("--match-head-commit") + 1], "head-sha"
         )
