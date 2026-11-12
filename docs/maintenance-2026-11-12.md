@@ -95,3 +95,35 @@ or VM files were removed.
 Kubernetes and Talos recovery contexts are in the global 0600 client configs.
 Pre-maintenance etcd snapshots were saved off-node on the Mac in the protected
 `/tmp/homelab-recovery` directory; they do not cover application volumes.
+
+## Follow-up: metric history persistence
+
+The later history check found that Prometheus had no retained samples before
+2026-11-12 19:51:50 Europe/Prague, despite its 14-day / 8 GiB retention. The
+original PVC UID was unchanged, but this was insufficient evidence of data
+persistence. Its `prometheus-db` subPath resolved inside the Talos kubelet
+overlay because `/var/lib/local-path-provisioner` was not bind-mounted into
+kubelet. A direct read-only mount of the same PVC was empty; Prometheus
+process mountinfo confirmed `overlay`. The configuration predates this update;
+the first historical loss time is unknown. Older overlay snapshots inspected
+did not contain another TSDB. Grafana itself mounts its PVC directly, and its
+five provisioned dashboards remain available.
+
+Prometheus was stopped gracefully, its current TSDB copied off-node to the Mac
+with mode 0600 at
+`/tmp/homelab-recovery/prometheus-before-persistence-fix-20261112.tar.gz`
+(SHA256 `92410b2e293340dcec0b7ee5aa62fee9ee46612c84d41da40ea49716913d4e8c`).
+The archive was restored onto the empty original PVC and all five regular
+file hashes matched. `storageSpec.disableMountSubPath: true` and a matching
+root mount in the permission init container were deployed from Git.
+
+After deployment and an additional real pod recreation, WAL replay succeeded,
+the original earliest timestamp and a pre-transfer historical query remained
+available, and no Prometheus targets were down. Independent PVC inspection
+found the restored files, and process mountinfo now shows XFS `/dev/sda6`.
+Both Flux resources were resumed, Admin API remains disabled, and temporary
+pods were removed. Earlier missing history was not recovered.
+
+A separate audit also found Supabase PostgreSQL's `postgres-data` subPath on
+the same kubelet overlay. No Supabase data or mounts were changed in this
+monitoring repair; its persistence needs a separate database maintenance operation.
