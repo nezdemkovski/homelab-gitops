@@ -16,6 +16,7 @@ spec:
   driftDetection:
     mode: enabled
   install:
+    crds: CreateReplace
     strategy:
       name: RetryOnFailure
   interval: 1h0m0s
@@ -24,5 +25,6 @@ spec:
   targetNamespace: monitoring
   timeout: 15m0s
   upgrade:
+    crds: CreateReplace
     strategy:
       name: RetryOnFailure
