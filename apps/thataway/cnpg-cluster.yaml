@@ -49,6 +49,7 @@ spec:
           key: ACCESS_SECRET_KEY
       wal:
         compression: gzip
+        maxParallel: 4
       data:
         compression: gzip
     retentionPolicy: "14d"
