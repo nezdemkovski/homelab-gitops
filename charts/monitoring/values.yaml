@@ -63,7 +63,6 @@ kube-prometheus-stack:
           volumeMounts:
             - name: prometheus-prometheus-prometheus-db
               mountPath: /prometheus
-              subPath: prometheus-db
       resources:
         requests:
           cpu: 100m
@@ -71,6 +70,9 @@ kube-prometheus-stack:
         limits:
           memory: 1536Mi
       storageSpec:
+        # Talos kubelet has no bind mount for this hostPath. A subPath would
+        # resolve inside its disposable overlay instead of the actual PVC.
+        disableMountSubPath: true
         volumeClaimTemplate:
           spec:
             storageClassName: local-path
