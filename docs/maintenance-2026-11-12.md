@@ -171,3 +171,36 @@ still limited by the earlier persistence incident; query success does not imply
 that missing older samples have been recovered. MCP image rendering returned
 HTTP 500 because a renderer is unavailable, so this audit verifies queries and
 frame schemas, not a pixel-level browser render.
+
+## Follow-up: Flux metrics and upstream dashboards
+
+Added a 30-second PodMonitor for the four installed Flux controllers and a
+Prometheus-only TCP 8080 egress allowance. Existing Flux bootstrap ingress
+already allows scraping. Extended the existing kube-state-metrics with seven
+Flux resource kinds and scoped list/watch RBAC while preserving all standard
+Kubernetes collectors. No controller restart or persistent-data migration was
+required.
+
+Provisioned **Flux Cluster Stats** (`flux-cluster`) and **Flux Control Plane**
+(`flux-control-plane`) in the Grafana Flux folder from the official monitoring
+example at `7ab65dc8b90f7a6751d88f18bbb4e1bee33bf334`, preserving its Apache
+license. Local adaptations pin the Prometheus UID and namespace defaults and
+make healthy failing-resource stats display zero without masking an absent
+base metric. The source and adaptation details are in the monitoring README.
+
+Live checks after scrape warm-up and normal reconciliation events:
+
+- Four of four controller targets up; zero down targets across Prometheus.
+- `gotk_resource_info` exposed 85 resources, matching Kubernetes exactly:
+  28 Kustomizations, 24 HelmReleases, 1 GitRepository, 8 HelmRepositories,
+  12 HelmCharts and 12 OCIRepositories; zero Buckets or suspended resources.
+- All Kustomizations and HelmReleases Ready; controller operations, durations,
+  CPU/memory and resource-readiness frames contained live data.
+- All 35 active target queries across the 27 new data panels succeeded. Only
+  the Suspended Objects table was empty, matching the Kubernetes state.
+- Re-ran the 54 queries across the original 53 panels without query errors;
+  both datasources stayed healthy and all nine CNPG collectors remained up.
+
+New Flux metric history starts when this collection was enabled. The existing
+MCP image-renderer limitation still applies; verification used real backend
+query results and frame schemas.
