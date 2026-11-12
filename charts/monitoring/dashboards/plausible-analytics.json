@@ -484,7 +484,7 @@
             "type": "grafana-clickhouse-datasource",
             "uid": "plausible-clickhouse"
           },
-          "format": 1,
+          "format": 0,
           "queryType": "sql",
           "rawSql": "SELECT $__timeInterval(start) AS time,\n       sum(sign) AS \"Sessions\",\n       uniqExact(user_id) AS \"Visitors\",\n       sum(pageviews * sign) AS \"Pageviews\"\nFROM plausible_events_db.sessions_v2\nWHERE $__timeFilter(start)\n  AND hostname IN (${host:singlequote})\nGROUP BY time\nORDER BY time",
           "refId": "A"
@@ -576,7 +576,7 @@
             "type": "grafana-clickhouse-datasource",
             "uid": "plausible-clickhouse"
           },
-          "format": 1,
+          "format": 0,
           "queryType": "sql",
           "rawSql": "SELECT $__timeInterval(timestamp) AS time,\n       name,\n       count() AS \"Events\"\nFROM plausible_events_db.events_v2\nWHERE $__timeFilter(timestamp)\n  AND hostname IN (${host:singlequote})\n  AND name IN (\n    SELECT name\n    FROM plausible_events_db.events_v2\n    WHERE $__timeFilter(timestamp)\n  AND hostname IN (${host:singlequote})\n    GROUP BY name\n    ORDER BY count() DESC\n    LIMIT 8\n  )\nGROUP BY time, name\nORDER BY time",
           "refId": "A"

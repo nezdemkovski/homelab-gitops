@@ -127,3 +127,47 @@ pods were removed. Earlier missing history was not recovered.
 A separate audit also found Supabase PostgreSQL's `postgres-data` subPath on
 the same kubelet overlay. No Supabase data or mounts were changed in this
 monitoring repair; its persistence needs a separate database maintenance operation.
+
+## Follow-up: dashboard query audit
+
+Grafana MCP was used to execute every retained panel query through Grafana's
+`/api/ds/query`, including actual datasource backend execution, response status,
+frame fields, time types, row counts and nulls. The remaining dashboards contain
+53 panels / 54 targets: Cluster Overview (11), Cluster Diagnostics (27 / 28),
+and Plausible Analytics (15). Plausible's host-options SQL returned two sites;
+its panel queries were checked with All and each host individually.
+
+Fixes applied:
+
+- Removed both WHOOP dashboards, their provider/mounts, retired NezdemOS
+  datasource and unused reader-secret mapping after the owner confirmed WHOOP
+  is no longer needed. No WHOOP database or 1Password item was deleted.
+- Expanded the CNPG PodMonitor and only the required TCP 9187 network rules
+  from three existing clusters to all nine production CNPG clusters. Verified
+  one collector per namespace and successful database-size queries.
+- Changed four diagnostic stat queries to boolean aggregation, so healthy
+  sources return zero instead of an empty result. They still return no data
+  when the underlying metric is absent. Filtered problem tables remain empty
+  when no corresponding issue exists.
+- Corrected session aggregates to use `sign` in Plausible's
+  `VersionedCollapsingMergeTree` table. The live sample contained 45 rows and
+  zero cancellation rows, so current totals agreed; the queries now also handle
+  unmerged cancellation rows correctly, following the
+  [ClickHouse engine semantics](https://clickhouse.com/docs/reference/engines/table-engines/mergetree-family/versionedcollapsingmergetree).
+- Selected the ClickHouse time-series response format for both line charts.
+  The events query now returns distinct labeled numeric series instead of a
+  table containing the event-name string column.
+
+The Grafana rollout exposed four stale WHOOP volume/mount fields still owned
+by `argocd-controller` from September. Helm's new manifest did not contain
+them, but server-side field ownership kept them alive after the ConfigMap was
+removed. A guarded JSON patch removed only these four obsolete fields to match
+Git, and the rollout completed.
+
+Both retained datasources are healthy. All retained panel target queries passed;
+empty issue tables and the host with no custom events were checked as expected
+empty results rather than connection failures. Existing Prometheus history is
+still limited by the earlier persistence incident; query success does not imply
+that missing older samples have been recovered. MCP image rendering returned
+HTTP 500 because a renderer is unavailable, so this audit verifies queries and
+frame schemas, not a pixel-level browser render.
