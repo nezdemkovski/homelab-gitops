@@ -26,6 +26,44 @@ spec:
       retryInterval: 5m0s
   driftDetection:
     mode: enabled
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apps
+              version: v1
+              kind: StatefulSet
+              name: supabase-supabase-db
+            patch: |
+              apiVersion: apps/v1
+              kind: StatefulSet
+              metadata:
+                name: supabase-supabase-db
+              spec:
+                template:
+                  spec:
+                    terminationGracePeriodSeconds: 120
+                    containers:
+                      - name: supabase-db
+                        volumeMounts:
+                          - name: postgres-volume
+                            mountPath: /var/lib/postgresql/data
+                            subPath: null
+                        lifecycle:
+                          preStop:
+                            exec:
+                              command:
+                                - /sbin/su-exec
+                                - postgres
+                                - pg_ctl
+                                - -D
+                                - /var/lib/postgresql/data
+                                - -w
+                                - -t
+                                - "60"
+                                - -m
+                                - fast
+                                - stop
   values:
     deployment:
       analytics:
