@@ -58,7 +58,7 @@ spec:
       registry: code.forgejo.org
       repository: forgejo/forgejo
       rootless: true
-      tag: 17.0.0
+      tag: 17.0.1
     ingress:
       enabled: false
     persistence:
