@@ -20,7 +20,7 @@
       description: "Authenticate against private GHCR images and charts",
       matchHost: "ghcr.io",
       hostType: "docker",
-      username: "{{ secrets.GHCR_USERNAME }}",
+      username: "nezdemkovski",
       password: "{{ secrets.GHCR_TOKEN }}",
     },
   ],
