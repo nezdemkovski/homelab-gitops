@@ -78,6 +78,13 @@ production CloudNativePG clusters and application pods were ready. Public
 Forgejo, n8n, Paperclip, Grafana, Thataway and Playdamnit API checks succeeded;
 Uptime Kuma and Homarr returned their expected authentication redirects.
 
+Prometheus reported no down targets. Node exporter exposed 49 collector status
+series; six reported no data (`bcachefs`, `infiniband`, `kernel_hung`, `nfsd`,
+`tapestats`, `zfs`), with no collector errors in its logs. Upstream deliberately
+[uses the same zero status for no data and errors](https://github.com/prometheus/node_exporter/blob/v1.12.1/collector/collector.go#L147-L164);
+these statuses alone do not establish a scrape failure. No collectors or
+security controls were disabled.
+
 VM 107 backup is intentionally excluded from the existing Proxmox schedules.
 The ad-hoc backup was stopped at the owner's request, its leftover backup lock
 was cleared, and schedules were not changed. No successful new VM backup is
