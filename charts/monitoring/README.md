@@ -19,3 +19,19 @@ Grafana also provisions a read-only `Plausible ClickHouse` datasource and a
 `Plausible Analytics` dashboard under the Analytics folder. This dashboard is
 shaped for quick AI inspection through Grafana MCP: traffic, events, top pages,
 referrers, countries, devices, UTM campaigns, and recent activity.
+
+Grafana MCP caller authentication uses `Homelab/grafana/MCP_SERVER_TOKEN`,
+separate from the Grafana service-account `token` field. External Secrets creates
+`monitoring/grafana-mcp-server-token`; the chart does not generate its own caller
+credential. Preserve this value when reorganizing secrets.
+
+Codex and Cursor can share the local stdio bridge:
+
+```bash
+install -m 700 scripts/grafana-mcp-remote.sh ~/.codex/bin/grafana-mcp-remote.sh
+```
+
+The bridge uses global `~/.kube/config` with `admin@homelab`, forwards only on
+localhost, and reads the caller token at startup. Its temporary header file has
+owner-only permissions and is removed when the bridge exits. Tokens are not
+embedded in client configuration or process arguments.

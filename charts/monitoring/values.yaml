@@ -232,6 +232,10 @@ grafana-mcp:
     apiKeySecret:
       name: grafana-mcp-token
       key: token
+  serverAuth:
+    tokenSecret:
+      name: grafana-mcp-server-token
+      key: token
   disableWrite: false
   service:
     type: NodePort
