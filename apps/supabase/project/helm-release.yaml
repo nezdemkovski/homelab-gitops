@@ -57,9 +57,6 @@ spec:
       pod:
         spec:
           automountServiceAccountToken: false
-          # Bounded migration gate; removed after cold copy and secret sync.
-          nodeSelector:
-            homelab.nezdemkovski.cloud/supabase-migration-ready: "true"
           terminationGracePeriodSeconds: 120
           containers:
             - name: postgres
