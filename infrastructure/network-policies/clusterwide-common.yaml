@@ -160,9 +160,15 @@ spec:
       - key: io.kubernetes.pod.namespace
         operator: In
         values:
+          - amela
           - auth
+          - doop
+          - haymaker
           - n8n
           - openmarkers
+          - paperclip
+          - playdamnit
+          - thataway
   ingress:
     - fromEndpoints:
         - matchLabels:

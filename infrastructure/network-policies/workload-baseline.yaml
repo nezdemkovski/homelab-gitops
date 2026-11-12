@@ -330,9 +330,15 @@ spec:
               - key: kubernetes.io/metadata.name
                 operator: In
                 values:
+                  - amela
                   - auth
+                  - doop
+                  - haymaker
                   - n8n
                   - openmarkers
+                  - paperclip
+                  - playdamnit
+                  - thataway
           podSelector:
             matchLabels:
               app.kubernetes.io/name: postgresql

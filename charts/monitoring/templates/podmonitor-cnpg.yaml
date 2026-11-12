@@ -10,10 +10,15 @@ metadata:
 spec:
   namespaceSelector:
     matchNames:
+      - amela
       - auth
+      - doop
+      - haymaker
       - n8n
-      - nezdemos
       - openmarkers
+      - paperclip
+      - playdamnit
+      - thataway
   selector:
     matchLabels:
       app.kubernetes.io/name: postgresql
