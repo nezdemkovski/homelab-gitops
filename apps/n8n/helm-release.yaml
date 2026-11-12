@@ -36,7 +36,7 @@ spec:
         value: "true"
       - name: N8N_SECURE_COOKIE
         value: "true"
-      - name: WEBHOOK_URL
+      - name: N8N_WEBHOOK_URL
         valueFrom:
           secretKeyRef:
             key: WEBHOOK_URL
