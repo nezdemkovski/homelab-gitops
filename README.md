@@ -56,3 +56,6 @@ Runtime secrets come from 1Password Connect through External Secrets Operator.
 See [vault conventions and recovery](infrastructure/onepassword-store/README.md).
 Public hostnames and tunnel routes are configured in
 [`charts/cloudflared/values.yaml`](charts/cloudflared/values.yaml).
+
+[2026-11-12 maintenance record](docs/maintenance-2026-11-12.md): verified upgrades,
+restore checks, MCP client migration and the owner's VM backup choice.
