@@ -54,6 +54,10 @@ spec:
               value: {{ .Values.env.instanceId | quote }}
             - name: PAPERCLIP_CONFIG
               value: {{ .Values.env.config | quote }}
+            - name: PAPERCLIP_WORKSPACE_REAPER_COOLDOWN_DAYS
+              value: {{ .Values.env.workspaceReaperCooldownDays | quote }}
+            - name: PAPERCLIP_WORKSPACE_COMPACTION_ENABLED
+              value: {{ .Values.env.workspaceCompactionEnabled | quote }}
             - name: PAPERCLIP_DEPLOYMENT_MODE
               value: {{ .Values.env.deploymentMode | quote }}
             - name: PAPERCLIP_DEPLOYMENT_EXPOSURE

@@ -11,6 +11,9 @@ env:
   serveUi: "true"
   home: /paperclip
   instanceId: default
+  # Preserve the previous release's workspace retention behavior.
+  workspaceReaperCooldownDays: "7"
+  workspaceCompactionEnabled: "false"
   config: /paperclip/instances/default/config.json
   deploymentMode: authenticated
   deploymentExposure: private
