@@ -11,5 +11,5 @@ spec:
     operation: copy
   provider: generic
   ref:
-    tag: 17.3.1
+    tag: 17.3.2
   url: oci://code.forgejo.org/forgejo-helm/forgejo
