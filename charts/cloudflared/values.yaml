@@ -35,7 +35,7 @@ tunnel:
     - hostname: paperclip.nezdemkovski.cloud
       service: http://paperclip.paperclip.svc.cluster.local:80
     - hostname: supabase.nezdemkovski.cloud
-      service: http://supabase-supabase-kong.supabase.svc.cluster.local:8000
+      service: http://supabase-envoy.supabase.svc.cluster.local:8000
     - hostname: status.nezdemkovski.cloud
       service: http://uptime-kuma.uptime-kuma.svc.cluster.local:80
     - hostname: grafana.nezdemkovski.cloud
