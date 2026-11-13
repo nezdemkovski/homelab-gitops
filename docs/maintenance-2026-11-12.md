@@ -256,3 +256,32 @@ query results and frame schemas.
 - Removed the legacy `supabase` 0.8.0 HelmRelease and legacy ExternalSecret from
   Git after public verification. Original PVCs and the recovery copy remain;
   namespace and PVs were not deleted. Operator/project charts stay at 0.8.4.
+
+
+## Migration backup cleanup on 2026-11-13
+
+At the owner's explicit request, after successful migrations and public checks:
+
+- Removed the Supabase recovery PVC from Git, reconciled Flux, and deleted the
+  six legacy PVCs plus recovery PVC. Rechecked bindings and absence of pod
+  references before changing only their retired PVs to `Delete`. The provisioner
+  deleted all 13 old PVs and their directories, including six previously Released
+  volumes. The three active operator PVCs retain their original bindings and
+  `Retain` policies.
+- Deleted the two temporary etcd snapshots and Prometheus migration archive from
+  `/tmp/homelab-recovery` (258,335,096 bytes), removed the empty directory, and
+  deleted the temporary pre-change Grafana MCP wrapper copy. Active Kubernetes
+  and Talos client configurations remain in their global locations.
+- Deleted the exact NAS base backup prefixes `20261112T190512` (n8n),
+  `20261112T191533` (Paperclip), and `20261112T185210` (Thataway), plus
+  `maintenance/20261112/grafana-before-upgrade-db.tar.gz`: seven S3 objects in
+  total. Verified the objects absent and removed their Backup records plus the
+  failed manual Thataway attempt. No ScheduledBackup resources or WAL archives
+  were removed, and backup schedules remain unchanged.
+- Removed the three already-empty leftover restore-check directories for n8n,
+  Paperclip, and Thataway after confirming no PV references those paths.
+- Proxmox inventory contains no VM backup created by this maintenance. The five
+  existing June VM archives were outside this cleanup and remain untouched.
+
+The earlier sections describe the verification steps performed while recovery
+copies existed; those temporary copies are no longer available after cleanup.

@@ -21,12 +21,12 @@ The PostgreSQL image remains `supabase/postgres:17.6.1.136` for this migration.
 The initial Project bootstrap migration is disabled because the imported
 `_supabase` database already exists; component migrations remain enabled.
 
-`supabase-db-recovery-20261112` retains the pre-migration physical database,
-checksums, aggregate verification metadata, and pgsodium configuration. It is a
-node-local recovery copy, not an off-node backup. Original application PVCs and
-older Released PVs are retained. Namespace, recovery PVC, and stateful project
-resources have prune protection; local-path volumes use `Retain` and remain
-bound to this node.
+The recovery PVC, six legacy application PVCs, and six older Released PVs were
+permanently removed on 2026-11-13 at the owner's request after verification.
+The local-path provisioner deleted all 13 corresponding directories. Only the
+three active PVCs remain: `supabase-postgres-data`, `supabase-storage-data`, and
+`supabase-studio-data`. Their PV reclaim policies remain `Retain`; these volumes
+are node-bound. No migration recovery copy remains.
 
 A synthetic row survived recreation of `supabase-postgres-0` and was readable
 through both the original anon API key and the new publishable key. PostgreSQL's
@@ -50,9 +50,9 @@ No generated Secret manifests, key material, or database exports were committed.
 
 Before public cutover, both old and new databases still had zero users, Storage
 objects, and public application tables. The new gateway passed public HTTPS
-checks before the legacy HelmRelease was removed. Its six original PVCs and the
-recovery PVC remain retained; deleting the old installation did not delete the
-namespace or application disks.
+checks before the legacy HelmRelease was removed. Legacy disks were initially
+retained, then deleted separately on the owner's explicit cleanup request. The
+namespace and three active application disks were preserved.
 
 Private API checks included REST table reads. Public HTTPS checks passed for
 Auth, service-role REST OpenAPI, Storage status, Meta health, Studio
