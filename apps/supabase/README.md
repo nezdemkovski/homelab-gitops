@@ -2,9 +2,9 @@
 
 The operator and project charts are pinned to `0.8.4`. Flux installs the operator
 from `infrastructure/supabase-operator` and the project from `apps/supabase/project`.
-The legacy `supabase` chart `0.8.0` remains installed during the migration, and
-Cloudflare Tunnel still sends `https://supabase.nezdemkovski.cloud` to its Kong
-service. The new Envoy gateway is currently private to the cluster.
+Cloudflare Tunnel sends `https://supabase.nezdemkovski.cloud` to
+`supabase-envoy.supabase.svc.cluster.local:8000`. The legacy `supabase` chart
+`0.8.0`, its Kong gateway, and its ExternalSecret were retired on 2026-11-13.
 
 ## Storage
 
@@ -35,26 +35,27 @@ is removed after testing.
 
 ## Credentials and cutover
 
-Existing database, dashboard, Realtime, Meta, and Storage credentials are merged
-from the `supabase` item in the Homelab 1Password vault into operator-owned
-Secrets. Merge targets are checked for `SecretSynced`, including on bootstrap.
-The original JWT secret and legacy anon/service-role API keys have also been
-preserved in the new project's JWT Secret, including its HMAC JWK entries.
+Database, dashboard, Realtime, Meta, Storage, JWT, asymmetric signing, opaque
+API, and vault encryption credentials are restored from the `supabase` Secure
+Note in the Homelab 1Password vault into five operator-owned Secrets through
+External Secrets with `creationPolicy: Merge`. Bootstrap health requires
+`SecretSynced`, rather than treating a missing merge target as healthy.
 
-**Cutover is pending:** seven new operator-generated key fields still need to be
-saved in that same 1Password item and mapped through External Secrets. Connect
-can read this item but rejects writes with HTTP 403. Until personal 1Password
-CLI access is available, do not publish the new gateway or remove the legacy
-release. New generated keys currently exist only in the operator's Kubernetes
-Secrets; ordinary operator reconciliation preserves them.
+The original database password, JWT secret, anon/service-role API keys,
+dashboard login, and crypto keys were preserved. The seven additional operator
+key fields were written to 1Password and read back; all prior values were
+verified unchanged. Fresh ESO sync preserved all five Secret data hashes.
+Database connection metadata in the same item now points to `supabase-postgres`.
+No generated Secret manifests, key material, or database exports were committed.
 
-After key storage and fresh ExternalSecret verification, recheck the legacy
-application for writes, switch the tunnel backend to `supabase-envoy`, verify
-the public API and Studio, and only then remove the legacy HelmRelease. Keep
-its PVCs and the recovery copy until explicitly retired.
+Before public cutover, both old and new databases still had zero users, Storage
+objects, and public application tables. The new gateway passed public HTTPS
+checks before the legacy HelmRelease was removed. Its six original PVCs and the
+recovery PVC remain retained; deleting the old installation did not delete the
+namespace or application disks.
 
-The private gateway has passed Auth, REST table reads, Storage status, Meta
-health, Studio authentication, and public-only JWKS checks with the original
-credentials. Envoy intentionally restricts the REST OpenAPI root to service-role
+Private API checks included REST table reads. Public HTTPS checks passed for
+Auth, service-role REST OpenAPI, Storage status, Meta health, Studio
+authentication, and public-only JWKS with the original credentials. Envoy intentionally restricts the REST OpenAPI root to service-role
 keys. Analytics, Vector, Supavisor, and MinIO are disabled; imgproxy is enabled
 with Storage. Email confirmation remains automatic and SMTP remains unconfigured.

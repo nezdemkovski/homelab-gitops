@@ -205,7 +205,9 @@ New Flux metric history starts when this collection was enabled. The existing
 MCP image-renderer limitation still applies; verification used real backend
 query results and frame schemas.
 
-## Supabase persistence and operator migration (cutover pending)
+## Supabase persistence and operator migration (completed 2026-11-13)
+
+### Staging on 2026-11-12
 
 - Recovered the legacy PostgreSQL database and pgsodium configuration inside the
   cluster, verified file checksums and an isolated restore, and retained the
@@ -231,6 +233,26 @@ query results and frame schemas.
   database pod recreation; the database identifier stayed unchanged. Restarting
   the operator preserved all five credential Secrets. The test table and copy
   helper were removed afterward.
-- Public cutover and legacy HelmRelease retirement are pending vaulting the new
-  keys and wiring their ESO mappings. The existing public hostname still serves
-  the legacy installation. See `apps/supabase/README.md` for the remaining steps.
+- At the end of staging, public cutover and legacy retirement were pending
+  vaulting the new keys. The old installation continued serving the public
+  hostname until the completion steps below.
+
+
+### Supabase cutover completed on 2026-11-13
+
+- Personal 1Password access restored. Fixed a missing section identifier in the
+  existing Secure Note, stored the seven additional operator key fields, and
+  read-verified every credential. Existing field values were preserved.
+- Added JWT and vault encryption key ESO mappings. All five operator
+  ExternalSecrets reported `SecretSynced`; before/after Secret data hashes
+  matched. Updated database endpoint metadata to `supabase-postgres`.
+- Rechecked both databases: zero application users, Storage objects, and public
+  tables; no user writes needed another migration. Changed only the Supabase
+  tunnel backend to `supabase-envoy`; both tunnel replicas rolled successfully.
+- Public HTTPS checks passed with the original credentials: Auth, service-role
+  REST OpenAPI, Storage, authenticated Studio, Meta, and public-only JWKS.
+  Missing API credentials and missing Studio login were correctly rejected.
+  Envoy's anon restriction on REST OpenAPI is intentional.
+- Removed the legacy `supabase` 0.8.0 HelmRelease and legacy ExternalSecret from
+  Git after public verification. Original PVCs and the recovery copy remain;
+  namespace and PVs were not deleted. Operator/project charts stay at 0.8.4.
