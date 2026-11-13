@@ -77,6 +77,10 @@ spec:
     kind: ExternalSecret
     name: supabase-operator-storage
     namespace: supabase
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    name: supabase-operator-jwt
+    namespace: supabase
   healthCheckExprs:
   - apiVersion: external-secrets.io/v1
     kind: ExternalSecret
