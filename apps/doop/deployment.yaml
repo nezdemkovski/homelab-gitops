@@ -21,7 +21,7 @@ spec:
         - name: doop-registry
       containers:
         - name: doop
-          image: ghcr.io/nezdemkovski/doop:0.12.0@sha256:d84b61ed81e3bdf1ceb1667134f482f71f8a3d54722bff155de82abc9f663bc1
+          image: ghcr.io/nezdemkovski/doop:0.14.0@sha256:472dd5ec770f946800a30e71b3aab85fd40577b252efdff974e71c63ac77636e
           ports:
             - name: http
               containerPort: 4400

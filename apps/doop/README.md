@@ -6,8 +6,8 @@ and Recreate updates: rooms and upload tickets live in memory.
 
 ## Release
 
-Unmodified upstream v0.12.0, source commit
-`65b24a5ee0696f2646720cf57727e68873cd6fba` (AGPL-3.0).
+Unmodified upstream v0.14.0, source commit
+`f1c36719e1599a7e960badbc600e7ab27c69542e` (AGPL-3.0).
 The manual `Build Doop` workflow builds the upstream Dockerfile, including
 Chromium, and publishes `ghcr.io/nezdemkovski/doop`. The deployment pins the image
 by version and digest. To update, review upstream changes/migrations, change the
@@ -44,3 +44,18 @@ agent or configure a model account in Doop to run real design tasks.
 Network policies allow DNS, same-namespace traffic, CNPG operator management,
 Kubernetes API access for database pods, NAS S3, public HTTP/HTTPS and Resend SMTP.
 Only the tunnel may enter the app from another workload namespace.
+
+## Upgrade verification (2026-11-15)
+
+Upgraded from 0.12.0 to 0.14.0. The nine new SQL migrations were exercised on an
+isolated clone of the existing database schema, with synthetic data confirming
+that an existing model account survives and a second provider can be added for
+the same user. The temporary database was removed. Before rollout, the live
+application had 1 user, 5 canvases and 75 frames; the 03:30 UTC NAS backup was
+complete and continuous WAL archiving was healthy.
+
+The official desktop shell loads the server's web UI rather than shipping a
+frozen copy of the model-account settings client. This release changes that
+settings API to support multiple providers; refresh an already-open browser tab
+after upgrading. Public origin, authentication settings, database, and S3 asset
+location are preserved.
