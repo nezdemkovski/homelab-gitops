@@ -18,11 +18,11 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Check out upstream release v0.12.0
+      - name: Check out upstream release v0.14.0
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: kgoedecke/doop
-          ref: 65b24a5ee0696f2646720cf57727e68873cd6fba
+          ref: f1c36719e1599a7e960badbc600e7ab27c69542e
           persist-credentials: false
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
@@ -37,14 +37,14 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/nezdemkovski/doop:0.12.0
+          tags: ghcr.io/nezdemkovski/doop:0.14.0
           labels: |
             org.opencontainers.image.source=https://github.com/nezdemkovski/homelab-gitops
             org.opencontainers.image.url=https://github.com/kgoedecke/doop
-            org.opencontainers.image.revision=65b24a5ee0696f2646720cf57727e68873cd6fba
-            org.opencontainers.image.version=0.12.0
+            org.opencontainers.image.revision=f1c36719e1599a7e960badbc600e7ab27c69542e
+            org.opencontainers.image.version=0.14.0
             org.opencontainers.image.licenses=AGPL-3.0-only
       - name: Record digest
         env:
           IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
-        run: echo "ghcr.io/nezdemkovski/doop:0.12.0@$IMAGE_DIGEST" >> "$GITHUB_STEP_SUMMARY"
+        run: echo "ghcr.io/nezdemkovski/doop:0.14.0@$IMAGE_DIGEST" >> "$GITHUB_STEP_SUMMARY"
