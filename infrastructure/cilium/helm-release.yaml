@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cilium
-      version: 1.20.4
+      version: 1.20.5
   driftDetection:
     ignore:
     - paths:
