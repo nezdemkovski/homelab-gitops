@@ -7,6 +7,6 @@ dependencies:
   version: 14.5.0
 - name: grafana-mcp
   repository: https://grafana-community.github.io/helm-charts
-  version: 0.35.0
-digest: sha256:2b8a60cd3dce440d5af7899990bceb426dfa5f6114b62565aea6515667ee0a95
-generated: "2026-11-22T19:44:36.372636797Z"
+  version: 0.37.0
+digest: sha256:3e4869564bbc5d860533a3a0ea62aae695c4b5dd1d74ee686b99b3d6c7a4bab0
+generated: "2026-11-25T13:01:00.079637102Z"
