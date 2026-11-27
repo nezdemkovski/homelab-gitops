@@ -14,6 +14,6 @@ spec:
     fullnameOverride: playdamnit-api
     image:
       repository: ghcr.io/nezdemkovski/playdamnit-api
-      tag: 0.1.69@sha256:05dbb45697799823374788b29a11da2fa6b3defaca80e452046163e66e05abc2
+      tag: 0.1.70@sha256:f5a90f585dc2862f014ddb43dd950b80e6a7b4ca98153f64eb54d2d07020fd56
     imagePullSecrets:
     - name: playdamnit-ghcr
