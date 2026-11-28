@@ -28,7 +28,7 @@ spec:
     manager:
       image:
         repository: ghcr.io/supabase-community/supabase-operator
-        tag: v0.8.4
+        tag: v0.8.5
       resources:
         requests:
           cpu: 25m
